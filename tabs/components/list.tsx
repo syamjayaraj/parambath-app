@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
   TouchableOpacity,
-  Image,
   FlatList,
   Dimensions,
   Keyboard,
@@ -11,7 +10,6 @@ import {
 import axios from "axios";
 import {
   Container,
-  Content,
   List,
   ListItem,
   Text,
@@ -32,7 +30,7 @@ import colours from "../../const/colours";
 
 const { width, height } = Dimensions.get("window");
 
-export default function ListComponent(props) {
+export default function ListComponent(props: any) {
   let [items, setitems] = useState([]);
   let [categories, setCategories] = useState([]);
   let [selectedCategoryId, setSelectedCategoryId] = useState("");
@@ -43,7 +41,7 @@ export default function ListComponent(props) {
 
   const refRBSheet = useRef();
 
-  let itemCategoryProp = props.route.params.itemCategory;
+  let itemCategoryProp: any = props.route.params.itemCategory;
   let urlProp = props.route.params.url;
   let categoryUrlProp = props.route.params.categoryUrl;
   let mainProp = props.route.params.main;
@@ -65,7 +63,7 @@ export default function ListComponent(props) {
       }
       // fetchItemCategories();
       setLoading(false);
-    } catch (err) {
+    } catch (err: any) {
       setLoading(false);
     }
   };
@@ -77,14 +75,14 @@ export default function ListComponent(props) {
         setitemsCategories(response.data.data);
       } else {
       }
-    } catch (err) {}
+    } catch (err: any) {}
   };
 
   let showCategories = (items) => {
-    let itemCategories = [];
-    items.map((item) => {
+    let itemCategories: any = [];
+    items.map((item: any) => {
       let categoryExist = false;
-      itemCategories.map((itemCategory) => {
+      itemCategories.map((itemCategory: any) => {
         if (item[itemCategoryProp]._id === itemCategory._id) {
           categoryExist = true;
         }
@@ -96,7 +94,7 @@ export default function ListComponent(props) {
     setCategories(itemCategories);
   };
 
-  let setCategoryIdAdvanced = (value) => {
+  let setCategoryIdAdvanced = (value: any) => {
     if (selectedCategoryId === value) {
       setSelectedCategoryId("");
     } else {
@@ -171,7 +169,7 @@ export default function ListComponent(props) {
         prompt: true,
       };
       await call(callArgs);
-    } catch (err) {}
+    } catch (err: any) {}
   };
 
   const openBrowser = async (params) => {
@@ -180,7 +178,7 @@ export default function ListComponent(props) {
       let result = await WebBrowser.openAuthSessionAsync(url, url, {
         showInRecents: true,
       });
-    } catch (err) {}
+    } catch (err: any) {}
   };
 
   let cancelInput = () => {
@@ -202,14 +200,14 @@ export default function ListComponent(props) {
   //   };
   // });
 
-  const getRandomInt = (max) => {
+  const getRandomInt = (max: any) => {
     return Math.floor(Math.random() * max);
   };
 
   return (
     <Container>
       <View>
-        <View rounded style={[styles.searchInputContainer]}>
+        <View style={[styles.searchInputContainer]}>
           <Item
             rounded
             style={[
@@ -236,18 +234,10 @@ export default function ListComponent(props) {
           showsHorizontalScrollIndicator={false}
           horizontal
           data={categories}
-          renderItem={({ item }) => (
+          renderItem={({ item }: any) => (
             <View style={{ padding: 10, marginTop: 0 }}>
               <TouchableOpacity
-                style={[
-                  styles.categoryBadge,
-                  // {
-                  //   backgroundColor:
-                  //     selectedCategoryId === item._id
-                  //       ? colours[getRandomInt(6)]
-                  //       : "white",
-                  // },
-                ]}
+                style={[styles.categoryBadge]}
                 onPress={() => setCategoryIdAdvanced(item._id)}
               >
                 {/* {item.icon ? (
@@ -291,16 +281,16 @@ export default function ListComponent(props) {
           </TouchableOpacity>
         )}
       </View>
-      <Content style={styles.container}>
+      <View style={styles.container}>
         {loading ? (
           <View style={styles.loader}>
-            {/* <Spinner color={colours[getRandomInt(6)]} /> */}
+            <Spinner color={colours[getRandomInt(6)]} />
           </View>
         ) : (
           <View>
             <View style={styles.sectionContainer}>
               <List>
-                {filtereditems.map((item, index) => {
+                {filtereditems.map((item: any, index: number) => {
                   let itemImage =
                     item.images.length != 0
                       ? item.images[0]
@@ -577,18 +567,10 @@ export default function ListComponent(props) {
             <FlatList
               showsHorizontalScrollIndicator={false}
               data={categories}
-              renderItem={({ item }) => (
+              renderItem={({ item }: any) => (
                 <View style={{ padding: 10, marginTop: 0 }}>
                   <TouchableOpacity
-                    style={[
-                      styles.categoryExpItem,
-                      // {
-                      //   backgroundColor:
-                      //     selectedCategoryId === item._id
-                      //       ? colours[getRandomInt(6)]
-                      //       : "white",
-                      // },
-                    ]}
+                    style={[styles.categoryExpItem]}
                     onPress={() => setCategoryIdAdvancedBottomSheet(item._id)}
                   >
                     {/* {item.icon ? (
@@ -617,11 +599,11 @@ export default function ListComponent(props) {
                   </TouchableOpacity>
                 </View>
               )}
-              keyExtractor={(item) => item._id}
+              keyExtractor={(item: any) => item._id}
             />
           </View>
         </RBSheet>
-      </Content>
+      </View>
     </Container>
   );
 }
