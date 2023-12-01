@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Dimensions } from "react-native";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 import Markdown from "react-native-markdown-display";
 
 import axios from "axios";
-import { Container, Spinner } from "native-base";
+import { Box, ScrollView, Spinner } from "native-base";
 import { apiUrl } from "../../config";
 
-export default function Terms(props: any) {
+export default function Terms() {
   let [term, setTerm] = useState({
     text: "",
   });
@@ -32,23 +32,25 @@ export default function Terms(props: any) {
   };
 
   return (
-    <Container>
-      <View style={styles.container}>
-        {loading ? (
-          <View style={styles.loader}>
-            <Spinner color="#1c1b29" />
-          </View>
-        ) : (
-          <View
-            style={{
-              marginBottom: 50,
-            }}
-          >
-            <Markdown>{term.text}</Markdown>
-          </View>
-        )}
-      </View>
-    </Container>
+    <Box bg={"white"} pt={5} padding={3}>
+      <SafeAreaView>
+        <ScrollView contentContainerStyle={{ width: "100%" }}>
+          {loading ? (
+            <View style={styles.loader}>
+              <Spinner color="#1c1b29" />
+            </View>
+          ) : (
+            <View
+              style={{
+                marginBottom: 50,
+              }}
+            >
+              <Markdown>{term.text}</Markdown>
+            </View>
+          )}
+        </ScrollView>
+      </SafeAreaView>
+    </Box>
   );
 }
 

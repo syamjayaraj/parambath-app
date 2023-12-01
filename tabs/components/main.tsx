@@ -7,6 +7,7 @@ import {
   Image,
   Linking,
   Share,
+  SafeAreaView,
 } from "react-native";
 import axios from "axios";
 import { Text, Icon, Spinner, Box, ScrollView } from "native-base";
@@ -147,454 +148,458 @@ export default function MainComponent(props: any) {
 
   return (
     <Box bg={"white"} pt={12} padding={5}>
-      <ScrollView contentContainerStyle={{ width: "100%" }}>
-        {loading ? (
-          <View style={styles.loader}>
-            <Spinner color="#1c1b29" />
-          </View>
-        ) : (
-          <View
-            style={{
-              marginTop: 50,
-            }}
-          >
-            {item.images && item.images.length !== 0 ? (
-              <Carousel
-                showsHorizontalScrollIndicator={true}
-                indica
-                loop={true}
-                activeOpacity={1}
-                autoplay={true}
-                autoplayInterval={2500}
-                autoplayDelay={1000}
-                layout={"stack"}
-                // ref={(ref) => (this.carousel = ref)}
-                data={item.images}
-                sliderWidth={width}
-                itemWidth={width}
-                renderItem={_renderItem}
-              />
-            ) : null}
+      <SafeAreaView>
+        <ScrollView contentContainerStyle={{ width: "100%" }}>
+          {loading ? (
+            <View style={styles.loader}>
+              <Spinner color="#1c1b29" />
+            </View>
+          ) : (
             <View
-              style={[
-                styles.sectionContainer,
-                item.isPremium
-                  ? {
-                      borderColor: "#FFA507",
-                    }
-                  : null,
-              ]}
+              style={{
+                marginTop: 50,
+              }}
             >
-              {item.isPremium ? (
-                <Image
-                  source={require("../../assets/icons/premium.png")}
-                  style={styles.badge}
+              {item.images && item.images.length !== 0 ? (
+                <Carousel
+                  showsHorizontalScrollIndicator={true}
+                  loop={true}
+                  autoplay={true}
+                  autoplayInterval={2500}
+                  autoplayDelay={1000}
+                  layout={"stack"}
+                  data={item.images}
+                  sliderWidth={width}
+                  itemWidth={width}
+                  renderItem={_renderItem}
                 />
               ) : null}
-              <View style={styles.shareButtonContainer}>
-                <TouchableOpacity onPress={onShare} style={styles.shareButton}>
-                  <EvilIcons
-                    name="share-apple"
-                    color="black"
-                    style={styles.shareIcon}
+              <View
+                style={[
+                  styles.sectionContainer,
+                  item.isPremium
+                    ? {
+                        borderColor: "#FFA507",
+                      }
+                    : null,
+                ]}
+              >
+                {item.isPremium ? (
+                  <Image
+                    source={require("../../assets/icons/premium.png")}
+                    style={styles.badge}
                   />
-                  <Text style={styles.shareText}>Share</Text>
-                </TouchableOpacity>
-              </View>
-              {item.name || item.title ? (
-                <Text style={styles.title}>
-                  {item.malayalamName
-                    ? item.malayalamName
-                    : item.malayalamTitle
-                    ? item.malayalamTitle
-                    : item.name
-                    ? item.name
-                    : item.title}
-                  &nbsp;
-                </Text>
-              ) : null}
-              {item[itemCategoryProp] ? (
-                <Text note style={styles.workName}>
-                  {item[itemCategoryProp].malayalamName
-                    ? item[itemCategoryProp].malayalamName
-                    : item[itemCategoryProp].name}
-                  &nbsp;
-                </Text>
-              ) : null}
-
-              {item.about ? (
-                <Text style={styles.aboutText}>{item.about}</Text>
-              ) : null}
-
-              {item.description ? (
-                <Text style={styles.aboutText}>{item.description}</Text>
-              ) : null}
-
-              {(urlProp === "notification" || urlProp === "online-service") &&
-              item.youtube ? (
-                <TouchableOpacity
-                  style={[styles.video]}
-                  onPress={() => Linking.openURL(item.youtube)}
-                >
-                  <Icon name="logo-youtube" style={styles.bookingIcon} />
-
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      marginLeft: 10,
-                    }}
-                  >
-                    <Text style={{}}>സഹായക വീഡിയോ കാണു</Text>
-                  </View>
-                </TouchableOpacity>
-              ) : null}
-
-              {(urlProp === "notification" && item.website) || item.url ? (
-                <TouchableOpacity
-                  style={[styles.booking]}
-                  onPress={() =>
-                    openBrowser({
-                      url: item.website ? item.website : item.url,
-                    })
-                  }
-                >
-                  <Icon name="globe-outline" style={styles.bookingIcon} />
-
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      marginLeft: 10,
-                    }}
-                  >
-                    <Text style={styles.value}>വെബ്സൈറ്റ് സന്ദർശിക്കൂ</Text>
-                  </View>
-                </TouchableOpacity>
-              ) : null}
-
-              {item.opensAt && item.closesAt ? (
-                <View style={styles.section}>
-                  <View style={styles.iconContainer}>
-                    <Icon name="time-outline" style={styles.icon} />
-                  </View>
-                  <View style={styles.textContainer}>
-                    <Text style={styles.label}>പ്രവൃത്തി സമയം</Text>
-                    <Text style={styles.value}>
-                      {item.opensAt}-{item.closesAt}
-                    </Text>
-                  </View>
-                </View>
-              ) : null}
-
-              {item.owner ? (
-                <View style={styles.section}>
-                  <View style={styles.iconContainer}>
-                    <Icon name="person-outline" style={styles.icon} />
-                  </View>
-                  <View style={styles.textContainer}>
-                    <Text style={styles.label}>ഉടമ</Text>
-                    <Text style={styles.value}>
-                      {item.ownerMalayalamName
-                        ? item.ownerMalayalamName
-                        : item.owner}
-                    </Text>
-                  </View>
-                </View>
-              ) : null}
-              {item.from || item.to ? (
-                <View style={styles.section}>
-                  <View style={styles.iconContainer}>
-                    <Icon name="calendar-outline" style={styles.icon} />
-                  </View>
-                  <View style={styles.textContainer}>
-                    <Text style={styles.label}>കാലാവധി</Text>
-                    <Text style={styles.value}>
-                      {item.from} - {item.to}
-                    </Text>
-                  </View>
-                </View>
-              ) : null}
-
-              {item.phoneNumber ? (
-                <View style={styles.section}>
-                  <View style={styles.iconContainer}>
-                    <FontAwesome name="phone" style={styles.icon} />
-                  </View>
+                ) : null}
+                <View style={styles.shareButtonContainer}>
                   <TouchableOpacity
-                    style={styles.textContainer}
-                    onPress={() => callToTheNumber(item.phoneNumber)}
+                    onPress={onShare}
+                    style={styles.shareButton}
                   >
-                    <Text style={styles.label}>ഫോൺ നമ്പർ</Text>
-                    <Text style={styles.value}>{item.phoneNumber}</Text>
+                    <EvilIcons
+                      name="share-apple"
+                      color="black"
+                      style={styles.shareIcon}
+                    />
+                    <Text style={styles.shareText}>Share</Text>
                   </TouchableOpacity>
                 </View>
-              ) : null}
+                {item.name || item.title ? (
+                  <Text style={styles.title}>
+                    {item.malayalamName
+                      ? item.malayalamName
+                      : item.malayalamTitle
+                      ? item.malayalamTitle
+                      : item.name
+                      ? item.name
+                      : item.title}
+                    &nbsp;
+                  </Text>
+                ) : null}
+                {item[itemCategoryProp] ? (
+                  <Text note style={styles.workName}>
+                    {item[itemCategoryProp].malayalamName
+                      ? item[itemCategoryProp].malayalamName
+                      : item[itemCategoryProp].name}
+                    &nbsp;
+                  </Text>
+                ) : null}
 
-              {item.phoneNumber2 ? (
-                <View style={styles.section}>
-                  <View style={styles.iconContainer}>
-                    <FontAwesome name="phone" style={styles.icon} />
+                {item.about ? (
+                  <Text style={styles.aboutText}>{item.about}</Text>
+                ) : null}
 
-                    <Icon name="call-outline" style={styles.icon} />
-                  </View>
+                {item.description ? (
+                  <Text style={styles.aboutText}>{item.description}</Text>
+                ) : null}
+
+                {(urlProp === "notification" || urlProp === "online-service") &&
+                item.youtube ? (
                   <TouchableOpacity
-                    style={styles.textContainer}
-                    onPress={() => callToTheNumber(item.phoneNumber2)}
+                    style={[styles.video]}
+                    onPress={() => Linking.openURL(item.youtube)}
                   >
+                    <Icon name="logo-youtube" style={styles.bookingIcon} />
+
                     <View
                       style={{
                         display: "flex",
                         flexDirection: "row",
                         alignItems: "center",
+                        marginLeft: 10,
                       }}
                     >
-                      <Text style={styles.label}>ഫോൺ നമ്പർ</Text>
-                      <Text
-                        note
-                        style={{
-                          fontSize: 10,
-                          marginLeft: 5,
-                        }}
-                      >
-                        (2)
-                      </Text>
+                      <Text style={{}}>സഹായക വീഡിയോ കാണു</Text>
                     </View>
-                    <Text style={styles.value}>{item.phoneNumber2}</Text>
-                  </TouchableOpacity>
-                </View>
-              ) : null}
-
-              {item.email ? (
-                <View style={styles.section}>
-                  <View style={styles.iconContainer}>
-                    <MaterialIcons name="email" style={styles.icon} />
-                  </View>
-                  <TouchableOpacity
-                    style={styles.textContainer}
-                    onPress={() =>
-                      Linking.openURL("mailto:support@example.com")
-                    }
-                  >
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text style={styles.label}>ഇമെയിൽ</Text>
-                    </View>
-                    <Text style={styles.value}>{item.email}</Text>
-                  </TouchableOpacity>
-                </View>
-              ) : null}
-
-              {item.place ? (
-                <View style={styles.section}>
-                  <View style={styles.iconContainer}>
-                    <Ionicons name="location-sharp" style={styles.icon} />
-                  </View>
-                  <View style={styles.textContainer}>
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text style={styles.label}>സ്ഥലം</Text>
-                    </View>
-                    <Text style={styles.value}>{item.place}</Text>
-                  </View>
-                </View>
-              ) : null}
-
-              {item.address ? (
-                <View style={styles.section}>
-                  <View style={styles.iconContainer}>
-                    <Icon name="mail-outline" style={styles.icon} />
-                  </View>
-                  <View style={styles.textContainer}>
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text style={styles.label}>മേൽവിലാസം</Text>
-                    </View>
-                    <Text style={styles.value}>{item.address}</Text>
-                  </View>
-                </View>
-              ) : null}
-
-              {item.upi || item.card ? (
-                <View style={styles.section}>
-                  <View style={styles.iconContainer}>
-                    <Icon name="wallet-outline" style={styles.icon} />
-                  </View>
-                  <View style={styles.textContainer}>
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text style={styles.label}>ഓൺലൈൻ പേയ്മെന്റ്</Text>
-                    </View>
-                    <View style={{}}>
-                      {item.upi ? (
-                        <Text style={styles.value}>
-                          യുപിഐ&nbsp;
-                          <Text
-                            style={{
-                              fontSize: 10,
-                            }}
-                          >
-                            (ഗൂഗിൾ പേ/ഫോൺ പേ)
-                          </Text>
-                        </Text>
-                      ) : null}
-                      {item.card ? (
-                        <Text style={styles.value}>
-                          ക്രെഡിറ്റ്/ഡെബിറ്റ് കാർഡ്
-                        </Text>
-                      ) : null}
-                    </View>
-                  </View>
-                </View>
-              ) : null}
-
-              {item.vehicleNumber ? (
-                <View style={styles.section}>
-                  <View style={styles.iconContainer}>
-                    <Icon name="clipboard-outline" style={styles.icon} />
-                  </View>
-                  <View style={styles.textContainer}>
-                    <Text style={styles.label}>വണ്ടി നമ്പർ</Text>
-                    <Text style={styles.value}>{item.vehicleNumber}</Text>
-                  </View>
-                </View>
-              ) : null}
-
-              {item.onlineBookingUrl ? (
-                <TouchableOpacity
-                  style={[
-                    styles.booking,
-                    item.isPremium
-                      ? {
-                          borderColor: "#FFA507",
-                        }
-                      : null,
-                  ]}
-                  onPress={() =>
-                    openBrowser({
-                      url: item.onlineBookingUrl,
-                    })
-                  }
-                >
-                  <Icon
-                    name="phone-portrait-outline"
-                    style={styles.bookingIcon}
-                  />
-
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      marginLeft: 10,
-                    }}
-                  >
-                    <Text style={styles.value}>ബുക്കിംഗ്/ഓർഡർ</Text>
-                  </View>
-                </TouchableOpacity>
-              ) : null}
-
-              <View style={styles.footer}>
-                {item.whatsapp ? (
-                  <TouchableOpacity
-                    style={styles.footerIconContainer}
-                    onPress={() =>
-                      Linking.openURL(`whatsapp://send?phone=${item.whatsapp}`)
-                    }
-                  >
-                    <Icon name="logo-whatsapp" style={styles.footerIcon} />
                   </TouchableOpacity>
                 ) : null}
 
-                {urlProp !== "notification" && item.website ? (
+                {(urlProp === "notification" && item.website) || item.url ? (
                   <TouchableOpacity
-                    style={styles.footerIconContainer}
+                    style={[styles.booking]}
                     onPress={() =>
                       openBrowser({
-                        url: item.website,
+                        url: item.website ? item.website : item.url,
                       })
                     }
                   >
-                    <Icon name="globe-outline" style={styles.footerIcon} />
+                    <Icon name="globe-outline" style={styles.bookingIcon} />
+
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        marginLeft: 10,
+                      }}
+                    >
+                      <Text style={styles.value}>വെബ്സൈറ്റ് സന്ദർശിക്കൂ</Text>
+                    </View>
                   </TouchableOpacity>
                 ) : null}
 
-                {item.facebook ? (
-                  <TouchableOpacity
-                    style={styles.footerIconContainer}
-                    onPress={() =>
-                      Linking.canOpenURL(`fb://page/${item.facebook}`).then(
-                        (supported) => {
-                          let facebookUrlIsId = /^\d+$/.test(item.facebook);
+                {item.opensAt && item.closesAt ? (
+                  <View style={styles.section}>
+                    <View style={styles.iconContainer}>
+                      <Icon name="time-outline" style={styles.icon} />
+                    </View>
+                    <View style={styles.textContainer}>
+                      <Text style={styles.label}>പ്രവൃത്തി സമയം</Text>
+                      <Text style={styles.value}>
+                        {item.opensAt}-{item.closesAt}
+                      </Text>
+                    </View>
+                  </View>
+                ) : null}
 
-                          if (supported && facebookUrlIsId) {
-                            return Linking.openURL(
-                              `fb://page/${item.facebook}`
-                            );
-                          } else {
-                            return Linking.openURL(
-                              `https://www.facebook.com/${item.facebook}`
-                            );
+                {item.owner ? (
+                  <View style={styles.section}>
+                    <View style={styles.iconContainer}>
+                      <Icon name="person-outline" style={styles.icon} />
+                    </View>
+                    <View style={styles.textContainer}>
+                      <Text style={styles.label}>ഉടമ</Text>
+                      <Text style={styles.value}>
+                        {item.ownerMalayalamName
+                          ? item.ownerMalayalamName
+                          : item.owner}
+                      </Text>
+                    </View>
+                  </View>
+                ) : null}
+                {item.from || item.to ? (
+                  <View style={styles.section}>
+                    <View style={styles.iconContainer}>
+                      <Icon name="calendar-outline" style={styles.icon} />
+                    </View>
+                    <View style={styles.textContainer}>
+                      <Text style={styles.label}>കാലാവധി</Text>
+                      <Text style={styles.value}>
+                        {item.from} - {item.to}
+                      </Text>
+                    </View>
+                  </View>
+                ) : null}
+
+                {item.phoneNumber ? (
+                  <View style={styles.section}>
+                    <View style={styles.iconContainer}>
+                      <FontAwesome name="phone" style={styles.icon} />
+                    </View>
+                    <TouchableOpacity
+                      style={styles.textContainer}
+                      onPress={() => callToTheNumber(item.phoneNumber)}
+                    >
+                      <Text style={styles.label}>ഫോൺ നമ്പർ</Text>
+                      <Text style={styles.value}>{item.phoneNumber}</Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : null}
+
+                {item.phoneNumber2 ? (
+                  <View style={styles.section}>
+                    <View style={styles.iconContainer}>
+                      <FontAwesome name="phone" style={styles.icon} />
+
+                      <Icon name="call-outline" style={styles.icon} />
+                    </View>
+                    <TouchableOpacity
+                      style={styles.textContainer}
+                      onPress={() => callToTheNumber(item.phoneNumber2)}
+                    >
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Text style={styles.label}>ഫോൺ നമ്പർ</Text>
+                        <Text
+                          note
+                          style={{
+                            fontSize: 10,
+                            marginLeft: 5,
+                          }}
+                        >
+                          (2)
+                        </Text>
+                      </View>
+                      <Text style={styles.value}>{item.phoneNumber2}</Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : null}
+
+                {item.email ? (
+                  <View style={styles.section}>
+                    <View style={styles.iconContainer}>
+                      <MaterialIcons name="email" style={styles.icon} />
+                    </View>
+                    <TouchableOpacity
+                      style={styles.textContainer}
+                      onPress={() =>
+                        Linking.openURL("mailto:support@example.com")
+                      }
+                    >
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Text style={styles.label}>ഇമെയിൽ</Text>
+                      </View>
+                      <Text style={styles.value}>{item.email}</Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : null}
+
+                {item.place ? (
+                  <View style={styles.section}>
+                    <View style={styles.iconContainer}>
+                      <Ionicons name="location-sharp" style={styles.icon} />
+                    </View>
+                    <View style={styles.textContainer}>
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Text style={styles.label}>സ്ഥലം</Text>
+                      </View>
+                      <Text style={styles.value}>{item.place}</Text>
+                    </View>
+                  </View>
+                ) : null}
+
+                {item.address ? (
+                  <View style={styles.section}>
+                    <View style={styles.iconContainer}>
+                      <Icon name="mail-outline" style={styles.icon} />
+                    </View>
+                    <View style={styles.textContainer}>
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Text style={styles.label}>മേൽവിലാസം</Text>
+                      </View>
+                      <Text style={styles.value}>{item.address}</Text>
+                    </View>
+                  </View>
+                ) : null}
+
+                {item.upi || item.card ? (
+                  <View style={styles.section}>
+                    <View style={styles.iconContainer}>
+                      <Icon name="wallet-outline" style={styles.icon} />
+                    </View>
+                    <View style={styles.textContainer}>
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Text style={styles.label}>ഓൺലൈൻ പേയ്മെന്റ്</Text>
+                      </View>
+                      <View style={{}}>
+                        {item.upi ? (
+                          <Text style={styles.value}>
+                            യുപിഐ&nbsp;
+                            <Text
+                              style={{
+                                fontSize: 10,
+                              }}
+                            >
+                              (ഗൂഗിൾ പേ/ഫോൺ പേ)
+                            </Text>
+                          </Text>
+                        ) : null}
+                        {item.card ? (
+                          <Text style={styles.value}>
+                            ക്രെഡിറ്റ്/ഡെബിറ്റ് കാർഡ്
+                          </Text>
+                        ) : null}
+                      </View>
+                    </View>
+                  </View>
+                ) : null}
+
+                {item.vehicleNumber ? (
+                  <View style={styles.section}>
+                    <View style={styles.iconContainer}>
+                      <Icon name="clipboard-outline" style={styles.icon} />
+                    </View>
+                    <View style={styles.textContainer}>
+                      <Text style={styles.label}>വണ്ടി നമ്പർ</Text>
+                      <Text style={styles.value}>{item.vehicleNumber}</Text>
+                    </View>
+                  </View>
+                ) : null}
+
+                {item.onlineBookingUrl ? (
+                  <TouchableOpacity
+                    style={[
+                      styles.booking,
+                      item.isPremium
+                        ? {
+                            borderColor: "#FFA507",
                           }
-                        }
-                      )
+                        : null,
+                    ]}
+                    onPress={() =>
+                      openBrowser({
+                        url: item.onlineBookingUrl,
+                      })
                     }
                   >
-                    <Icon name="logo-facebook" style={styles.footerIcon} />
+                    <Icon
+                      name="phone-portrait-outline"
+                      style={styles.bookingIcon}
+                    />
+
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        marginLeft: 10,
+                      }}
+                    >
+                      <Text style={styles.value}>ബുക്കിംഗ്/ഓർഡർ</Text>
+                    </View>
                   </TouchableOpacity>
                 ) : null}
 
-                {item.instagram ? (
-                  <TouchableOpacity
-                    style={styles.footerIconContainer}
-                    onPress={() => Linking.openURL(item.instagram)}
-                  >
-                    <Icon name="logo-instagram" style={styles.footerIcon} />
-                  </TouchableOpacity>
-                ) : null}
+                <View style={styles.footer}>
+                  {item.whatsapp ? (
+                    <TouchableOpacity
+                      style={styles.footerIconContainer}
+                      onPress={() =>
+                        Linking.openURL(
+                          `whatsapp://send?phone=${item.whatsapp}`
+                        )
+                      }
+                    >
+                      <Icon name="logo-whatsapp" style={styles.footerIcon} />
+                    </TouchableOpacity>
+                  ) : null}
 
-                {urlProp !== "notification" &&
-                urlProp !== "online-service" &&
-                item.youtube ? (
-                  <TouchableOpacity
-                    style={styles.footerIconContainer}
-                    onPress={() => Linking.openURL(item.youtube)}
-                  >
-                    <Icon name="logo-youtube" style={styles.footerIcon} />
-                  </TouchableOpacity>
-                ) : null}
-              </View>
-              {/* {item.isPremium ? (
+                  {urlProp !== "notification" && item.website ? (
+                    <TouchableOpacity
+                      style={styles.footerIconContainer}
+                      onPress={() =>
+                        openBrowser({
+                          url: item.website,
+                        })
+                      }
+                    >
+                      <Icon name="globe-outline" style={styles.footerIcon} />
+                    </TouchableOpacity>
+                  ) : null}
+
+                  {item.facebook ? (
+                    <TouchableOpacity
+                      style={styles.footerIconContainer}
+                      onPress={() =>
+                        Linking.canOpenURL(`fb://page/${item.facebook}`).then(
+                          (supported) => {
+                            let facebookUrlIsId = /^\d+$/.test(item.facebook);
+
+                            if (supported && facebookUrlIsId) {
+                              return Linking.openURL(
+                                `fb://page/${item.facebook}`
+                              );
+                            } else {
+                              return Linking.openURL(
+                                `https://www.facebook.com/${item.facebook}`
+                              );
+                            }
+                          }
+                        )
+                      }
+                    >
+                      <Icon name="logo-facebook" style={styles.footerIcon} />
+                    </TouchableOpacity>
+                  ) : null}
+
+                  {item.instagram ? (
+                    <TouchableOpacity
+                      style={styles.footerIconContainer}
+                      onPress={() => Linking.openURL(item.instagram)}
+                    >
+                      <Icon name="logo-instagram" style={styles.footerIcon} />
+                    </TouchableOpacity>
+                  ) : null}
+
+                  {urlProp !== "notification" &&
+                  urlProp !== "online-service" &&
+                  item.youtube ? (
+                    <TouchableOpacity
+                      style={styles.footerIconContainer}
+                      onPress={() => Linking.openURL(item.youtube)}
+                    >
+                      <Icon name="logo-youtube" style={styles.footerIcon} />
+                    </TouchableOpacity>
+                  ) : null}
+                </View>
+                {/* {item.isPremium ? (
                 <View style={styles.premiumMessageContainer}>
                   <Text style={styles.premiumMessage}>പ്രീമിയം</Text>
                 </View>
               ) : null} */}
+              </View>
             </View>
-          </View>
-        )}
-      </ScrollView>
+          )}
+        </ScrollView>
+      </SafeAreaView>
     </Box>
   );
 }

@@ -1,47 +1,31 @@
 import React, { useEffect, useState } from "react";
 import {
-  ScrollView,
   StyleSheet,
   View,
   Dimensions,
+  SafeAreaView,
   TouchableOpacity,
-  Image,
 } from "react-native";
 import axios from "axios";
-import {
-  Container,
-  Header,
-  List,
-  ListItem,
-  Text,
-  Card,
-  CardItem,
-  Icon,
-  Right,
-  Item,
-  Input,
-  Left,
-  Body,
-  Title,
-  Spinner,
-  Accordion,
-} from "native-base";
+import { Text, Spinner, Box, ScrollView } from "native-base";
 import { apiUrl } from "../../config";
 const { width } = Dimensions.get("window");
+import { Ionicons } from "@expo/vector-icons";
+import Accordion from "react-native-collapsible/Accordion";
 
 export default function Help(props: any) {
-  let [helps, setHelps] = useState([]);
+  const [helps, setHelps] = useState([]);
 
-  let [loading, setLoading] = useState(false);
-
+  const [loading, setLoading] = useState(false);
+  const [activeSections, setActiveSections] = useState<any>([]);
   useEffect(() => {
     fetchHelps();
   }, []);
 
-  let fetchHelps = async () => {
+  const fetchHelps = async () => {
     try {
       setLoading(true);
-      let response = await axios.get(`${apiUrl}/help/list?`);
+      const response = await axios.get(`${apiUrl}/help/list?`);
       if (response && response.data && response.data.status == 200) {
         setHelps(response.data.data);
       } else {
@@ -52,7 +36,7 @@ export default function Help(props: any) {
     }
   };
 
-  function _renderHeader(item, expanded, index) {
+  function renderHeader(item: any, index: number, expanded: boolean) {
     return (
       <View
         style={{
@@ -66,21 +50,23 @@ export default function Help(props: any) {
           borderBottomWidth: 1,
           borderBottomColor: "#f1f1f1",
         }}
+        key={index}
       >
         <Text style={{ fontWeight: "700", width: width - 80 }}>
           {item.title}
         </Text>
         <View>
           {expanded ? (
-            <Icon style={{ fontSize: 18 }} name="arrow-up-outline" />
+            <Ionicons name="arrow-up-outline" size={24} color="black" />
           ) : (
-            <Icon style={{ fontSize: 18 }} name="arrow-down-outline" />
+            <Ionicons name="arrow-down-outline" size={24} color="black" />
           )}
         </View>
       </View>
     );
   }
-  function _renderContent(item) {
+
+  const renderContent = (item: any) => {
     return (
       <Text
         style={{
@@ -91,36 +77,44 @@ export default function Help(props: any) {
         {item.content}
       </Text>
     );
-  }
+  };
 
-  let helpFiltered = helps.map((item) => {
+  let helpFiltered: any = helps.map((item: any) => {
     return {
-      title: item.title,
-      content: item.description,
+      title: item?.title,
+      content: item?.description,
     };
   });
 
+  const updateSections = (activeSections: any) => {
+    setActiveSections(activeSections);
+  };
+
   return (
-    <Container>
-      <View style={styles.container}>
-        {loading ? (
-          <View style={styles.loader}>
-            <Spinner color="#1c1b29" />
-          </View>
-        ) : (
-          <View style={styles.sectionContainer}>
-            <Accordion
-              dataArray={helpFiltered}
-              animation={true}
-              expanded={[0]}
-              renderHeader={_renderHeader}
-              renderContent={_renderContent}
-              style={{ borderRadius: 10 }}
-            />
-          </View>
-        )}
-      </View>
-    </Container>
+    <Box bg={"white"} pt={12} padding={5}>
+      <SafeAreaView>
+        <ScrollView contentContainerStyle={{ width: "100%" }}>
+          {loading ? (
+            <View style={styles.loader}>
+              <Spinner color="#1c1b29" />
+            </View>
+          ) : (
+            <View style={styles.sectionContainer}>
+              <Accordion
+                sections={helpFiltered}
+                renderHeader={renderHeader as any}
+                renderContent={renderContent}
+                touchableComponent={TouchableOpacity}
+                duration={400}
+                onChange={updateSections}
+                activeSections={activeSections}
+                renderAsFlatList={false}
+              />
+            </View>
+          )}
+        </ScrollView>
+      </SafeAreaView>
+    </Box>
   );
 }
 
