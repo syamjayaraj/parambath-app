@@ -1,10 +1,17 @@
 import React from "react";
-import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Image,
+  SafeAreaView,
+} from "react-native";
 import { Box, Container, ScrollView, Text } from "native-base";
 import * as WebBrowser from "expo-web-browser";
+import * as appJson from "../../app.json";
 
 export default function Autos() {
-  const openBrowser = async (params) => {
+  const openBrowser = async (params: any) => {
     try {
       let { url } = params;
       let result = await WebBrowser.openBrowserAsync(url);
@@ -13,55 +20,59 @@ export default function Autos() {
 
   return (
     <Box bg={"white"}>
-      <ScrollView contentContainerStyle={{ width: "100%" }}>
-        <View>
-          <View style={styles.logoContainer}>
-            <Image
-              source={require("../../assets/logo.png")}
-              style={styles.logo}
-            />
-          </View>
+      <SafeAreaView>
+        <ScrollView contentContainerStyle={{ width: "100%" }}>
           <View>
-            <Text style={styles.title}>പറമ്പത്ത്</Text>
-            <TouchableOpacity
-              onPress={() =>
-                openBrowser({
-                  url: "https://onnich.com",
-                })
-              }
-            >
-              <Text style={styles.subTitle}>
-                Powered by&nbsp;
-                <Text
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: 13,
-                  }}
-                >
-                  ONNICH
-                </Text>
-              </Text>
-            </TouchableOpacity>
-
-            <View style={styles.copyRightContainer}>
+            <View style={styles.logoContainer}>
+              <Image
+                source={require("../../assets/logo.png")}
+                style={styles.logo}
+              />
+            </View>
+            <View>
+              <Text style={styles.title}>പറമ്പത്ത്</Text>
               <TouchableOpacity
                 onPress={() =>
                   openBrowser({
-                    url: "https://floyet.com",
+                    url: "https://onnich.com",
                   })
                 }
               >
-                <Text style={styles.copyRight}>
-                  {"\u00A9"} 2018-2021 Floyet Technologies LLP
+                <Text style={styles.subTitle}>
+                  Powered by&nbsp;
+                  <Text
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: 13,
+                    }}
+                  >
+                    ONNICH
+                  </Text>
                 </Text>
               </TouchableOpacity>
-              <Text style={styles.copyRight}>All rights reserved</Text>
 
-              <Text style={styles.version}>Version 3.2</Text>
+              <View style={styles.copyRightContainer}>
+                <TouchableOpacity
+                  onPress={() =>
+                    openBrowser({
+                      url: "https://floyet.com",
+                    })
+                  }
+                >
+                  <Text style={styles.copyRight}>
+                    {"\u00A9"} 2018-2024 Floyet Labs & Technologies
+                  </Text>
+                </TouchableOpacity>
+                <Text style={styles.copyRight}>All rights reserved</Text>
+
+                <Text style={styles.version}>
+                  Version {appJson?.expo?.version}
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </SafeAreaView>
     </Box>
   );
 }

@@ -2,7 +2,7 @@ import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Platform } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { Icon, NativeBaseProvider, View } from "native-base";
 import HomeComponent from "./tabs/home";
 import EventComponent from "./tabs/events";
@@ -33,11 +33,19 @@ export default function App() {
     loadFont();
   }, []);
 
+  const navTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: "white",
+    },
+  };
+
   return loading ? (
     <NativeBaseProvider></NativeBaseProvider>
   ) : (
     <NativeBaseProvider>
-      <NavigationContainer>
+      <NavigationContainer theme={navTheme}>
         <StatusBar style="dark" backgroundColor="white" />
         <BottomTab.Navigator
           initialRouteName="Home"

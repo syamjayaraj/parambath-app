@@ -5,6 +5,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
+  SafeAreaView,
 } from "react-native";
 
 import { Box, Text, ScrollView } from "native-base";
@@ -116,206 +117,208 @@ export default function Landing(props: any) {
 
   return (
     <Box bg={"white"} pt={12}>
-      <ScrollView contentContainerStyle={{ width: "100%" }}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>പറമ്പത്ത് ആപ്പ് </Text>
-        </View>
-
-        {loading ? (
-          <View
-            style={{
-              width: width - 20,
-              height: 200,
-              borderRadius: 10,
-              backgroundColor: "#f1f1f1",
-              marginLeft: 10,
-              marginTop: 20,
-            }}
-          ></View>
-        ) : (
-          <View>
-            <Carousel
-              showsHorizontalScrollIndicator={true}
-              loop={true}
-              autoplay={true}
-              autoplayInterval={2500}
-              autoplayDelay={1000}
-              layout={"default"}
-              data={carousel}
-              sliderWidth={width}
-              itemWidth={width}
-              renderItem={_renderItem}
-            />
+      <SafeAreaView>
+        <ScrollView contentContainerStyle={{ width: "100%" }}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>പറമ്പത്ത് ആപ്പ് </Text>
           </View>
-        )}
 
-        <View style={styles.container}>
-          <View style={styles.menu}>
-            <TouchableOpacity
-              style={styles.menuCard}
-              onPress={() =>
-                props.navigation.navigate("Businesses", {
-                  url: "business",
-                  categoryUrl: "business-category",
-                  placeHolderImage: "business",
-                  itemCategory: "businessCategory",
-                  main: "Business",
-                })
-              }
-            >
-              <Image
-                source={require("../../assets/icons/business.png")}
-                style={styles.icon}
+          {loading ? (
+            <View
+              style={{
+                width: width - 20,
+                height: 200,
+                borderRadius: 10,
+                backgroundColor: "#f1f1f1",
+                marginLeft: 10,
+                marginTop: 20,
+              }}
+            ></View>
+          ) : (
+            <View>
+              <Carousel
+                showsHorizontalScrollIndicator={true}
+                loop={true}
+                autoplay={true}
+                autoplayInterval={2500}
+                autoplayDelay={1000}
+                layout={"default"}
+                data={carousel}
+                sliderWidth={width}
+                itemWidth={width}
+                renderItem={_renderItem}
               />
-              <Text style={styles.menuCardText}>സ്ഥാപനങ്ങൾ</Text>
-            </TouchableOpacity>
+            </View>
+          )}
 
-            <TouchableOpacity
-              style={styles.menuCard}
-              onPress={() =>
-                props.navigation.navigate("Autos", {
-                  url: "auto",
-                  categoryUrl: "auto-stand",
-                  placeHolderImage: "auto",
-                  itemCategory: "autoStand",
-                  main: "Auto",
-                })
-              }
-            >
-              <Image
-                source={require("../../assets/icons/auto.png")}
-                style={styles.icon}
-              />
-              <Text style={styles.menuCardText}>ഓട്ടോ റിക്ഷ</Text>
-            </TouchableOpacity>
+          <View style={styles.container}>
+            <View style={styles.menu}>
+              <TouchableOpacity
+                style={styles.menuCard}
+                onPress={() =>
+                  props.navigation.navigate("Businesses", {
+                    url: "business",
+                    categoryUrl: "business-category",
+                    placeHolderImage: "business",
+                    itemCategory: "businessCategory",
+                    main: "Business",
+                  })
+                }
+              >
+                <Image
+                  source={require("../../assets/icons/business.png")}
+                  style={styles.icon}
+                />
+                <Text style={styles.menuCardText}>സ്ഥാപനങ്ങൾ</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.menuCard}
-              onPress={() => props.navigation.navigate("BusTimings")}
-            >
-              <Image
-                source={require("../../assets/icons/bus.png")}
-                style={styles.icon}
-              />
-              <Text style={styles.menuCardText}>ബസ് സമയം</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.menuCard}
+                onPress={() =>
+                  props.navigation.navigate("Autos", {
+                    url: "auto",
+                    categoryUrl: "auto-stand",
+                    placeHolderImage: "auto",
+                    itemCategory: "autoStand",
+                    main: "Auto",
+                  })
+                }
+              >
+                <Image
+                  source={require("../../assets/icons/auto.png")}
+                  style={styles.icon}
+                />
+                <Text style={styles.menuCardText}>ഓട്ടോ റിക്ഷ</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.menuCard}
-              onPress={() =>
-                props.navigation.navigate("Vehicles", {
-                  url: "vehicle",
-                  categoryUrl: "vehicle-category",
-                  placeHolderImage: "vehicle",
-                  itemCategory: "vehicleCategory",
-                  main: "Vehicle",
-                })
-              }
-            >
-              <Image
-                source={require("../../assets/icons/lorry.png")}
-                style={styles.icon}
-              />
-              <Text style={styles.menuCardText}>മറ്റു വാഹനങ്ങൾ</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.menuCard}
+                onPress={() => props.navigation.navigate("BusTimings")}
+              >
+                <Image
+                  source={require("../../assets/icons/bus.png")}
+                  style={styles.icon}
+                />
+                <Text style={styles.menuCardText}>ബസ് സമയം</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.menuCard}
-              onPress={() =>
-                props.navigation.navigate("Workers", {
-                  url: "worker",
-                  categoryUrl: "work-category",
-                  placeHolderImage: "worker",
-                  itemCategory: "workCategory",
-                  main: "Worker",
-                })
-              }
-            >
-              <Image
-                source={require("../../assets/icons/worker.png")}
-                style={styles.icon}
-              />
-              <Text style={styles.menuCardText}>ജോലിക്കാർ</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.menuCard}
+                onPress={() =>
+                  props.navigation.navigate("Vehicles", {
+                    url: "vehicle",
+                    categoryUrl: "vehicle-category",
+                    placeHolderImage: "vehicle",
+                    itemCategory: "vehicleCategory",
+                    main: "Vehicle",
+                  })
+                }
+              >
+                <Image
+                  source={require("../../assets/icons/lorry.png")}
+                  style={styles.icon}
+                />
+                <Text style={styles.menuCardText}>മറ്റു വാഹനങ്ങൾ</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.menuCard}
-              onPress={() =>
-                props.navigation.navigate("Emergencies", {
-                  url: "emergency",
-                  categoryUrl: "emergency-category",
-                  placeHolderImage: "emergency",
-                  itemCategory: "emergencyCategory",
-                  main: "Emergency",
-                })
-              }
-            >
-              <Image
-                source={require("../../assets/icons/ambulance.png")}
-                style={styles.icon}
-              />
-              <Text style={styles.menuCardText}>അത്യാഹിതം</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.menuCard}
+                onPress={() =>
+                  props.navigation.navigate("Workers", {
+                    url: "worker",
+                    categoryUrl: "work-category",
+                    placeHolderImage: "worker",
+                    itemCategory: "workCategory",
+                    main: "Worker",
+                  })
+                }
+              >
+                <Image
+                  source={require("../../assets/icons/worker.png")}
+                  style={styles.icon}
+                />
+                <Text style={styles.menuCardText}>ജോലിക്കാർ</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.menuCard}
-              onPress={() =>
-                props.navigation.navigate("Representatives", {
-                  url: "representative",
-                  categoryUrl: "representative-category",
-                  placeHolderImage: "representative",
-                  itemCategory: "representativeCategory",
-                  main: "Representative",
-                })
-              }
-            >
-              <Image
-                source={require("../../assets/icons/rep.png")}
-                style={styles.icon}
-              />
-              <Text style={styles.menuCardText}>ജന പ്രതിനിധികൾ</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.menuCard}
+                onPress={() =>
+                  props.navigation.navigate("Emergencies", {
+                    url: "emergency",
+                    categoryUrl: "emergency-category",
+                    placeHolderImage: "emergency",
+                    itemCategory: "emergencyCategory",
+                    main: "Emergency",
+                  })
+                }
+              >
+                <Image
+                  source={require("../../assets/icons/ambulance.png")}
+                  style={styles.icon}
+                />
+                <Text style={styles.menuCardText}>അത്യാഹിതം</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.menuCard}
-              onPress={() =>
-                props.navigation.navigate("Enterprises", {
-                  url: "enterprise",
-                  categoryUrl: "enterprise-category",
-                  placeHolderImage: "enterprise",
-                  itemCategory: "businessCategory",
-                  main: "Enterprise",
-                })
-              }
-            >
-              <Image
-                source={require("../../assets/icons/enterprise.png")}
-                style={styles.icon}
-              />
-              <Text style={styles.menuCardText}>ചെറു സംരംഭങ്ങൾ</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.menuCard}
+                onPress={() =>
+                  props.navigation.navigate("Representatives", {
+                    url: "representative",
+                    categoryUrl: "representative-category",
+                    placeHolderImage: "representative",
+                    itemCategory: "representativeCategory",
+                    main: "Representative",
+                  })
+                }
+              >
+                <Image
+                  source={require("../../assets/icons/rep.png")}
+                  style={styles.icon}
+                />
+                <Text style={styles.menuCardText}>ജന പ്രതിനിധികൾ</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.menuCard}
-              onPress={() =>
-                props.navigation.navigate("OnlineServices", {
-                  url: "online-service",
-                  categoryUrl: "online-service-category",
-                  placeHolderImage: "onlineService",
-                  itemCategory: "onlineServiceCategory",
-                  main: "OnlineService",
-                })
-              }
-            >
-              <Image
-                source={require("../../assets/icons/onlineService.png")}
-                style={styles.icon}
-              />
-              <Text style={styles.menuCardText}>ഓൺലൈൻ സേവനങ്ങൾ</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.menuCard}
+                onPress={() =>
+                  props.navigation.navigate("Enterprises", {
+                    url: "enterprise",
+                    categoryUrl: "enterprise-category",
+                    placeHolderImage: "enterprise",
+                    itemCategory: "businessCategory",
+                    main: "Enterprise",
+                  })
+                }
+              >
+                <Image
+                  source={require("../../assets/icons/enterprise.png")}
+                  style={styles.icon}
+                />
+                <Text style={styles.menuCardText}>ചെറു സംരംഭങ്ങൾ</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.menuCard}
+                onPress={() =>
+                  props.navigation.navigate("OnlineServices", {
+                    url: "online-service",
+                    categoryUrl: "online-service-category",
+                    placeHolderImage: "onlineService",
+                    itemCategory: "onlineServiceCategory",
+                    main: "OnlineService",
+                  })
+                }
+              >
+                <Image
+                  source={require("../../assets/icons/onlineService.png")}
+                  style={styles.icon}
+                />
+                <Text style={styles.menuCardText}>ഓൺലൈൻ സേവനങ്ങൾ</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </SafeAreaView>
     </Box>
   );
 }
@@ -390,6 +393,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderWidth: 1,
     borderColor: "#f5f5f5",
+    padding: 10,
   },
   sectionContent: {
     padding: 10,

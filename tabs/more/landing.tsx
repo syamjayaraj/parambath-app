@@ -6,14 +6,60 @@ import {
   TouchableOpacity,
   Image,
   Platform,
+  SafeAreaView,
 } from "react-native";
-import { Container, List, Text, Icon, Box, ScrollView } from "native-base";
+import {
+  Text,
+  Box,
+  ScrollView,
+  HStack,
+  VStack,
+  Spacer,
+  FlatList,
+} from "native-base";
 import axios from "axios";
 import { apiUrl } from "../../config";
 import * as WebBrowser from "expo-web-browser";
+import { Ionicons, EvilIcons } from "@expo/vector-icons";
+import * as appJson from "../../app.json";
 
 export default function Landing(props: any) {
   let [settings, setSettings] = useState<any>({});
+
+  const listData = [
+    {
+      id: 1,
+      title: "സഹായം",
+      page: "Help",
+      icon: <Ionicons name="help-circle-outline" size={24} color="black" />,
+    },
+    {
+      id: 1,
+      title: "ഞങ്ങളുമായി ബന്ധപ്പെടൂ",
+      page: "Contact",
+      icon: <Ionicons name="call-outline" size={24} color="black" />,
+    },
+    {
+      id: 1,
+      title: "ആപ്പിനെക്കുറിച്ച്‌",
+      page: "About",
+      icon: (
+        <Ionicons name="information-circle-outline" size={24} color="black" />
+      ),
+    },
+    {
+      id: 1,
+      title: "സംഭാവകർ",
+      page: "Contributors",
+      icon: <Ionicons name="people-outline" size={24} color="black" />,
+    },
+    {
+      id: 1,
+      title: "ഉപാധികളും നിബന്ധനകളും",
+      page: "Terms",
+      icon: <Ionicons name="documents-outline" size={24} color="black" />,
+    },
+  ];
 
   useEffect(() => {
     fetchSettings();
@@ -63,218 +109,219 @@ export default function Landing(props: any) {
 
   return (
     <Box bg={"white"} pt={5} padding={3}>
-      <ScrollView contentContainerStyle={{ width: "100%" }}>
-        <View style={styles.sectionContainer}>
-          <View style={styles.menu}>
-            <TouchableOpacity
-              style={{
-                ...styles.menuCard,
-              }}
-              onPress={() => props.navigation.navigate("Cooking")}
-            >
-              <Image
-                source={require("../../assets/icons/bake.png")}
-                style={styles.imageIcon}
-              />
-              <Text style={styles.menuCardText}>പാചകം</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                ...styles.menuCard,
-              }}
-              onPress={() => props.navigation.navigate("Games")}
-            >
-              <Image
-                source={require("../../assets/icons/game.png")}
-                style={styles.imageIcon}
-              />
-              <Text style={styles.menuCardText}>കളികൾ</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                ...styles.menuCard,
-              }}
-              onPress={() => props.navigation.navigate("Tools")}
-            >
-              <Image
-                source={require("../../assets/icons/tool.png")}
-                style={styles.imageIcon}
-              />
-              <Text style={styles.menuCardText}>ഓൺലൈൻ ടൂൾസ് </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={{
-                ...styles.menuCard,
-              }}
-              onPress={() => props.navigation.navigate("Channels")}
-            >
-              <Image
-                source={require("../../assets/icons/tv.png")}
-                style={styles.imageIcon}
-              />
-              <Text style={styles.menuCardText}>തത്സമയ ചാനലുകൾ</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={{
-                ...styles.menuCard,
-              }}
-              onPress={() =>
-                props.navigation.navigate("Offers", {
-                  url: "offer",
-                  categoryUrl: "offer-category",
-                  placeHolderImage: "offer",
-                  itemCategory: "offerCategory",
-                  main: "Offer",
-                })
-              }
-            >
-              <Image
-                source={require("../../assets/icons/offer.png")}
-                style={styles.imageIcon}
-              />
-              <Text style={styles.menuCardText}>ഓഫറുകൾ</Text>
-            </TouchableOpacity>
-
-            {settings.products ? (
+      <SafeAreaView>
+        <ScrollView contentContainerStyle={{ width: "100%" }}>
+          <View style={styles.sectionContainer}>
+            <View style={styles.menu}>
               <TouchableOpacity
                 style={{
                   ...styles.menuCard,
                 }}
-                onPress={() =>
-                  openBrowser({
-                    url: settings.products,
-                  })
-                }
+                onPress={() => props.navigation.navigate("Cooking")}
               >
                 <Image
-                  source={require("../../assets/icons/products.png")}
+                  source={require("../../assets/icons/bake.png")}
                   style={styles.imageIcon}
                 />
-                <Text style={styles.menuCardText}>ഉൽപ്പന്നങ്ങൾ</Text>
+                <Text style={styles.menuCardText}>പാചകം</Text>
               </TouchableOpacity>
-            ) : null}
-
-            {settings.tech ? (
               <TouchableOpacity
                 style={{
                   ...styles.menuCard,
                 }}
-                onPress={() =>
-                  openBrowser({
-                    url: settings.tech,
-                  })
-                }
+                onPress={() => props.navigation.navigate("Games")}
               >
                 <Image
-                  source={require("../../assets/icons/tech.png")}
+                  source={require("../../assets/icons/game.png")}
                   style={styles.imageIcon}
                 />
-                <Text style={styles.menuCardText}>ടെക്നോളജി</Text>
+                <Text style={styles.menuCardText}>കളികൾ</Text>
               </TouchableOpacity>
-            ) : null}
-            {settings.coding ? (
               <TouchableOpacity
                 style={{
                   ...styles.menuCard,
-                  ...{
-                    backgroundColor: "#FBECEA",
-                  },
+                }}
+                onPress={() => props.navigation.navigate("Tools")}
+              >
+                <Image
+                  source={require("../../assets/icons/tool.png")}
+                  style={styles.imageIcon}
+                />
+                <Text style={styles.menuCardText}>ഓൺലൈൻ ടൂൾസ് </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={{
+                  ...styles.menuCard,
+                }}
+                onPress={() => props.navigation.navigate("Channels")}
+              >
+                <Image
+                  source={require("../../assets/icons/tv.png")}
+                  style={styles.imageIcon}
+                />
+                <Text style={styles.menuCardText}>തത്സമയ ചാനലുകൾ</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={{
+                  ...styles.menuCard,
                 }}
                 onPress={() =>
-                  openBrowser({
-                    url: settings.coding,
+                  props.navigation.navigate("Offers", {
+                    url: "offer",
+                    categoryUrl: "offer-category",
+                    placeHolderImage: "offer",
+                    itemCategory: "offerCategory",
+                    main: "Offer",
                   })
                 }
               >
                 <Image
-                  source={require("../../assets/icons/coding.png")}
+                  source={require("../../assets/icons/offer.png")}
                   style={styles.imageIcon}
                 />
-                <Text style={styles.menuCardText}>
-                  കോഡിങ്/പ്രോഗ്രാമിങ് പഠിക്കാം
+                <Text style={styles.menuCardText}>ഓഫറുകൾ</Text>
+              </TouchableOpacity>
+
+              {settings.products ? (
+                <TouchableOpacity
+                  style={{
+                    ...styles.menuCard,
+                  }}
+                  onPress={() =>
+                    openBrowser({
+                      url: settings.products,
+                    })
+                  }
+                >
+                  <Image
+                    source={require("../../assets/icons/products.png")}
+                    style={styles.imageIcon}
+                  />
+                  <Text style={styles.menuCardText}>ഉൽപ്പന്നങ്ങൾ</Text>
+                </TouchableOpacity>
+              ) : null}
+
+              {settings.tech ? (
+                <TouchableOpacity
+                  style={{
+                    ...styles.menuCard,
+                  }}
+                  onPress={() =>
+                    openBrowser({
+                      url: settings.tech,
+                    })
+                  }
+                >
+                  <Image
+                    source={require("../../assets/icons/tech.png")}
+                    style={styles.imageIcon}
+                  />
+                  <Text style={styles.menuCardText}>ടെക്നോളജി</Text>
+                </TouchableOpacity>
+              ) : null}
+              {settings.coding ? (
+                <TouchableOpacity
+                  style={{
+                    ...styles.menuCard,
+                    ...{
+                      backgroundColor: "#FBECEA",
+                    },
+                  }}
+                  onPress={() =>
+                    openBrowser({
+                      url: settings.coding,
+                    })
+                  }
+                >
+                  <Image
+                    source={require("../../assets/icons/coding.png")}
+                    style={styles.imageIcon}
+                  />
+                  <Text style={styles.menuCardText}>
+                    കോഡിങ്/പ്രോഗ്രാമിങ് പഠിക്കാം
+                  </Text>
+                </TouchableOpacity>
+              ) : null}
+            </View>
+
+            <Box style={styles.list}>
+              <FlatList
+                data={listData}
+                renderItem={({ item }) => (
+                  <Box
+                    _dark={{
+                      borderColor: "muted.50",
+                    }}
+                    borderColor="muted.800"
+                    pl={["0", "4"]}
+                    pr={["0", "5"]}
+                    py="2"
+                  >
+                    <HStack space={[0, 3]} justifyContent="space-between">
+                      {item?.icon}
+                      <VStack>
+                        <TouchableOpacity
+                          onPress={() => props.navigation.navigate(item?.page)}
+                        >
+                          <Text style={{ marginLeft: 10 }}>{item?.title}</Text>
+                        </TouchableOpacity>
+                      </VStack>
+                      <Spacer />
+                    </HStack>
+                  </Box>
+                )}
+                keyExtractor={(item) => item?.id}
+              />
+            </Box>
+
+            {settings.shareUrlMessage ? (
+              <TouchableOpacity
+                onPress={shareAppUrl}
+                style={{
+                  marginTop: 30,
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderWidth: 1,
+                  borderColor: "#f1f1f1",
+                  padding: 10,
+                }}
+              >
+                <EvilIcons
+                  name="share-apple"
+                  color="black"
+                  // style={styles.shareIcon}
+                />
+                <Text style={{ marginLeft: 5, fontSize: 13 }}>
+                  സുഹൃത്തുക്കളെ ആപ്പിലേക്ക് സ്വാഗതം ചെയ്യൂ
                 </Text>
               </TouchableOpacity>
             ) : null}
-          </View>
-
-          <List>
-            <Icon name="help-circle-outline" style={styles.icon} />
-
-            <TouchableOpacity onPress={() => props.navigation.navigate("Help")}>
-              <Text style={{ marginLeft: 10 }}>സഹായം</Text>
-            </TouchableOpacity>
-
-            <Icon name="call-outline" style={styles.icon} />
-
-            <TouchableOpacity
-              onPress={() => props.navigation.navigate("Contact")}
-            >
-              <Text style={{ marginLeft: 10 }}>ഞങ്ങളുമായി ബന്ധപ്പെടൂ</Text>
-            </TouchableOpacity>
-
-            <Icon name="information-circle-outline" style={styles.icon} />
-            <TouchableOpacity
-              onPress={() => props.navigation.navigate("About")}
-            >
-              <Text style={{ marginLeft: 10 }}>ആപ്പിനെക്കുറിച്ച്‌</Text>
-            </TouchableOpacity>
-
-            <Icon name="people-outline" style={styles.icon} />
-            <TouchableOpacity
-              onPress={() => props.navigation.navigate("Contributors")}
-            >
-              <Text style={{ marginLeft: 10 }}>സംഭാവകർ</Text>
-            </TouchableOpacity>
-
-            <Icon name="documents-outline" style={styles.icon} />
-            <TouchableOpacity
-              onPress={() => props.navigation.navigate("Terms")}
-            >
-              <Text style={{ marginLeft: 10 }}>ഉപാധികളും നിബന്ധനകളും</Text>
-            </TouchableOpacity>
-          </List>
-
-          {settings.shareUrlMessage ? (
-            <TouchableOpacity
-              onPress={shareAppUrl}
+            <Text
               style={{
                 marginTop: 30,
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-                borderWidth: 1,
-                borderColor: "#f1f1f1",
-                padding: 10,
+                marginBottom: 50,
+                textAlign: "center",
+                fontSize: 15,
+                color: "#b0b0b0",
               }}
             >
-              <Icon name="share-outline" style={styles.icon} />
-              <Text style={{ marginLeft: 5, fontSize: 13 }}>
-                സുഹൃത്തുക്കളെ ആപ്പിലേക്ക് സ്വാഗതം ചെയ്യൂ
-              </Text>
-            </TouchableOpacity>
-          ) : null}
-
-          <Text
-            style={{
-              marginTop: 30,
-              marginBottom: 50,
-              textAlign: "center",
-              fontSize: 15,
-              color: "#b0b0b0",
-            }}
-          >
-            Version 3.3
-          </Text>
-        </View>
-      </ScrollView>
+              Version {appJson?.expo?.version}
+            </Text>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     </Box>
   );
 }
 
 const styles = StyleSheet.create({
+  list: {
+    marginTop: 10,
+  },
   loader: {
     display: "flex",
     justifyContent: "center",
@@ -290,6 +337,7 @@ const styles = StyleSheet.create({
   },
   sectionContainer: {
     marginTop: 0,
+    padding: 10,
   },
   searchInput: {
     backgroundColor: "#ffffff",
@@ -321,7 +369,6 @@ const styles = StyleSheet.create({
     marginTop: 0,
     flex: 3,
     flexWrap: "wrap",
-    padding: 5,
   },
   menuCard: {
     borderWidth: 0,
