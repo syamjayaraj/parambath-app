@@ -10,7 +10,6 @@ import {
 import axios from "axios";
 import {
   Container,
-  Content,
   List,
   ListItem,
   Text,
@@ -28,7 +27,7 @@ import colours from "../../const/colours";
 
 const { width, height } = Dimensions.get("window");
 
-export default function Autos(props) {
+export default function Autos(props: any) {
   let [busTimings, setBusTimings] = useState([]);
   let [busRoutes, setBusRoutes] = useState([]);
   let [selectedBusRoute, setSelectedBusRoute] = useState("");
@@ -56,7 +55,7 @@ export default function Autos(props) {
       fetchBusRoutes();
 
       setLoading(false);
-    } catch (err) {
+    } catch (err: any) {
       setLoading(false);
     }
   };
@@ -68,7 +67,7 @@ export default function Autos(props) {
         setBusRoutes(response.data.data);
       } else {
       }
-    } catch (err) {}
+    } catch (err: any) {}
   };
 
   let showRoutes = (timings) => {
@@ -169,7 +168,7 @@ export default function Autos(props) {
   return (
     <Container>
       <View>
-        <View rounded style={[styles.searchInputContainer]}>
+        <View style={[styles.searchInputContainer]}>
           <Item
             rounded
             style={[
@@ -201,12 +200,9 @@ export default function Autos(props) {
               <TouchableOpacity
                 style={[
                   styles.categoryBadge,
-                  // {
-                  //   backgroundColor:
-                  //     selectedBusRoute === item._id
-                  //       ? colours[getRandomInt(6)]
-                  //       : "white",
-                  // },
+                  {
+                    backgroundColor: "white",
+                  },
                 ]}
                 onPress={() => setBusRouteAdvanced(item._id)}
               >
@@ -240,10 +236,10 @@ export default function Autos(props) {
           </TouchableOpacity>
         )}
       </View>
-      <Content style={styles.container}>
+      <View style={styles.container}>
         {loading ? (
           <View style={styles.loader}>
-            {/* <Spinner color={colours[getRandomInt(6)]} /> */}
+            <Spinner color={colours[getRandomInt(6)]} />
           </View>
         ) : (
           <View style={styles.sectionContainer}>
@@ -307,12 +303,9 @@ export default function Autos(props) {
                   <TouchableOpacity
                     style={[
                       styles.categoryExpItem,
-                      // {
-                      //   backgroundColor:
-                      //     selectedBusRoute === item._id
-                      //       ? colours[getRandomInt(6)]
-                      //       : "white",
-                      // },
+                      {
+                        backgroundColor: "white",
+                      },
                     ]}
                     onPress={() => setBusRouteAdvancedBottomSheet(item._id)}
                   >
@@ -335,7 +328,7 @@ export default function Autos(props) {
             />
           </View>
         </RBSheet>
-      </Content>
+      </View>
     </Container>
   );
 }

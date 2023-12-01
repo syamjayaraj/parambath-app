@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -7,79 +7,21 @@ import {
   Image,
 } from "react-native";
 
-import { Container, Content, Text, Icon } from "native-base";
+import { Box, Text, ScrollView } from "native-base";
 import Carousel from "react-native-snap-carousel";
 import axios from "axios";
 import { apiUrl } from "../../config";
-import * as WebBrowser from "expo-web-browser";
-import * as Notifications from "expo-notifications";
 
 const { width } = Dimensions.get("window");
 
-export default function Home(props) {
+export default function Landing(props: any) {
   const [carousel, setCarousel] = useState([]);
   const [settings, setSettings] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const notificationListener = useRef();
-  const responseListener = useRef();
-
   useEffect(() => {
     fetchCarousel();
-    handleNotificationClick();
   }, []);
-
-  let handleNotificationClick = () => {
-    // This listener is fired whenever a notification is received while the app is foregrounded
-    notificationListener.current =
-      Notifications.addNotificationReceivedListener((response) => {
-        if (
-          response &&
-          response.notification &&
-          response.notification.request &&
-          response.notification.request.content &&
-          response.notification.request.content.data
-        ) {
-          navigateToPageFromNotification(
-            response.notification.request.content.data
-          );
-        }
-      });
-
-    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
-    responseListener.current =
-      Notifications.addNotificationResponseReceivedListener((response) => {
-        if (
-          response &&
-          response.notification &&
-          response.notification.request.content &&
-          response.notification.request.content &&
-          response.notification.request.content.data
-        ) {
-          navigateToPageFromNotification(
-            response.notification.request.content.data
-          );
-        }
-      });
-
-    return () => {
-      Notifications.removeNotificationSubscription(
-        notificationListener.current
-      );
-      Notifications.removeNotificationSubscription(responseListener.current);
-    };
-  };
-
-  let navigateToPageFromNotification = (data) => {
-    props.navigation.navigate(data.page, {
-      itemId: data.itemId,
-      url: data.url,
-      itemCategory: data.itemCategory,
-      categoryUrl: data.categoryUrl,
-      placeHolderImage: data.placeHolderImage,
-      main: data.main,
-    });
-  };
 
   let fetchCarousel = async () => {
     setLoading(true);
@@ -91,7 +33,7 @@ export default function Home(props) {
       } else {
       }
       setLoading(false);
-    } catch (err) {
+    } catch (err: any) {
       setLoading(false);
     }
   };
@@ -103,10 +45,10 @@ export default function Home(props) {
         setSettings(response.data.data);
       } else {
       }
-    } catch (err) {}
+    } catch (err: any) {}
   };
 
-  let _renderItem = ({ item, index }) => {
+  let _renderItem = ({ item, index }: any) => {
     let itemImage = item.image;
     // .replace(
     //   new RegExp("upload", "g"),
@@ -173,8 +115,8 @@ export default function Home(props) {
   };
 
   return (
-    <Container>
-      <Content>
+    <Box bg={"white"} pt={12}>
+      <ScrollView contentContainerStyle={{ width: "100%" }}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>പറമ്പത്ത് ആപ്പ് </Text>
         </View>
@@ -194,13 +136,11 @@ export default function Home(props) {
           <View>
             <Carousel
               showsHorizontalScrollIndicator={true}
-              indica
               loop={true}
-              activeOpacity={1}
               autoplay={true}
               autoplayInterval={2500}
               autoplayDelay={1000}
-              layout={"stack"}
+              layout={"default"}
               data={carousel}
               sliderWidth={width}
               itemWidth={width}
@@ -212,12 +152,7 @@ export default function Home(props) {
         <View style={styles.container}>
           <View style={styles.menu}>
             <TouchableOpacity
-              style={{
-                ...styles.menuCard,
-                ...{
-                  backgroundColor: "#FEF5E5",
-                },
-              }}
+              style={styles.menuCard}
               onPress={() =>
                 props.navigation.navigate("Businesses", {
                   url: "business",
@@ -228,22 +163,15 @@ export default function Home(props) {
                 })
               }
             >
-              <View style={styles.iconContainer}>
-                <Image
-                  source={require("../../assets/icons/business.png")}
-                  style={styles.icon}
-                />
-              </View>
+              <Image
+                source={require("../../assets/icons/business.png")}
+                style={styles.icon}
+              />
               <Text style={styles.menuCardText}>സ്ഥാപനങ്ങൾ</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={{
-                ...styles.menuCard,
-                ...{
-                  backgroundColor: "#CFECF4",
-                },
-              }}
+              style={styles.menuCard}
               onPress={() =>
                 props.navigation.navigate("Autos", {
                   url: "auto",
@@ -254,40 +182,26 @@ export default function Home(props) {
                 })
               }
             >
-              <View style={styles.iconContainer}>
-                <Image
-                  source={require("../../assets/icons/auto.png")}
-                  style={styles.icon}
-                />
-              </View>
+              <Image
+                source={require("../../assets/icons/auto.png")}
+                style={styles.icon}
+              />
               <Text style={styles.menuCardText}>ഓട്ടോ റിക്ഷ</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={{
-                ...styles.menuCard,
-                ...{
-                  backgroundColor: "#EAE7F9",
-                },
-              }}
+              style={styles.menuCard}
               onPress={() => props.navigation.navigate("BusTimings")}
             >
-              <View style={styles.iconContainer}>
-                <Image
-                  source={require("../../assets/icons/bus.png")}
-                  style={styles.icon}
-                />
-              </View>
+              <Image
+                source={require("../../assets/icons/bus.png")}
+                style={styles.icon}
+              />
               <Text style={styles.menuCardText}>ബസ് സമയം</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={{
-                ...styles.menuCard,
-                ...{
-                  backgroundColor: "#FBECEA",
-                },
-              }}
+              style={styles.menuCard}
               onPress={() =>
                 props.navigation.navigate("Vehicles", {
                   url: "vehicle",
@@ -298,22 +212,15 @@ export default function Home(props) {
                 })
               }
             >
-              <View style={styles.iconContainer}>
-                <Image
-                  source={require("../../assets/icons/lorry.png")}
-                  style={styles.icon}
-                />
-              </View>
+              <Image
+                source={require("../../assets/icons/lorry.png")}
+                style={styles.icon}
+              />
               <Text style={styles.menuCardText}>മറ്റു വാഹനങ്ങൾ</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={{
-                ...styles.menuCard,
-                ...{
-                  backgroundColor: "#DAD5CB",
-                },
-              }}
+              style={styles.menuCard}
               onPress={() =>
                 props.navigation.navigate("Workers", {
                   url: "worker",
@@ -324,22 +231,15 @@ export default function Home(props) {
                 })
               }
             >
-              <View style={styles.iconContainer}>
-                <Image
-                  source={require("../../assets/icons/worker.png")}
-                  style={styles.icon}
-                />
-              </View>
+              <Image
+                source={require("../../assets/icons/worker.png")}
+                style={styles.icon}
+              />
               <Text style={styles.menuCardText}>ജോലിക്കാർ</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={{
-                ...styles.menuCard,
-                ...{
-                  backgroundColor: "#E4F7F5",
-                },
-              }}
+              style={styles.menuCard}
               onPress={() =>
                 props.navigation.navigate("Emergencies", {
                   url: "emergency",
@@ -350,22 +250,15 @@ export default function Home(props) {
                 })
               }
             >
-              <View style={styles.iconContainer}>
-                <Image
-                  source={require("../../assets/icons/ambulance.png")}
-                  style={styles.icon}
-                />
-              </View>
+              <Image
+                source={require("../../assets/icons/ambulance.png")}
+                style={styles.icon}
+              />
               <Text style={styles.menuCardText}>അത്യാഹിതം</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={{
-                ...styles.menuCard,
-                ...{
-                  backgroundColor: "#FBECEA",
-                },
-              }}
+              style={styles.menuCard}
               onPress={() =>
                 props.navigation.navigate("Representatives", {
                   url: "representative",
@@ -376,22 +269,15 @@ export default function Home(props) {
                 })
               }
             >
-              <View style={styles.iconContainer}>
-                <Image
-                  source={require("../../assets/icons/rep.png")}
-                  style={styles.icon}
-                />
-              </View>
+              <Image
+                source={require("../../assets/icons/rep.png")}
+                style={styles.icon}
+              />
               <Text style={styles.menuCardText}>ജന പ്രതിനിധികൾ</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={{
-                ...styles.menuCard,
-                ...{
-                  backgroundColor: "#EAE7F9",
-                },
-              }}
+              style={styles.menuCard}
               onPress={() =>
                 props.navigation.navigate("Enterprises", {
                   url: "enterprise",
@@ -402,22 +288,15 @@ export default function Home(props) {
                 })
               }
             >
-              <View style={styles.iconContainer}>
-                <Image
-                  source={require("../../assets/icons/enterprise.png")}
-                  style={styles.icon}
-                />
-              </View>
+              <Image
+                source={require("../../assets/icons/enterprise.png")}
+                style={styles.icon}
+              />
               <Text style={styles.menuCardText}>ചെറു സംരംഭങ്ങൾ</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={{
-                ...styles.menuCard,
-                ...{
-                  backgroundColor: "#CFECF4",
-                },
-              }}
+              style={styles.menuCard}
               onPress={() =>
                 props.navigation.navigate("OnlineServices", {
                   url: "online-service",
@@ -428,52 +307,35 @@ export default function Home(props) {
                 })
               }
             >
-              <View style={styles.iconContainer}>
-                <Image
-                  source={require("../../assets/icons/onlineService.png")}
-                  style={styles.icon}
-                />
-              </View>
+              <Image
+                source={require("../../assets/icons/onlineService.png")}
+                style={styles.icon}
+              />
               <Text style={styles.menuCardText}>ഓൺലൈൻ സേവനങ്ങൾ</Text>
             </TouchableOpacity>
           </View>
         </View>
-      </Content>
-    </Container>
+      </ScrollView>
+    </Box>
   );
 }
 
 const styles = StyleSheet.create({
+  content: {
+    flex: 1,
+    // marginTop: 100,
+    marginRight: 0,
+    width: 400,
+  },
   titleContainer: {
     padding: 20,
   },
   title: {
     fontWeight: "bold",
-    fontSize: 35,
+    fontSize: 25,
     color: "black",
     marginLeft: 10,
-  },
-  notificationContainer: {
-    borderColor: "#f5f5f5",
-    borderWidth: 1,
-    borderRadius: 3,
-    padding: 10,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  notificationIconContainer: {
-    marginRight: 20,
-  },
-  notificationText: {
-    width: width - 90,
-    textAlign: "left",
-    fontSize: 12,
-  },
-  notificationTextSub: {
-    textAlign: "left",
-    fontSize: 12,
+    paddingTop: 17,
   },
   container: {
     padding: 20,
@@ -487,24 +349,21 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 30,
-    flex: 2,
+    flex: 3,
     flexWrap: "wrap",
     padding: 5,
   },
   menuCard: {
     borderWidth: 1,
     borderColor: "#f5f5f5",
-    width: "48.5%",
-    height: 200,
+    width: "30%",
+    height: 80,
     margin: 0,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 10,
-    elevation: 0.5,
-    paddingLeft: 5,
-    paddingRight: 5,
-    borderRadius: 20,
+    marginBottom: 5,
+    elevation: 0.2,
   },
   iconContainer: {
     backgroundColor: "white",
@@ -516,12 +375,10 @@ const styles = StyleSheet.create({
     height: 35,
   },
   menuCardText: {
-    fontWeight: "bold",
-    fontSize: 15,
+    fontWeight: "normal",
+    fontSize: 12,
     color: "#1f1f1f",
     textAlign: "center",
-    marginBottom: 5,
-    marginTop: 10,
   },
   subTitle: {
     fontWeight: "bold",

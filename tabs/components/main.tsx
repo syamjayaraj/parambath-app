@@ -6,25 +6,29 @@ import {
   TouchableOpacity,
   Image,
   Linking,
-  Button,
   Share,
 } from "react-native";
 import axios from "axios";
-import { Container, Content, Text, Icon, Spinner } from "native-base";
+import { Text, Icon, Spinner, Box, ScrollView } from "native-base";
 import { apiUrl } from "../../config";
 import call from "react-native-phone-call";
 import Carousel from "react-native-snap-carousel";
 import * as WebBrowser from "expo-web-browser";
-import colours from "../../const/colours";
+import {
+  EvilIcons,
+  FontAwesome,
+  MaterialIcons,
+  Ionicons,
+} from "@expo/vector-icons";
 
 const { width } = Dimensions.get("window");
 
-const getRandomInt = (max) => {
+const getRandomInt = (max: any) => {
   return Math.floor(Math.random() * max);
 };
 
-export default function Autos(props) {
-  let [item, setItem] = useState({
+export default function MainComponent(props: any) {
+  let [item, setItem] = useState<any>({
     itemCategory: {},
   });
 
@@ -47,22 +51,22 @@ export default function Autos(props) {
       } else {
       }
       setLoading(false);
-    } catch (err) {
+    } catch (err: any) {
       setLoading(false);
     }
   };
 
-  let callToTheNumber = async (phoneNumber) => {
+  let callToTheNumber = async (phoneNumber: any) => {
     try {
       let callArgs = {
         number: phoneNumber,
         prompt: false,
       };
       await call(callArgs);
-    } catch (err) {}
+    } catch (err: any) {}
   };
 
-  let _renderItem = ({ item, index }) => {
+  let _renderItem = ({ item, index }: any) => {
     let itemImage = item;
     //.replace(
     //      new RegExp("upload", "g"),
@@ -89,17 +93,16 @@ export default function Autos(props) {
     );
   };
 
-  const openBrowser = async (params) => {
+  const openBrowser = async (params: any) => {
     try {
       let { url } = params;
       let result = await WebBrowser.openAuthSessionAsync(url, url, {
         showInRecents: true,
       });
-    } catch (err) {}
+    } catch (err: any) {}
   };
 
   const onShare = async () => {
-    console.warn(item.url, "item");
     try {
       let sharableString = `${
         item.malayalamName
@@ -137,20 +140,24 @@ export default function Autos(props) {
       } else if (result.action === Share.dismissedAction) {
         // dismissed
       }
-    } catch (error) {
+    } catch (error: any) {
       alert(error.message);
     }
   };
 
   return (
-    <Container>
-      <Content style={styles.container}>
+    <Box bg={"white"} pt={12} padding={5}>
+      <ScrollView contentContainerStyle={{ width: "100%" }}>
         {loading ? (
           <View style={styles.loader}>
             <Spinner color="#1c1b29" />
           </View>
         ) : (
-          <View>
+          <View
+            style={{
+              marginTop: 50,
+            }}
+          >
             {item.images && item.images.length !== 0 ? (
               <Carousel
                 showsHorizontalScrollIndicator={true}
@@ -186,7 +193,11 @@ export default function Autos(props) {
               ) : null}
               <View style={styles.shareButtonContainer}>
                 <TouchableOpacity onPress={onShare} style={styles.shareButton}>
-                  <Icon name="share-outline" style={styles.shareIcon} />
+                  <EvilIcons
+                    name="share-apple"
+                    color="black"
+                    style={styles.shareIcon}
+                  />
                   <Text style={styles.shareText}>Share</Text>
                 </TouchableOpacity>
               </View>
@@ -310,7 +321,7 @@ export default function Autos(props) {
               {item.phoneNumber ? (
                 <View style={styles.section}>
                   <View style={styles.iconContainer}>
-                    <Icon name="call-outline" style={styles.icon} />
+                    <FontAwesome name="phone" style={styles.icon} />
                   </View>
                   <TouchableOpacity
                     style={styles.textContainer}
@@ -325,6 +336,8 @@ export default function Autos(props) {
               {item.phoneNumber2 ? (
                 <View style={styles.section}>
                   <View style={styles.iconContainer}>
+                    <FontAwesome name="phone" style={styles.icon} />
+
                     <Icon name="call-outline" style={styles.icon} />
                   </View>
                   <TouchableOpacity
@@ -357,7 +370,7 @@ export default function Autos(props) {
               {item.email ? (
                 <View style={styles.section}>
                   <View style={styles.iconContainer}>
-                    <Icon name="mail-outline" style={styles.icon} />
+                    <MaterialIcons name="email" style={styles.icon} />
                   </View>
                   <TouchableOpacity
                     style={styles.textContainer}
@@ -382,7 +395,7 @@ export default function Autos(props) {
               {item.place ? (
                 <View style={styles.section}>
                   <View style={styles.iconContainer}>
-                    <Icon name="location-outline" style={styles.icon} />
+                    <Ionicons name="location-sharp" style={styles.icon} />
                   </View>
                   <View style={styles.textContainer}>
                     <View
@@ -581,8 +594,8 @@ export default function Autos(props) {
             </View>
           </View>
         )}
-      </Content>
-    </Container>
+      </ScrollView>
+    </Box>
   );
 }
 
@@ -612,7 +625,6 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     paddingBottom: 50,
-    // backgroundColor: colours[getRandomInt(6)],
   },
   badge: {
     width: 30,
@@ -629,8 +641,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   icon: {
-    fontSize: 23,
-    color: "#969696",
+    fontSize: 25,
+    // color: "#969696",
   },
   textContainer: {
     marginLeft: 20,
@@ -641,6 +653,7 @@ const styles = StyleSheet.create({
     color: "black",
     textAlign: "center",
     marginTop: 15,
+    paddingTop: 10,
   },
   workName: {
     fontSize: 17,

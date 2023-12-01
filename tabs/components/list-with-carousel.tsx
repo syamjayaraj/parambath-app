@@ -10,7 +10,6 @@ import {
 import axios from "axios";
 import {
   Container,
-  Content,
   List,
   ListItem,
   Text,
@@ -30,7 +29,7 @@ import call from "react-native-phone-call";
 
 const { width } = Dimensions.get("window");
 
-export default function ListWithCarousel(props) {
+export default function ListWithCarousel(props: any) {
   let [items, setitems] = useState([]);
   let [filteredEvents, setFilteredEvents] = useState([]);
   let [loading, setLoading] = useState(false);
@@ -68,7 +67,7 @@ export default function ListWithCarousel(props) {
       } else {
       }
       setLoading(false);
-    } catch (err) {
+    } catch (err: any) {
       setLoading(false);
     }
   };
@@ -84,7 +83,7 @@ export default function ListWithCarousel(props) {
       } else {
       }
       setLoading(false);
-    } catch (err) {
+    } catch (err: any) {
       setLoading(false);
     }
   };
@@ -154,7 +153,7 @@ export default function ListWithCarousel(props) {
         prompt: true,
       };
       await call(callArgs);
-    } catch (err) {}
+    } catch (err: any) {}
   };
 
   const openBrowser = async (params) => {
@@ -163,14 +162,14 @@ export default function ListWithCarousel(props) {
       let result = await WebBrowser.openAuthSessionAsync(url, url, {
         showInRecents: true,
       });
-    } catch (err) {}
+    } catch (err: any) {}
   };
 
   let itemsToShow = filteredEvents.length !== 0 ? filteredEvents : items;
 
   return (
     <Container>
-      <Content style={styles.container}>
+      <View style={styles.container}>
         {loading ? (
           <View
             style={{
@@ -199,7 +198,7 @@ export default function ListWithCarousel(props) {
           />
         ) : null}
         <View>
-          <View rounded style={[styles.searchInputContainer]}>
+          <View style={[styles.searchInputContainer]}>
             <Item
               rounded
               style={[
@@ -411,7 +410,7 @@ export default function ListWithCarousel(props) {
             </List>
           </View>
         )}
-      </Content>
+      </View>
     </Container>
   );
 }

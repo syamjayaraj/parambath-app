@@ -10,7 +10,6 @@ import {
 import axios from "axios";
 import {
   Container,
-  Content,
   List,
   ListItem,
   Text,
@@ -29,7 +28,7 @@ import * as WebBrowser from "expo-web-browser";
 
 const { width } = Dimensions.get("window");
 
-export default function ListWeb(props) {
+export default function ListWeb(props: any) {
   let [items, setItems] = useState([]);
   let [filteredItems, setFilteredItems] = useState([]);
   let [loading, setLoading] = useState(false);
@@ -60,7 +59,7 @@ export default function ListWeb(props) {
       } else {
       }
       setLoading(false);
-    } catch (err) {
+    } catch (err: any) {
       setLoading(false);
     }
   };
@@ -88,7 +87,7 @@ export default function ListWeb(props) {
         prompt: true,
       };
       await call(callArgs);
-    } catch (err) {}
+    } catch (err: any) {}
   };
 
   let cancelInput = () => {
@@ -104,14 +103,14 @@ export default function ListWeb(props) {
       let result = await WebBrowser.openAuthSessionAsync(url, url, {
         showInRecents: true,
       });
-    } catch (err) {}
+    } catch (err: any) {}
   };
 
   let itemsToSHow = filteredItems.length !== 0 ? filteredItems : items;
   return (
     <Container>
       <View>
-        <View rounded style={[styles.searchInputContainer]}>
+        <View style={[styles.searchInputContainer]}>
           <Item
             rounded
             style={[
@@ -135,7 +134,7 @@ export default function ListWeb(props) {
           ) : null}
         </View>
       </View>
-      <Content style={styles.container}>
+      <View style={styles.container}>
         {loading ? (
           <View style={styles.loader}>
             <Spinner color="#1c1b29" />
@@ -265,7 +264,7 @@ export default function ListWeb(props) {
             </List>
           </View>
         )}
-      </Content>
+      </View>
     </Container>
   );
 }
