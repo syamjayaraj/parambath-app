@@ -1,28 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 import Markdown from "react-native-markdown-display";
-
-import axios from "axios";
 import { Box, ScrollView, Spinner } from "native-base";
-import { apiUrl } from "../../config";
+import * as apiService from "../../api-service/index";
 
 export default function Terms() {
-  let [term, setTerm] = useState({
-    text: "",
-  });
-
-  let [loading, setLoading] = useState(false);
+  const [content, setContent] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchTerms();
+    fetchContent();
   }, []);
 
-  let fetchTerms = async () => {
+  const fetchContent = async () => {
     try {
       setLoading(true);
-      let response = await axios.get(`${apiUrl}/term`);
-      if (response && response.data && response.data.status == 200) {
-        setTerm(response.data.data);
+      const response: any = await apiService?.fetchContent("term");
+      if (response && response?.data && response?.status == 200) {
+        setContent(response?.data?.data);
       } else {
       }
       setLoading(false);
@@ -45,7 +40,7 @@ export default function Terms() {
                 marginBottom: 50,
               }}
             >
-              <Markdown>{term.text}</Markdown>
+              {/* <Markdown>{htmlContent}</Markdown> */}
             </View>
           )}
         </ScrollView>

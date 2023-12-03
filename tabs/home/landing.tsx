@@ -51,10 +51,6 @@ export default function Landing(props: any) {
 
   let _renderItem = ({ item, index }: any) => {
     let itemImage = item.image;
-    // .replace(
-    //   new RegExp("upload", "g"),
-    //   `upload/c_thumb,w_${2 * (width - 50)},h_400`
-    // );
     let url = "";
     let itemCategory = "";
 

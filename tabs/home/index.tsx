@@ -12,7 +12,6 @@ function HomeComponent(props: any) {
   function LandingTitle() {
     return <Text style={styles.title}>പറമ്പത്ത്</Text>;
   }
-
   function OtherTitle(props: any) {
     return <Text style={styles.subTitle}>{props.name}</Text>;
   }

@@ -38,7 +38,7 @@ function MoreComponent() {
       }}
     >
       <Stack.Screen
-        name="Landing"
+        name="മറ്റുള്ളവ"
         component={Landing}
         options={{
           headerShown: true,

@@ -3,7 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Platform } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
-import { Icon, NativeBaseProvider, View } from "native-base";
+import { NativeBaseProvider } from "native-base";
 import HomeComponent from "./tabs/home";
 import EventComponent from "./tabs/events";
 import NotificationComponent from "./tabs/notification-component";
@@ -15,6 +15,7 @@ import {
   MaterialCommunityIcons,
   MaterialIcons,
   Ionicons,
+  AntDesign,
 } from "@expo/vector-icons";
 
 export default function App() {
@@ -73,12 +74,7 @@ export default function App() {
             options={{
               tabBarLabel: "ഹോം",
               tabBarIcon: ({ color, size }) => (
-                // <Icon name="home-outline" size={size} color={color} />
-                <MaterialCommunityIcons
-                  name="home-outline"
-                  size={size}
-                  color="black"
-                />
+                <Ionicons name="home-outline" size={24} color="black" />
               ),
             }}
           />
@@ -88,8 +84,7 @@ export default function App() {
             options={{
               tabBarLabel: "പരിപാടികൾ",
               tabBarIcon: ({ color, size }) => (
-                // <Icon name="menu-outline" size={size} color={color} />
-                <MaterialIcons name="event" size={24} color="black" />
+                <AntDesign name="calendar" size={24} color="black" />
               ),
             }}
           />
