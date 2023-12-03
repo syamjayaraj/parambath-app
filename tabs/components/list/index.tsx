@@ -49,7 +49,7 @@ export default function ListComponent(props: any) {
             loading={loading}
             data={items}
             onClick={handleSelectItem}
-            navigation={props.navigation}
+            props={props}
           />
         </View>
       </SafeAreaView>

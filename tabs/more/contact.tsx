@@ -8,30 +8,28 @@ import {
   Linking,
   SafeAreaView,
 } from "react-native";
-import axios from "axios";
-import { Container, Text, Spinner, Box, ScrollView } from "native-base";
-import { apiUrl } from "../../config";
+import { Text, Spinner, Box, ScrollView } from "native-base";
 import call from "react-native-phone-call";
 import * as WebBrowser from "expo-web-browser";
 import { Ionicons } from "@expo/vector-icons";
+import * as apiService from "../../api-service/index";
 
 const { width } = Dimensions.get("window");
 
-export default function Autos(props: any) {
-  let [settings, setSettings] = useState({});
-
-  let [loading, setLoading] = useState(false);
+export default function Contact() {
+  const [content, setContent] = useState<any>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    fetchSettings();
+    fetchContent();
   }, []);
 
-  let fetchSettings = async () => {
+  const fetchContent = async () => {
     try {
       setLoading(true);
-      let response = await axios.get(`${apiUrl}/settings`);
-      if (response && response.data && response.data.status == 200) {
-        setSettings(response.data.data);
+      const response: any = await apiService?.fetchContent("setting");
+      if (response && response?.data && response?.status == 200) {
+        setContent(response?.data?.data);
       } else {
       }
       setLoading(false);
@@ -40,7 +38,7 @@ export default function Autos(props: any) {
     }
   };
 
-  let callToTheNumber = async (phoneNumber) => {
+  let callToTheNumber = async (phoneNumber: string) => {
     try {
       let callArgs = {
         number: phoneNumber,
@@ -50,7 +48,7 @@ export default function Autos(props: any) {
     } catch (err: any) {}
   };
 
-  const openBrowser = async (params) => {
+  const openBrowser = async (params: any) => {
     try {
       let { url } = params;
       let result = await WebBrowser.openBrowserAsync(url);
@@ -72,18 +70,22 @@ export default function Autos(props: any) {
                 style={styles.featured}
               />
               <View style={styles.sectionContainer}>
-                {settings.phoneNumber ? (
+                {content?.attributes?.phoneNumber ? (
                   <View style={styles.section}>
                     <Text style={styles.label}>ഫോൺ നമ്പർ</Text>
                     <TouchableOpacity
-                      onPress={() => callToTheNumber(settings.phoneNumber)}
+                      onPress={() =>
+                        callToTheNumber(content?.attributes?.phoneNumber)
+                      }
                     >
-                      <Text style={styles.value}>{settings.phoneNumber}</Text>
+                      <Text style={styles.value}>
+                        {content?.attributes?.phoneNumber}
+                      </Text>
                     </TouchableOpacity>
                   </View>
                 ) : null}
 
-                {settings.phoneNumber2 ? (
+                {content?.attributes?.phoneNumber2 ? (
                   <View style={styles.section}>
                     <View
                       style={{
@@ -94,7 +96,6 @@ export default function Autos(props: any) {
                     >
                       <Text style={styles.label}>ഫോൺ നമ്പർ</Text>
                       <Text
-                        note
                         style={{
                           fontSize: 10,
                           marginLeft: 5,
@@ -104,41 +105,49 @@ export default function Autos(props: any) {
                       </Text>
                     </View>
                     <TouchableOpacity
-                      onPress={() => callToTheNumber(settings.phoneNumber2)}
+                      onPress={() =>
+                        callToTheNumber(content?.attributes?.phoneNumber2)
+                      }
                     >
-                      <Text style={styles.value}>{settings.phoneNumber2}</Text>
+                      <Text style={styles.value}>
+                        {content?.attributes?.phoneNumber2}
+                      </Text>
                     </TouchableOpacity>
                   </View>
                 ) : null}
 
-                {settings.email ? (
+                {content?.attributes?.email ? (
                   <View style={styles.section}>
                     <Text style={styles.label}>ഇമെയിൽ</Text>
                     <TouchableOpacity
                       onPress={() =>
-                        Linking.openURL(`mailto:${settings.email}`)
+                        Linking.openURL(`mailto:${content?.attributes?.email}`)
                       }
                     >
-                      <Text style={styles.value}>{settings.email}</Text>
+                      <Text style={styles.value}>
+                        {content?.attributes?.email}
+                      </Text>
                     </TouchableOpacity>
                   </View>
                 ) : null}
 
-                {settings.address ? (
+                {content?.attributes?.address ? (
                   <View style={styles.section}>
                     <Text style={styles.label}>മേല്‍വിലാസം</Text>
 
-                    <Text style={styles.value}>{settings.address}</Text>
+                    <Text style={styles.value}>
+                      {content?.attributes?.address}
+                    </Text>
                   </View>
                 ) : null}
 
                 <View style={styles.footer}>
-                  {settings.whatsapp ? (
+                  {content?.attributes?.whatsapp ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
                       onPress={() =>
                         Linking.openURL(
-                          `whatsapp://send?phone=${settings.whatsapp}`
+                          `whatsapp://send?phone=${content?.attributes?.whatsapp}`
                         )
                       }
                     >
@@ -146,12 +155,12 @@ export default function Autos(props: any) {
                     </TouchableOpacity>
                   ) : null}
 
-                  {settings.website ? (
+                  {content?.attributes?.website ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
                       onPress={() =>
                         openBrowser({
-                          url: settings.website,
+                          url: content?.attributes?.website,
                         })
                       }
                     >
@@ -159,22 +168,23 @@ export default function Autos(props: any) {
                     </TouchableOpacity>
                   ) : null}
 
-                  {settings.facebook ? (
+                  {content?.attributes?.facebook ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
                       onPress={() =>
                         Linking.canOpenURL(
-                          `fb://page/${settings.facebook}`
+                          `fb://page/${content?.attributes?.facebook}`
                         ).then((supported) => {
-                          let facebookUrlIsId = /^\d+$/.test(settings.facebook);
-
+                          let facebookUrlIsId = /^\d+$/.test(
+                            content?.attributes?.facebook
+                          );
                           if (supported && facebookUrlIsId) {
                             return Linking.openURL(
-                              `fb://page/${settings.facebook}`
+                              `fb://page/${content?.attributes?.facebook}`
                             );
                           } else {
                             return Linking.openURL(
-                              `https://www.facebook.com/${settings.facebook}`
+                              `https://www.facebook.com/${content?.attributes?.facebook}`
                             );
                           }
                         })
@@ -184,19 +194,23 @@ export default function Autos(props: any) {
                     </TouchableOpacity>
                   ) : null}
 
-                  {settings.instagram ? (
+                  {content?.attributes?.instagram ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
-                      onPress={() => Linking.openURL(settings.instagram)}
+                      onPress={() =>
+                        Linking.openURL(content?.attributes?.instagram)
+                      }
                     >
                       <Ionicons name="logo-instagram" size={24} color="black" />
                     </TouchableOpacity>
                   ) : null}
 
-                  {settings.youtube ? (
+                  {content?.attributes?.youtube ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
-                      onPress={() => Linking.openURL(settings.youtube)}
+                      onPress={() =>
+                        Linking.openURL(content?.attributes?.youtube)
+                      }
                     >
                       <Ionicons name="logo-youtube" size={24} color="black" />
                     </TouchableOpacity>

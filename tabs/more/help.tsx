@@ -6,28 +6,27 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
-import axios from "axios";
 import { Text, Spinner, Box, ScrollView } from "native-base";
-import { apiUrl } from "../../config";
 const { width } = Dimensions.get("window");
 import { Ionicons } from "@expo/vector-icons";
 import Accordion from "react-native-collapsible/Accordion";
+import * as apiService from "../../api-service/index";
 
 export default function Help(props: any) {
-  const [helps, setHelps] = useState([]);
-
+  const [content, setContent] = useState([]);
   const [loading, setLoading] = useState(false);
   const [activeSections, setActiveSections] = useState<any>([]);
+
   useEffect(() => {
-    fetchHelps();
+    fetchContent();
   }, []);
 
-  const fetchHelps = async () => {
+  const fetchContent = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${apiUrl}/help/list?`);
-      if (response && response.data && response.data.status == 200) {
-        setHelps(response.data.data);
+      const response: any = await apiService?.fetchContent("helps");
+      if (response && response?.data && response?.status == 200) {
+        setContent(response?.data?.data);
       } else {
       }
       setLoading(false);
@@ -79,10 +78,10 @@ export default function Help(props: any) {
     );
   };
 
-  let helpFiltered: any = helps.map((item: any) => {
+  let helpFiltered: any = content.map((item: any) => {
     return {
-      title: item?.title,
-      content: item?.description,
+      title: item?.attributes?.title,
+      content: item?.attributes?.content,
     };
   });
 
@@ -91,7 +90,7 @@ export default function Help(props: any) {
   };
 
   return (
-    <Box bg={"white"} pt={12} padding={5}>
+    <Box bg={"white"} padding={5} pt={1}>
       <SafeAreaView>
         <ScrollView contentContainerStyle={{ width: "100%" }}>
           {loading ? (

@@ -16,15 +16,19 @@ interface customProps {
   loading: boolean;
   data: any;
   onClick: (categoryId: string) => void;
-  navigation: any;
+  props: any;
 }
 
 export default function ItemList({
   loading,
   data,
   onClick,
-  navigation,
+  props,
 }: customProps) {
+  let itemCategoryProp = props.route.params.itemCategory;
+  let urlProp = props.route.params.url;
+  let mainProp = props.route.params.main;
+
   const handleSelectItem = (itemId: string) => {
     // ...
     onClick(itemId);
@@ -53,22 +57,16 @@ export default function ItemList({
               data={data}
               renderItem={({ item }: any) => (
                 <TouchableOpacity
-                  style={
-                    {
-                      // ...styles.menuCard,
-                    }
+                  onPress={() =>
+                    props?.navigation?.navigate(mainProp, {
+                      itemId: item._id,
+                      url: urlProp,
+                      itemCategory: itemCategoryProp,
+                    })
                   }
-                  onPress={() => navigation.navigate("Tools")}
+                  style={styles.item}
                 >
-                  <Box
-                    _dark={{
-                      borderColor: "muted.50",
-                    }}
-                    borderColor="muted.800"
-                    pl={["0", "4"]}
-                    pr={["0", "5"]}
-                    py="2"
-                  >
+                  <Box>
                     <HStack space={[3, 3]} justifyContent="space-between">
                       <VStack>
                         <Text bold>{item?.malayalamName}</Text>
@@ -78,16 +76,7 @@ export default function ItemList({
                       <TouchableOpacity
                         onPress={() => callToTheNumber(item.phoneNumber)}
                       >
-                        <Ionicons
-                          name="call-outline"
-                          style={
-                            item.isPremium
-                              ? {
-                                  color: "#FFA507",
-                                }
-                              : null
-                          }
-                        />
+                        <Ionicons name="call-outline" size={20} color="black" />
                       </TouchableOpacity>
                     </HStack>
                   </Box>
@@ -103,6 +92,9 @@ export default function ItemList({
 }
 
 const styles = StyleSheet.create({
+  item: {
+    marginBottom: 20,
+  },
   loader: {
     display: "flex",
     justifyContent: "center",

@@ -6,7 +6,7 @@ import {
   Image,
   SafeAreaView,
 } from "react-native";
-import { Box, Container, ScrollView, Text } from "native-base";
+import { Box, ScrollView, Text } from "native-base";
 import * as WebBrowser from "expo-web-browser";
 import * as appJson from "../../app.json";
 
@@ -19,9 +19,9 @@ export default function Autos() {
   };
 
   return (
-    <Box bg={"white"}>
+    <Box>
       <SafeAreaView>
-        <ScrollView contentContainerStyle={{ width: "100%" }}>
+        <ScrollView>
           <View>
             <View style={styles.logoContainer}>
               <Image
@@ -30,26 +30,28 @@ export default function Autos() {
               />
             </View>
             <View>
-              <Text style={styles.title}>പറമ്പത്ത്</Text>
-              <TouchableOpacity
-                onPress={() =>
-                  openBrowser({
-                    url: "https://onnich.com",
-                  })
-                }
-              >
-                <Text style={styles.subTitle}>
-                  Powered by&nbsp;
-                  <Text
-                    style={{
-                      fontWeight: "bold",
-                      fontSize: 13,
-                    }}
-                  >
-                    ONNICH
+              <View>
+                <Text style={styles.title}>പറമ്പത്ത്</Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    openBrowser({
+                      url: "https://onnich.com",
+                    })
+                  }
+                >
+                  <Text style={styles.subTitle}>
+                    Powered by&nbsp;
+                    <Text
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: 13,
+                      }}
+                    >
+                      ONNICH
+                    </Text>
                   </Text>
-                </Text>
-              </TouchableOpacity>
+                </TouchableOpacity>
+              </View>
 
               <View style={styles.copyRightContainer}>
                 <TouchableOpacity
@@ -60,7 +62,7 @@ export default function Autos() {
                   }
                 >
                   <Text style={styles.copyRight}>
-                    {"\u00A9"} 2018-2024 Floyet Labs & Technologies
+                    {"\u00A9"} 2018-2024 FLOYET Labs & Technologies
                   </Text>
                 </TouchableOpacity>
                 <Text style={styles.copyRight}>All rights reserved</Text>
@@ -78,7 +80,6 @@ export default function Autos() {
 }
 
 const styles = StyleSheet.create({
-  container: {},
   logoContainer: {
     display: "flex",
     justifyContent: "center",
@@ -101,8 +102,8 @@ const styles = StyleSheet.create({
   subTitle: {
     textAlign: "center",
     marginTop: -10,
+    paddingLeft: 20,
     fontSize: 12,
-    marginLeft: 70,
   },
   copyRightContainer: {
     marginTop: 20,
