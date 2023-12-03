@@ -6,31 +6,33 @@ import {
   TouchableOpacity,
   Keyboard,
   Image,
+  SafeAreaView,
 } from "react-native";
 import axios from "axios";
 import {
   Container,
   List,
-  ListItem,
   Text,
   Icon,
-  Right,
-  Item,
   Input,
-  Left,
-  Body,
   Spinner,
-  Thumbnail,
+  Box,
+  FlatList,
+  HStack,
+  Avatar,
+  VStack,
+  Spacer,
 } from "native-base";
 import { apiUrl } from "../../config";
 import Carousel from "react-native-snap-carousel";
 import * as WebBrowser from "expo-web-browser";
 import call from "react-native-phone-call";
+import { Ionicons } from "@expo/vector-icons";
 
 const { width } = Dimensions.get("window");
 
 export default function ListWithCarousel(props: any) {
-  let [items, setitems] = useState([]);
+  let [items, setitems] = useState<any>([]);
   let [filteredEvents, setFilteredEvents] = useState([]);
   let [loading, setLoading] = useState(false);
   let [searchInput, setSearchInput] = useState("");
@@ -40,7 +42,7 @@ export default function ListWithCarousel(props: any) {
 
   let carouselProp = props.route.params.carouselUrl;
   let deliveryUrlProp = props.route.params.deliveryUrl;
-  let itemCategoryProp = props.route.params.itemCategory;
+  let itemCategoryProp: any = props.route.params.itemCategory;
   let urlProp = props.route.params.url;
   let categoryUrlProp = props.route.params.categoryUrl;
   let mainProp = props.route.params.main;
@@ -88,12 +90,12 @@ export default function ListWithCarousel(props: any) {
     }
   };
 
-  let filterItems = (searchInputValue) => {
+  let filterItems = (searchInputValue: any) => {
     setSearchInput(searchInputValue);
     if (searchInputValue) {
       const lowercasedFilter = searchInputValue.toLowerCase();
-      let filteredData = items.filter(
-        (item) =>
+      let filteredData: any = items.filter(
+        (item: any) =>
           item.name.toLowerCase().includes(lowercasedFilter) ||
           (item.malayalamName &&
             item.malayalamName.toLowerCase().includes(lowercasedFilter))
@@ -111,7 +113,7 @@ export default function ListWithCarousel(props: any) {
     setFilteredEvents([]);
   };
 
-  let _renderItem = ({ item, index }) => {
+  let _renderItem = ({ item, index }: any) => {
     let itemImage = item.image;
     // .replace(
     //   new RegExp("upload", "g"),
@@ -146,7 +148,7 @@ export default function ListWithCarousel(props: any) {
     );
   };
 
-  let callToTheNumber = async (phoneNumber) => {
+  let callToTheNumber = async (phoneNumber: string) => {
     try {
       let callArgs = {
         number: phoneNumber,
@@ -156,7 +158,7 @@ export default function ListWithCarousel(props: any) {
     } catch (err: any) {}
   };
 
-  const openBrowser = async (params) => {
+  const openBrowser = async (params: any) => {
     try {
       let { url } = params;
       let result = await WebBrowser.openAuthSessionAsync(url, url, {
@@ -168,8 +170,8 @@ export default function ListWithCarousel(props: any) {
   let itemsToShow = filteredEvents.length !== 0 ? filteredEvents : items;
 
   return (
-    <Container>
-      <View style={styles.container}>
+    <Box bg={"white"} pt={12}>
+      <SafeAreaView>
         {loading ? (
           <View
             style={{
@@ -184,9 +186,7 @@ export default function ListWithCarousel(props: any) {
         ) : !showCancel ? (
           <Carousel
             showsHorizontalScrollIndicator={true}
-            indica
             loop={true}
-            activeOpacity={1}
             autoplay={true}
             autoplayInterval={2500}
             autoplayDelay={1000}
@@ -197,106 +197,61 @@ export default function ListWithCarousel(props: any) {
             renderItem={_renderItem}
           />
         ) : null}
-        <View>
-          <View style={[styles.searchInputContainer]}>
-            <Item
-              rounded
-              style={[
-                styles.searchInput,
-                { width: showCancel ? width - 110 : width - 45 },
-              ]}
-            >
-              <Icon name="search-outline" />
-              <Input
-                placeholder="തിരയൂ"
-                placeholderTextColor="#bababa"
-                onChangeText={(value) => filterItems(value)}
-                value={searchInput}
-                onFocus={() => setShowCancel(true)}
-              />
-            </Item>
-            {showCancel ? (
-              <TouchableOpacity onPress={() => cancelInput()}>
-                <Text style={styles.cancel}>Cancel</Text>
-              </TouchableOpacity>
-            ) : null}
+
+        <View style={[styles.searchInputContainer]}>
+          <View
+            style={[
+              styles.searchInput,
+              { width: showCancel ? width - 110 : width - 45 },
+            ]}
+          >
+            <Ionicons name="search-outline" size={24} color="black" />
+            <Input
+              placeholder="തിരയൂ"
+              placeholderTextColor="#bababa"
+              onChangeText={(value) => filterItems(value)}
+              value={searchInput}
+              onFocus={() => setShowCancel(true)}
+            />
           </View>
+          {showCancel ? (
+            <TouchableOpacity onPress={() => cancelInput()}>
+              <Text style={styles.cancel}>Cancel</Text>
+            </TouchableOpacity>
+          ) : null}
         </View>
+
         {loading ? (
           <View style={styles.loader}>
             <Spinner color="#1c1b29" />
           </View>
         ) : (
           <View style={styles.sectionContainer}>
-            <List>
-              {itemsToShow.map((item, index) => {
-                let itemImage =
-                  item.images && item.images.length != 0
-                    ? item.images[0]
-                    : item.icon
-                    ? item.icon
-                    : item[itemCategoryProp] && [itemCategoryProp].icon
-                    ? item[itemCategoryProp].icon
-                    : "";
-                itemImage = itemImage;
-                // .replace(
-                //   new RegExp("upload", "g"),
-                //   "upload/c_thumb,w_200"
-                // );
-                return (
-                  <ListItem key={index}>
-                    <Left>
-                      {/* <TouchableOpacity
-                        onPress={() =>
-                          props.navigation.navigate(mainProp, {
-                            itemId: item._id,
-                            url: urlProp,
-                            itemCategory: itemCategoryProp,
-                          })
-                        }
-                      >
-                        {itemImage ? (
-                          <Thumbnail
-                            source={{
-                              uri: itemImage,
-                            }}
-                            style={
-                              item.isPremium
-                                ? {
-                                    borderColor: "#FFA507",
-                                    borderWidth: 2,
-                                    padding: 1,
-                                  }
-                                : null
-                            }
-                          />
-                        ) : (
-                          <Thumbnail
-                            source={require("../../assets/icons/placeholders/event.png")}
-                            style={
-                              item.isPremium
-                                ? {
-                                    borderColor: "#FFA507",
-                                    borderWidth: 2,
-                                    padding: 1,
-                                  }
-                                : null
-                            }
-                          />
-                        )}
-                      </TouchableOpacity> */}
-
-                      <Body>
-                        <TouchableOpacity
-                          onPress={() =>
-                            props.navigation.navigate(mainProp, {
-                              itemId: item._id,
-                              url: urlProp,
-                              itemCategory: itemCategoryProp,
-                            })
-                          }
-                        >
-                          <Text>
+            <Box>
+              <FlatList
+                data={itemsToShow}
+                renderItem={({ item }: any) => (
+                  <TouchableOpacity
+                    onPress={() =>
+                      props.navigation.navigate(mainProp, {
+                        itemId: item._id,
+                        url: urlProp,
+                        itemCategory: itemCategoryProp,
+                      })
+                    }
+                  >
+                    <Box
+                      _dark={{
+                        borderColor: "muted.50",
+                      }}
+                      borderColor="muted.800"
+                      pl={["0", "4"]}
+                      pr={["0", "5"]}
+                      py="2"
+                    >
+                      <HStack space={[3, 3]} justifyContent="space-between">
+                        <VStack>
+                          <Text bold>
                             {item.malayalamName
                               ? item.malayalamName
                               : item.name}
@@ -324,7 +279,7 @@ export default function ListWithCarousel(props: any) {
                               {item.label}
                             </Text>
                           ) : item[itemCategoryProp] ? (
-                            <Text note>
+                            <Text style={styles.note}>
                               {item[itemCategoryProp] &&
                               item[itemCategoryProp].malayalamName
                                 ? item[itemCategoryProp].malayalamName
@@ -332,90 +287,26 @@ export default function ListWithCarousel(props: any) {
                               &nbsp;
                             </Text>
                           ) : null}
-                        </TouchableOpacity>
-                      </Body>
-                    </Left>
-                    {deliveryUrlProp ? (
-                      <Right
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: item.onlineBookingUrl
-                            ? "space-between"
-                            : "flex-end",
-                        }}
-                      >
-                        {item.onlineBookingUrl ? (
-                          <TouchableOpacity
-                            onPress={() =>
-                              openBrowser({
-                                url: item.onlineBookingUrl,
-                              })
-                            }
-                          >
-                            <Icon
-                              name="globe-outline"
-                              style={
-                                item.isPremium
-                                  ? {
-                                      color: "#FFA507",
-                                    }
-                                  : null
-                              }
-                            />
-                          </TouchableOpacity>
-                        ) : null}
-                        <TouchableOpacity
-                          onPress={() => callToTheNumber(item.phoneNumber)}
-                        >
-                          <Icon
-                            name="call-outline"
-                            style={
-                              item.isPremium
-                                ? {
-                                    color: "#FFA507",
-                                  }
-                                : null
-                            }
-                          />
-                        </TouchableOpacity>
-                      </Right>
-                    ) : (
-                      <Right>
-                        <TouchableOpacity
-                          onPress={() =>
-                            props.navigation.navigate(mainProp, {
-                              itemId: item._id,
-                              url: urlProp,
-                              itemCategory: itemCategoryProp,
-                            })
-                          }
-                        >
-                          <Icon
-                            name="arrow-forward-outline"
-                            style={
-                              item.isPremium
-                                ? {
-                                    color: "#FFA507",
-                                  }
-                                : null
-                            }
-                          />
-                        </TouchableOpacity>
-                      </Right>
-                    )}
-                  </ListItem>
-                );
-              })}
-            </List>
+                        </VStack>
+                        <Spacer />
+                      </HStack>
+                    </Box>
+                  </TouchableOpacity>
+                )}
+                keyExtractor={(item: any) => item?._id}
+              />
+            </Box>
           </View>
         )}
-      </View>
-    </Container>
+      </SafeAreaView>
+    </Box>
   );
 }
 
 const styles = StyleSheet.create({
+  note: {
+    color: "#7d7c7c",
+  },
   loader: {
     display: "flex",
     justifyContent: "center",
@@ -430,7 +321,6 @@ const styles = StyleSheet.create({
   sectionContainer: {
     padding: 20,
     marginTop: 0,
-    marginBottom: 50,
   },
   searchInputContainer: {
     margin: 20,

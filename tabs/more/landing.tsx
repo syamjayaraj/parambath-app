@@ -272,7 +272,7 @@ export default function Landing(props: any) {
                     </HStack>
                   </Box>
                 )}
-                keyExtractor={(item) => item?.id}
+                keyExtractor={(item: any) => item?.id}
               />
             </Box>
 
