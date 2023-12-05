@@ -12,6 +12,17 @@ const fetchItems = async (type: string) => {
   } catch (err: any) {}
 };
 
+const fetchItemDetails = async (type: string, itemId: string) => {
+  try {
+    const response = await axios.get(`${apiUrl}/${type}/${itemId}`);
+    if (response) {
+      return response;
+    } else {
+      return null;
+    }
+  } catch (err: any) {}
+};
+
 const fetchEvents = async (type: string) => {
   try {
     const response = await axios.get(`${apiUrl2}/${type}/list?`);
@@ -34,4 +45,4 @@ const fetchContent = async (type: string) => {
   } catch (err: any) {}
 };
 
-export { fetchItems, fetchContent };
+export { fetchItems, fetchItemDetails, fetchContent };

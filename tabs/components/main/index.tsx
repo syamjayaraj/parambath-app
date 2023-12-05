@@ -2,53 +2,37 @@ import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
-  Dimensions,
   TouchableOpacity,
-  Image,
   Linking,
-  Share,
   SafeAreaView,
 } from "react-native";
-import axios from "axios";
-import { Text, Icon, Spinner, Box, ScrollView } from "native-base";
-import { apiUrl } from "../../config";
-import call from "react-native-phone-call";
-import Carousel from "react-native-snap-carousel";
-import * as WebBrowser from "expo-web-browser";
-import {
-  EvilIcons,
-  FontAwesome,
-  MaterialIcons,
-  Ionicons,
-} from "@expo/vector-icons";
-
-const { width } = Dimensions.get("window");
-
-const getRandomInt = (max: any) => {
-  return Math.floor(Math.random() * max);
-};
+import { Text, Spinner, Box, ScrollView } from "native-base";
+import { EvilIcons, MaterialIcons, Ionicons } from "@expo/vector-icons";
+import onShare from "../../../utils/on-share";
+import openBrowser from "../../../utils/open-browser";
+import callToTheNumber from "../../../utils/call-to-number";
+import Slider from "../common/slider";
+import * as apiService from "../../../api-service/index";
 
 export default function MainComponent(props: any) {
-  let [item, setItem] = useState<any>({
+  let [itemDetails, setItemDetails] = useState<any>({
     itemCategory: {},
   });
-
-  let [loading, setLoading] = useState(false);
-
-  let itemCategoryProp = props.route.params.itemCategory;
-  let urlProp = props.route.params.url;
+  const [loading, setLoading] = useState(false);
+  const itemCategoryProp = props.route.params.itemCategory;
+  const urlProp = props.route.params.url;
+  let { itemId } = props.route.params;
 
   useEffect(() => {
-    fetchAutoDetails();
+    fetchItemDetails();
   }, []);
 
-  let fetchAutoDetails = async () => {
-    let { itemId } = props.route.params;
+  let fetchItemDetails = async () => {
     try {
       setLoading(true);
-      let response = await axios.get(`${apiUrl}/${urlProp}/${itemId}`);
+      const response = await apiService?.fetchItemDetails(urlProp, itemId);
       if (response && response.data && response.data.status == 200) {
-        setItem(response.data.data);
+        setItemDetails(response?.data?.data);
       } else {
       }
       setLoading(false);
@@ -57,99 +41,10 @@ export default function MainComponent(props: any) {
     }
   };
 
-  let callToTheNumber = async (phoneNumber: any) => {
-    try {
-      let callArgs = {
-        number: phoneNumber,
-        prompt: false,
-      };
-      await call(callArgs);
-    } catch (err: any) {}
-  };
-
-  let _renderItem = ({ item, index }: any) => {
-    let itemImage = item;
-    //.replace(
-    //      new RegExp("upload", "g"),
-    //      `upload/c_thumb,w_${2 * (width - 50)},h_400`
-    //    );
-
-    return (
-      <View
-        style={{
-          padding: 10,
-        }}
-      >
-        <Image
-          style={{
-            width: width - 50,
-            height: 250,
-            borderRadius: 10,
-          }}
-          source={{
-            uri: itemImage,
-          }}
-        ></Image>
-      </View>
-    );
-  };
-
-  const openBrowser = async (params: any) => {
-    try {
-      let { url } = params;
-      let result = await WebBrowser.openAuthSessionAsync(url, url, {
-        showInRecents: true,
-      });
-    } catch (err: any) {}
-  };
-
-  const onShare = async () => {
-    try {
-      let sharableString = `${
-        item.malayalamName
-          ? item.malayalamName
-          : item.malayalamTitle
-          ? item.malayalamTitle
-          : item.name
-          ? item.name
-          : item.title
-          ? item.title
-          : ""
-      }${
-        item[itemCategoryProp].malayalamName
-          ? ", " + item[itemCategoryProp].malayalamName
-          : ", " + item[itemCategoryProp].name
-      }${item?.place ? ", " + item.place : ""} - ${
-        item.ownerMalayalamName
-          ? "ഉടമ: " + item.ownerMalayalamName + ", "
-          : item.owner
-          ? "ഉടമ: " + item.owner + ", "
-          : ""
-      }${item?.phoneNumber ? "ഫോൺ നമ്പർ:" + item?.phoneNumber : ""}${
-        item?.phoneNumber2 ? ", ഫോൺ നമ്പർ(2):" + item?.phoneNumber2 : ""
-      }${item.url ? ", വെബ്സൈറ്റ്: " + item.url : ""}`;
-
-      const result = await Share.share({
-        message: sharableString,
-      });
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          // shared with activity type of result.activityType
-        } else {
-          // shared
-        }
-      } else if (result.action === Share.dismissedAction) {
-        // dismissed
-      }
-    } catch (error: any) {
-      alert(error.message);
-    }
-  };
-
   return (
-    <Box bg={"white"} pt={12} padding={5}>
+    <Box pt={12} padding={5}>
       <SafeAreaView>
-        <ScrollView contentContainerStyle={{ width: "100%" }}>
+        <ScrollView>
           {loading ? (
             <View style={styles.loader}>
               <Spinner color="#1c1b29" />
@@ -160,39 +55,13 @@ export default function MainComponent(props: any) {
                 marginTop: 50,
               }}
             >
-              {item.images && item.images.length !== 0 ? (
-                <Carousel
-                  showsHorizontalScrollIndicator={true}
-                  loop={true}
-                  autoplay={true}
-                  autoplayInterval={2500}
-                  autoplayDelay={1000}
-                  layout={"stack"}
-                  data={item.images}
-                  sliderWidth={width}
-                  itemWidth={width}
-                  renderItem={_renderItem}
-                />
+              {itemDetails.images && itemDetails.images.length !== 0 ? (
+                <Slider images={itemDetails?.images} />
               ) : null}
-              <View
-                style={[
-                  styles.sectionContainer,
-                  item.isPremium
-                    ? {
-                        borderColor: "#FFA507",
-                      }
-                    : null,
-                ]}
-              >
-                {item.isPremium ? (
-                  <Image
-                    source={require("../../assets/icons/premium.png")}
-                    style={styles.badge}
-                  />
-                ) : null}
+              <View style={[styles.sectionContainer]}>
                 <View style={styles.shareButtonContainer}>
                   <TouchableOpacity
-                    onPress={onShare}
+                    onPress={() => onShare(itemDetails, itemCategoryProp)}
                     style={styles.shareButton}
                   >
                     <EvilIcons
@@ -203,43 +72,44 @@ export default function MainComponent(props: any) {
                     <Text style={styles.shareText}>Share</Text>
                   </TouchableOpacity>
                 </View>
-                {item.name || item.title ? (
+                {itemDetails.name || itemDetails.title ? (
                   <Text style={styles.title}>
-                    {item.malayalamName
-                      ? item.malayalamName
-                      : item.malayalamTitle
-                      ? item.malayalamTitle
-                      : item.name
-                      ? item.name
-                      : item.title}
+                    {itemDetails.malayalamName
+                      ? itemDetails.malayalamName
+                      : itemDetails.malayalamTitle
+                      ? itemDetails.malayalamTitle
+                      : itemDetails.name
+                      ? itemDetails.name
+                      : itemDetails.title}
                     &nbsp;
                   </Text>
                 ) : null}
-                {item[itemCategoryProp] ? (
-                  <Text note style={styles.workName}>
-                    {item[itemCategoryProp].malayalamName
-                      ? item[itemCategoryProp].malayalamName
-                      : item[itemCategoryProp].name}
+                {itemDetails[itemCategoryProp] ? (
+                  <Text style={styles.workName}>
+                    {itemDetails[itemCategoryProp].malayalamName
+                      ? itemDetails[itemCategoryProp].malayalamName
+                      : itemDetails[itemCategoryProp].name}
                     &nbsp;
                   </Text>
                 ) : null}
 
-                {item.about ? (
-                  <Text style={styles.aboutText}>{item.about}</Text>
+                {itemDetails.about ? (
+                  <Text style={styles.aboutText}>{itemDetails.about}</Text>
                 ) : null}
 
-                {item.description ? (
-                  <Text style={styles.aboutText}>{item.description}</Text>
+                {itemDetails.description ? (
+                  <Text style={styles.aboutText}>
+                    {itemDetails.description}
+                  </Text>
                 ) : null}
 
                 {(urlProp === "notification" || urlProp === "online-service") &&
-                item.youtube ? (
+                itemDetails.youtube ? (
                   <TouchableOpacity
                     style={[styles.video]}
-                    onPress={() => Linking.openURL(item.youtube)}
+                    onPress={() => Linking.openURL(itemDetails.youtube)}
                   >
-                    <Icon name="logo-youtube" style={styles.bookingIcon} />
-
+                    <Ionicons name="logo-youtube" size={20} color="black" />
                     <View
                       style={{
                         display: "flex",
@@ -253,17 +123,19 @@ export default function MainComponent(props: any) {
                   </TouchableOpacity>
                 ) : null}
 
-                {(urlProp === "notification" && item.website) || item.url ? (
+                {(urlProp === "notification" && itemDetails.website) ||
+                itemDetails.url ? (
                   <TouchableOpacity
                     style={[styles.booking]}
                     onPress={() =>
                       openBrowser({
-                        url: item.website ? item.website : item.url,
+                        url: itemDetails.website
+                          ? itemDetails.website
+                          : itemDetails.url,
                       })
                     }
                   >
-                    <Icon name="globe-outline" style={styles.bookingIcon} />
-
+                    <Ionicons name="globe-outline" size={20} color="black" />
                     <View
                       style={{
                         display: "flex",
@@ -277,74 +149,78 @@ export default function MainComponent(props: any) {
                   </TouchableOpacity>
                 ) : null}
 
-                {item.opensAt && item.closesAt ? (
+                {itemDetails.opensAt && itemDetails.closesAt ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
-                      <Icon name="time-outline" style={styles.icon} />
+                      <Ionicons name="time-outline" size={20} color="black" />
                     </View>
                     <View style={styles.textContainer}>
                       <Text style={styles.label}>പ്രവൃത്തി സമയം</Text>
                       <Text style={styles.value}>
-                        {item.opensAt}-{item.closesAt}
+                        {itemDetails.opensAt}-{itemDetails.closesAt}
                       </Text>
                     </View>
                   </View>
                 ) : null}
 
-                {item.owner ? (
+                {itemDetails.owner ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
-                      <Icon name="person-outline" style={styles.icon} />
+                      {/* <Ionicons name="person-outline" size={20} color="black" /> */}
                     </View>
                     <View style={styles.textContainer}>
                       <Text style={styles.label}>ഉടമ</Text>
                       <Text style={styles.value}>
-                        {item.ownerMalayalamName
-                          ? item.ownerMalayalamName
-                          : item.owner}
+                        {itemDetails.ownerMalayalamName
+                          ? itemDetails.ownerMalayalamName
+                          : itemDetails.owner}
                       </Text>
                     </View>
                   </View>
                 ) : null}
-                {item.from || item.to ? (
+                {itemDetails.from || itemDetails.to ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
-                      <Icon name="calendar-outline" style={styles.icon} />
+                      <Ionicons
+                        name="calendar-outline"
+                        size={20}
+                        color="black"
+                      />
                     </View>
                     <View style={styles.textContainer}>
                       <Text style={styles.label}>കാലാവധി</Text>
                       <Text style={styles.value}>
-                        {item.from} - {item.to}
+                        {itemDetails.from} - {itemDetails.to}
                       </Text>
                     </View>
                   </View>
                 ) : null}
 
-                {item.phoneNumber ? (
+                {itemDetails.phoneNumber ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
-                      <FontAwesome name="phone" style={styles.icon} />
+                      <Ionicons name="call-outline" size={20} color="black" />
                     </View>
                     <TouchableOpacity
                       style={styles.textContainer}
-                      onPress={() => callToTheNumber(item.phoneNumber)}
+                      onPress={() => callToTheNumber(itemDetails.phoneNumber)}
                     >
                       <Text style={styles.label}>ഫോൺ നമ്പർ</Text>
-                      <Text style={styles.value}>{item.phoneNumber}</Text>
+                      <Text style={styles.value}>
+                        {itemDetails.phoneNumber}
+                      </Text>
                     </TouchableOpacity>
                   </View>
                 ) : null}
 
-                {item.phoneNumber2 ? (
+                {itemDetails.phoneNumber2 ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
-                      <FontAwesome name="phone" style={styles.icon} />
-
-                      <Icon name="call-outline" style={styles.icon} />
+                      <Ionicons name="call-outline" size={20} color="black" />
                     </View>
                     <TouchableOpacity
                       style={styles.textContainer}
-                      onPress={() => callToTheNumber(item.phoneNumber2)}
+                      onPress={() => callToTheNumber(itemDetails.phoneNumber2)}
                     >
                       <View
                         style={{
@@ -355,7 +231,6 @@ export default function MainComponent(props: any) {
                       >
                         <Text style={styles.label}>ഫോൺ നമ്പർ</Text>
                         <Text
-                          note
                           style={{
                             fontSize: 10,
                             marginLeft: 5,
@@ -364,12 +239,14 @@ export default function MainComponent(props: any) {
                           (2)
                         </Text>
                       </View>
-                      <Text style={styles.value}>{item.phoneNumber2}</Text>
+                      <Text style={styles.value}>
+                        {itemDetails.phoneNumber2}
+                      </Text>
                     </TouchableOpacity>
                   </View>
                 ) : null}
 
-                {item.email ? (
+                {itemDetails.email ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
                       <MaterialIcons name="email" style={styles.icon} />
@@ -389,15 +266,15 @@ export default function MainComponent(props: any) {
                       >
                         <Text style={styles.label}>ഇമെയിൽ</Text>
                       </View>
-                      <Text style={styles.value}>{item.email}</Text>
+                      <Text style={styles.value}>{itemDetails.email}</Text>
                     </TouchableOpacity>
                   </View>
                 ) : null}
 
-                {item.place ? (
+                {itemDetails.place ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
-                      <Ionicons name="location-sharp" style={styles.icon} />
+                      <Ionicons name="location-outline" style={styles.icon} />
                     </View>
                     <View style={styles.textContainer}>
                       <View
@@ -409,15 +286,15 @@ export default function MainComponent(props: any) {
                       >
                         <Text style={styles.label}>സ്ഥലം</Text>
                       </View>
-                      <Text style={styles.value}>{item.place}</Text>
+                      <Text style={styles.value}>{itemDetails.place}</Text>
                     </View>
                   </View>
                 ) : null}
 
-                {item.address ? (
+                {itemDetails.address ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
-                      <Icon name="mail-outline" style={styles.icon} />
+                      <Ionicons name="mail-outline" size={20} color="black" />
                     </View>
                     <View style={styles.textContainer}>
                       <View
@@ -429,15 +306,15 @@ export default function MainComponent(props: any) {
                       >
                         <Text style={styles.label}>മേൽവിലാസം</Text>
                       </View>
-                      <Text style={styles.value}>{item.address}</Text>
+                      <Text style={styles.value}>{itemDetails.address}</Text>
                     </View>
                   </View>
                 ) : null}
 
-                {item.upi || item.card ? (
+                {itemDetails.upi || itemDetails.card ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
-                      <Icon name="wallet-outline" style={styles.icon} />
+                      <Ionicons name="wallet-outline" size={20} color="black" />
                     </View>
                     <View style={styles.textContainer}>
                       <View
@@ -450,7 +327,7 @@ export default function MainComponent(props: any) {
                         <Text style={styles.label}>ഓൺലൈൻ പേയ്മെന്റ്</Text>
                       </View>
                       <View style={{}}>
-                        {item.upi ? (
+                        {itemDetails.upi ? (
                           <Text style={styles.value}>
                             യുപിഐ&nbsp;
                             <Text
@@ -462,7 +339,7 @@ export default function MainComponent(props: any) {
                             </Text>
                           </Text>
                         ) : null}
-                        {item.card ? (
+                        {itemDetails.card ? (
                           <Text style={styles.value}>
                             ക്രെഡിറ്റ്/ഡെബിറ്റ് കാർഡ്
                           </Text>
@@ -472,39 +349,38 @@ export default function MainComponent(props: any) {
                   </View>
                 ) : null}
 
-                {item.vehicleNumber ? (
+                {itemDetails.vehicleNumber ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
-                      <Icon name="clipboard-outline" style={styles.icon} />
+                      <Ionicons
+                        name="clipboard-outline"
+                        size={20}
+                        color="black"
+                      />
                     </View>
                     <View style={styles.textContainer}>
                       <Text style={styles.label}>വണ്ടി നമ്പർ</Text>
-                      <Text style={styles.value}>{item.vehicleNumber}</Text>
+                      <Text style={styles.value}>
+                        {itemDetails.vehicleNumber}
+                      </Text>
                     </View>
                   </View>
                 ) : null}
 
-                {item.onlineBookingUrl ? (
+                {itemDetails.onlineBookingUrl ? (
                   <TouchableOpacity
-                    style={[
-                      styles.booking,
-                      item.isPremium
-                        ? {
-                            borderColor: "#FFA507",
-                          }
-                        : null,
-                    ]}
+                    style={[styles.booking]}
                     onPress={() =>
                       openBrowser({
-                        url: item.onlineBookingUrl,
+                        url: itemDetails.onlineBookingUrl,
                       })
                     }
                   >
-                    <Icon
+                    <Ionicons
                       name="phone-portrait-outline"
-                      style={styles.bookingIcon}
+                      size={20}
+                      color="black"
                     />
-
                     <View
                       style={{
                         display: "flex",
@@ -519,82 +395,79 @@ export default function MainComponent(props: any) {
                 ) : null}
 
                 <View style={styles.footer}>
-                  {item.whatsapp ? (
+                  {itemDetails.whatsapp ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
                       onPress={() =>
                         Linking.openURL(
-                          `whatsapp://send?phone=${item.whatsapp}`
+                          `whatsapp://send?phone=${itemDetails.whatsapp}`
                         )
                       }
                     >
-                      <Icon name="logo-whatsapp" style={styles.footerIcon} />
+                      <Ionicons name="logo-whatsapp" size={20} color="black" />
                     </TouchableOpacity>
                   ) : null}
 
-                  {urlProp !== "notification" && item.website ? (
+                  {urlProp !== "notification" && itemDetails.website ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
                       onPress={() =>
                         openBrowser({
-                          url: item.website,
+                          url: itemDetails.website,
                         })
                       }
                     >
-                      <Icon name="globe-outline" style={styles.footerIcon} />
+                      <Ionicons name="globe-outline" size={20} color="black" />
                     </TouchableOpacity>
                   ) : null}
 
-                  {item.facebook ? (
+                  {itemDetails.facebook ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
                       onPress={() =>
-                        Linking.canOpenURL(`fb://page/${item.facebook}`).then(
-                          (supported) => {
-                            let facebookUrlIsId = /^\d+$/.test(item.facebook);
+                        Linking.canOpenURL(
+                          `fb://page/${itemDetails.facebook}`
+                        ).then((supported) => {
+                          let facebookUrlIsId = /^\d+$/.test(
+                            itemDetails.facebook
+                          );
 
-                            if (supported && facebookUrlIsId) {
-                              return Linking.openURL(
-                                `fb://page/${item.facebook}`
-                              );
-                            } else {
-                              return Linking.openURL(
-                                `https://www.facebook.com/${item.facebook}`
-                              );
-                            }
+                          if (supported && facebookUrlIsId) {
+                            return Linking.openURL(
+                              `fb://page/${itemDetails.facebook}`
+                            );
+                          } else {
+                            return Linking.openURL(
+                              `https://www.facebook.com/${itemDetails.facebook}`
+                            );
                           }
-                        )
+                        })
                       }
                     >
-                      <Icon name="logo-facebook" style={styles.footerIcon} />
+                      <Ionicons name="logo-facebook" size={20} color="black" />
                     </TouchableOpacity>
                   ) : null}
 
-                  {item.instagram ? (
+                  {itemDetails.instagram ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
-                      onPress={() => Linking.openURL(item.instagram)}
+                      onPress={() => Linking.openURL(itemDetails.instagram)}
                     >
-                      <Icon name="logo-instagram" style={styles.footerIcon} />
+                      <Ionicons name="logo-instagram" size={20} color="black" />
                     </TouchableOpacity>
                   ) : null}
 
                   {urlProp !== "notification" &&
                   urlProp !== "online-service" &&
-                  item.youtube ? (
+                  itemDetails.youtube ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
-                      onPress={() => Linking.openURL(item.youtube)}
+                      onPress={() => Linking.openURL(itemDetails.youtube)}
                     >
-                      <Icon name="logo-youtube" style={styles.footerIcon} />
+                      <Ionicons name="logo-youtube" size={20} color="black" />
                     </TouchableOpacity>
                   ) : null}
                 </View>
-                {/* {item.isPremium ? (
-                <View style={styles.premiumMessageContainer}>
-                  <Text style={styles.premiumMessage}>പ്രീമിയം</Text>
-                </View>
-              ) : null} */}
               </View>
             </View>
           )}
@@ -605,6 +478,7 @@ export default function MainComponent(props: any) {
 }
 
 const styles = StyleSheet.create({
+  iconContainer: {},
   premiumMessageContainer: {
     marginTop: 50,
   },
