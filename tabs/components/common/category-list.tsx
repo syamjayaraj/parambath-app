@@ -133,7 +133,6 @@ const styles = StyleSheet.create({
   categoryBadgeText: {
     fontSize: 14,
   },
-
   categoryMore: {
     display: "flex",
     flexDirection: "row",
@@ -154,7 +153,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginLeft: 2,
   },
-
   categoryExp: {},
   categoryExpHeaderContainer: {
     display: "flex",
