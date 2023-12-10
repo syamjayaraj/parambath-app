@@ -5,51 +5,60 @@ import SearchBar from "../common/search-bar";
 import CategoryList from "../common/category-list";
 import ItemList from "../common/item-list";
 import { useCollectionData } from "../../../hooks/use-collection-data";
+import { pageSize } from "../../../config";
 
 export default function ListComponent(props: any) {
   const [categories, setCategories] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [fetchMoreLoading, setFetchMoreLoading] = useState(false);
-  const [page, setPage] = useState(1);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [fetchedData, setFetchedData] = useState<any>([]);
 
   const type = props.route.params.type;
   const { loading, error, data, fetchMore } = useCollectionData(
     type,
     searchInput,
-    page
+    pageNumber,
+    pageSize
   );
-
-  // console.log(data, "datagg");
 
   const handleSearch = (param: string) => {
     setSearchInput(param);
   };
 
+  useEffect(() => {
+    if (searchInput === "") {
+      setFetchedData([]);
+      setPageNumber(1);
+    } else {
+      setFetchedData([]);
+      setPageNumber(1);
+    }
+  }, [searchInput]);
+
   const handleSelectCategory = (categoryId: string) => {};
 
   const handleSelectItem = (itemId: string) => {};
+
+  useEffect(() => {
+    if (data && pageNumber >= 2) {
+      setFetchedData([...fetchedData, ...data]);
+    } else if (data && pageNumber < 2) {
+      setFetchedData(data);
+    }
+  }, [data]);
 
   const handleLoadMore = () => {
     if (!fetchMoreLoading) {
       setFetchMoreLoading(true);
       fetchMore({
-        variables: { searchInput, pageNumber: page + 1 },
+        variables: { searchInput, pageNumber: pageNumber + 1 },
         updateQuery: (prev, { fetchMoreResult }) => {
           setFetchMoreLoading(false);
-          if (fetchMoreResult?.autos?.data?.length === 0) {
-            return {
-              autos: {
-                data: [...prev.autos.data],
-              },
-            };
+          if (fetchMoreResult[type]?.data?.length === 0) {
+            setPageNumber(pageNumber + 1);
           } else {
-            const newAutos = fetchMoreResult.autos.data;
-            setPage(page + 1);
-            return {
-              autos: {
-                data: [...prev.autos.data, ...newAutos],
-              },
-            };
+            setPageNumber(pageNumber + 1);
           }
         },
       });
@@ -67,7 +76,7 @@ export default function ListComponent(props: any) {
           <ItemList
             handleLoadMore={handleLoadMore}
             loading={loading}
-            data={data}
+            data={fetchedData}
             onClick={handleSelectItem}
             props={props}
           />
