@@ -3,7 +3,9 @@ import { apiUrl, apiUrl2 } from "../config";
 
 const fetchItems = async (type: string) => {
   try {
-    const response = await axios.get(`${apiUrl}/${type}/list?`);
+    const response = await axios.get(
+      `${apiUrl2}${type}?_fields=title,author&&populate=*`
+    );
     if (response) {
       return response;
     } else {

@@ -20,13 +20,13 @@ export default function SearchBar({ data, onSearchData }: customProps) {
     800
   );
 
-  const handleSearch = (e: any) => setSearchInput(e.target.value);
+  const handleSearch = (value: string) => setSearchInput(value);
 
   return (
     <View style={styles.searchInputContainer}>
       <VStack w="100%" alignSelf="center">
         <Input
-          onChange={handleSearch}
+          onChangeText={handleSearch}
           placeholder="തിരയൂ"
           width="100%"
           borderRadius="4"

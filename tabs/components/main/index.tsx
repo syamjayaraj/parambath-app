@@ -42,7 +42,7 @@ export default function MainComponent(props: any) {
   };
 
   return (
-    <Box pt={12} padding={5}>
+    <Box mt={2} padding={5}>
       <SafeAreaView>
         <ScrollView>
           {loading ? (
@@ -166,7 +166,7 @@ export default function MainComponent(props: any) {
                 {itemDetails.owner ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
-                      {/* <Ionicons name="person-outline" size={20} color="black" /> */}
+                      <Ionicons name="person-outline" size={20} color="black" />
                     </View>
                     <View style={styles.textContainer}>
                       <Text style={styles.label}>ഉടമ</Text>
@@ -491,6 +491,7 @@ const styles = StyleSheet.create({
     color: "#FFA507",
   },
   loader: {
+    marginTop: 120,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
