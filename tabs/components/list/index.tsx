@@ -30,26 +30,27 @@ export default function ListComponent(props: any) {
   const handleSelectItem = (itemId: string) => {};
 
   const handleLoadMore = () => {
-    if (!fetchMoreLoading && data?.length > 0) {
+    if (!fetchMoreLoading) {
       setFetchMoreLoading(true);
       fetchMore({
         variables: { searchInput, pageNumber: page + 1 },
         updateQuery: (prev, { fetchMoreResult }) => {
-          console.log(fetchMoreResult, "lorem");
+          setFetchMoreLoading(false);
           if (fetchMoreResult?.autos?.data?.length === 0) {
             return {
               autos: {
-                data: prev?.autos?.data,
+                data: [...prev.autos.data],
+              },
+            };
+          } else {
+            const newAutos = fetchMoreResult.autos.data;
+            setPage(page + 1);
+            return {
+              autos: {
+                data: [...prev.autos.data, ...newAutos],
               },
             };
           }
-          setFetchMoreLoading(false);
-          setPage(page + 1);
-          return {
-            autos: {
-              data: [...prev?.autos?.data, ...fetchMoreResult?.autos?.data],
-            },
-          };
         },
       });
     }
