@@ -11,16 +11,20 @@ import DeliveryComponent from "./tabs/delivery";
 import MoreComponent from "./tabs/more";
 import { useEffect, useState } from "react";
 import * as Font from "expo-font";
-import {
-  MaterialCommunityIcons,
-  MaterialIcons,
-  Ionicons,
-  AntDesign,
-} from "@expo/vector-icons";
+import { MaterialIcons, Ionicons, AntDesign } from "@expo/vector-icons";
+import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
+import { ApolloProvider } from "@apollo/client";
+import client from "./lib/appolo";
 
 export default function App() {
   const BottomTab = createBottomTabNavigator();
   const [loading, setLoading] = useState(true);
+
+  if (__DEV__) {
+    // Adds messages only in a dev environment
+    loadDevMessages();
+    loadErrorMessages();
+  }
 
   useEffect(() => {
     async function loadFont() {
@@ -45,88 +49,94 @@ export default function App() {
   return loading ? (
     <NativeBaseProvider></NativeBaseProvider>
   ) : (
-    <NativeBaseProvider>
-      <NavigationContainer theme={navTheme}>
-        <StatusBar style="dark" backgroundColor="white" />
-        <BottomTab.Navigator
-          initialRouteName="Home"
-          screenOptions={{
-            headerShown: false,
-            tabBarShowLabel: true,
-            tabBarStyle: {
-              height: Platform.OS === "ios" ? 90 : 60,
-              backgroundColor: "#ffffff",
-              position: "absolute",
-              elevation: 0,
-            },
-            tabBarLabelStyle: {
-              fontSize: 10,
-              marginTop: 0,
-              marginBottom: 5,
-              color: "black",
-              fontWeight: "bold",
-            },
-          }}
-        >
-          <BottomTab.Screen
-            name="Home"
-            children={(props) => <HomeComponent {...props} />}
-            options={{
-              tabBarLabel: "ഹോം",
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="home-outline" size={24} color="black" />
-              ),
+    <ApolloProvider client={client}>
+      <NativeBaseProvider>
+        <NavigationContainer theme={navTheme}>
+          <StatusBar style="dark" backgroundColor="white" />
+          <BottomTab.Navigator
+            initialRouteName="Home"
+            screenOptions={{
+              headerShown: false,
+              tabBarShowLabel: true,
+              tabBarStyle: {
+                height: Platform.OS === "ios" ? 90 : 60,
+                backgroundColor: "#ffffff",
+                position: "absolute",
+                elevation: 0,
+              },
+              tabBarLabelStyle: {
+                fontSize: 10,
+                marginTop: 0,
+                marginBottom: 5,
+                color: "black",
+                fontWeight: "bold",
+              },
             }}
-          />
-          <BottomTab.Screen
-            name="Events"
-            component={EventComponent}
-            options={{
-              tabBarLabel: "പരിപാടികൾ",
-              tabBarIcon: ({ color, size }) => (
-                <AntDesign name="calendar" size={24} color="black" />
-              ),
-            }}
-          />
-          <BottomTab.Screen
-            name="Notification"
-            component={NotificationComponent}
-            options={{
-              tabBarLabel: "അറിയിപ്പുകൾ",
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons
-                  name="notifications-outline"
-                  size={24}
-                  color="black"
-                />
-              ),
-            }}
-          />
+          >
+            <BottomTab.Screen
+              name="Home"
+              children={(props) => <HomeComponent {...props} />}
+              options={{
+                tabBarLabel: "ഹോം",
+                tabBarIcon: ({ color, size }) => (
+                  <Ionicons name="home-outline" size={24} color="black" />
+                ),
+              }}
+            />
+            <BottomTab.Screen
+              name="Events"
+              component={EventComponent}
+              options={{
+                tabBarLabel: "പരിപാടികൾ",
+                tabBarIcon: ({ color, size }) => (
+                  <AntDesign name="calendar" size={24} color="black" />
+                ),
+              }}
+            />
+            <BottomTab.Screen
+              name="Notification"
+              component={NotificationComponent}
+              options={{
+                tabBarLabel: "അറിയിപ്പുകൾ",
+                tabBarIcon: ({ color, size }) => (
+                  <Ionicons
+                    name="notifications-outline"
+                    size={24}
+                    color="black"
+                  />
+                ),
+              }}
+            />
 
-          <BottomTab.Screen
-            name="Delivery"
-            component={DeliveryComponent}
-            options={{
-              tabBarLabel: "ഡെലിവറി",
-              tabBarIcon: ({ color, size }) => (
-                <MaterialIcons name="delivery-dining" size={24} color="black" />
-              ),
-            }}
-          />
+            <BottomTab.Screen
+              name="Delivery"
+              component={DeliveryComponent}
+              options={{
+                tabBarLabel: "ഡെലിവറി",
+                tabBarIcon: ({ color, size }) => (
+                  <MaterialIcons
+                    name="delivery-dining"
+                    size={24}
+                    color="black"
+                  />
+                ),
+              }}
+            />
 
-          <BottomTab.Screen
-            name="More"
-            component={MoreComponent}
-            options={{
-              tabBarLabel: "മറ്റുള്ളവ",
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="menu-outline" size={24} color="black" />
-              ),
-            }}
-          />
-        </BottomTab.Navigator>
-      </NavigationContainer>
-    </NativeBaseProvider>
+            <BottomTab.Screen
+              name="More"
+              component={MoreComponent}
+              options={{
+                tabBarLabel: "മറ്റുള്ളവ",
+                tabBarIcon: ({ color, size }) => (
+                  <Ionicons name="menu-outline" size={24} color="black" />
+                ),
+              }}
+            />
+          </BottomTab.Navigator>
+        </NavigationContainer>
+      </NativeBaseProvider>
+    </ApolloProvider>
   );
 }
 

@@ -4,50 +4,69 @@ import { Box } from "native-base";
 import SearchBar from "../common/search-bar";
 import CategoryList from "../common/category-list";
 import ItemList from "../common/item-list";
-import * as apiService from "../../../api-service/index";
+import { useCollectionData } from "../../../hooks/use-collection-data";
 
 export default function ListComponent(props: any) {
-  let [items, setitems] = useState([]);
-  let [categories, setCategories] = useState([]);
-  let [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
+  const [fetchMoreLoading, setFetchMoreLoading] = useState(false);
+  const [page, setPage] = useState(1);
 
-  let type = props.route.params.url;
+  const type = props.route.params.type;
+  const { loading, error, data, fetchMore } = useCollectionData(
+    type,
+    searchInput,
+    page
+  );
 
-  useEffect(() => {
-    fetchItems();
-  }, []);
+  // console.log(data, "datagg");
 
-  const fetchItems = async () => {
-    try {
-      setLoading(true);
-      const response = await apiService?.fetchItems(type);
-      if (response && response.data && response.data.status == 200) {
-        setitems(response?.data?.data);
-      } else {
-      }
-      setLoading(false);
-    } catch (err: any) {
-      setLoading(false);
-    }
+  const handleSearch = (param: string) => {
+    setSearchInput(param);
   };
-
-  const searchData = (searchInput: string) => {};
 
   const handleSelectCategory = (categoryId: string) => {};
 
   const handleSelectItem = (itemId: string) => {};
 
+  const handleLoadMore = () => {
+    if (!fetchMoreLoading && data?.length > 0) {
+      setFetchMoreLoading(true);
+      fetchMore({
+        variables: { searchInput, pageNumber: page + 1 },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          console.log(fetchMoreResult, "lorem");
+          if (fetchMoreResult?.autos?.data?.length === 0) {
+            return {
+              autos: {
+                data: prev?.autos?.data,
+              },
+            };
+          }
+          setFetchMoreLoading(false);
+          setPage(page + 1);
+          return {
+            autos: {
+              data: [...prev?.autos?.data, ...fetchMoreResult?.autos?.data],
+            },
+          };
+        },
+      });
+    }
+  };
+
   return (
-    <Box bg={"white"} pt={2}>
+    <Box bg={"white"} mt={2}>
       <SafeAreaView>
         <View>
-          <SearchBar onSearchData={searchData} data={categories} />
+          <SearchBar onSearchData={handleSearch} data={categories} />
           <CategoryList data={categories} onClick={handleSelectCategory} />
         </View>
         <View style={styles.sectionContainer}>
           <ItemList
+            handleLoadMore={handleLoadMore}
             loading={loading}
-            data={items}
+            data={data}
             onClick={handleSelectItem}
             props={props}
           />

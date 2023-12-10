@@ -153,10 +153,7 @@ export default function Landing(props: any) {
                 style={styles.menuCard}
                 onPress={() =>
                   props.navigation.navigate("Businesses", {
-                    url: "business",
-                    categoryUrl: "business-category",
-                    placeHolderImage: "business",
-                    itemCategory: "businessCategory",
+                    type: "businesses",
                     main: "Business",
                   })
                 }
@@ -172,10 +169,7 @@ export default function Landing(props: any) {
                 style={styles.menuCard}
                 onPress={() =>
                   props.navigation.navigate("Autos", {
-                    url: "auto",
-                    categoryUrl: "auto-stand",
-                    placeHolderImage: "auto",
-                    itemCategory: "autoStand",
+                    type: "autos",
                     main: "Auto",
                   })
                 }
