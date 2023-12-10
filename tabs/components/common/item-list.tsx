@@ -38,57 +38,55 @@ export default function ItemList({
 
   return (
     <View>
-      {loading ? (
+      <FlatList
+        data={data}
+        maxToRenderPerBatch={20}
+        scrollEventThrottle={16}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.1}
+        renderItem={({ item, index }: any) => (
+          <TouchableOpacity
+            onPress={() =>
+              props?.navigation?.navigate(mainProp, {
+                itemId: item._id,
+                url: urlProp,
+                itemCategory: itemCategoryProp,
+              })
+            }
+            style={styles.item}
+            key={index}
+          >
+            <Box>
+              <HStack space={[3, 3]} justifyContent="space-between">
+                <VStack>
+                  <Text bold>
+                    {item?.attributes?.nameMalayalam ?? item?.attributes?.name}
+                  </Text>
+                  <Text>
+                    {
+                      item?.attributes?.business_category?.data?.attributes
+                        ?.nameMalayalam
+                    }
+                  </Text>
+                </VStack>
+                <Spacer />
+                <TouchableOpacity
+                  onPress={() =>
+                    callToTheNumber(item?.attributes?.nameMalayalam, true)
+                  }
+                >
+                  <Ionicons name="call-outline" size={20} color="black" />
+                </TouchableOpacity>
+              </HStack>
+            </Box>
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item: any) => item?.id}
+      />
+      {loading && (
         <View style={styles.loader}>
           <Spinner color="black" />
         </View>
-      ) : (
-        <FlatList
-          data={data}
-          maxToRenderPerBatch={20}
-          scrollEventThrottle={16}
-          onEndReached={handleLoadMore}
-          onEndReachedThreshold={0.1}
-          renderItem={({ item, index }: any) => (
-            <TouchableOpacity
-              onPress={() =>
-                props?.navigation?.navigate(mainProp, {
-                  itemId: item._id,
-                  url: urlProp,
-                  itemCategory: itemCategoryProp,
-                })
-              }
-              style={styles.item}
-              key={index}
-            >
-              <Box>
-                <HStack space={[3, 3]} justifyContent="space-between">
-                  <VStack>
-                    <Text bold>
-                      {item?.attributes?.nameMalayalam ??
-                        item?.attributes?.name}
-                    </Text>
-                    <Text>
-                      {
-                        item?.attributes?.business_category?.data?.attributes
-                          ?.nameMalayalam
-                      }
-                    </Text>
-                  </VStack>
-                  <Spacer />
-                  <TouchableOpacity
-                    onPress={() =>
-                      callToTheNumber(item?.attributes?.nameMalayalam, true)
-                    }
-                  >
-                    <Ionicons name="call-outline" size={20} color="black" />
-                  </TouchableOpacity>
-                </HStack>
-              </Box>
-            </TouchableOpacity>
-          )}
-          keyExtractor={(item: any) => item?._id}
-        />
       )}
     </View>
   );
@@ -102,6 +100,6 @@ const styles = StyleSheet.create({
   },
   item: {
     // marginBottom: 20,
-    marginBottom: 300,
+    marginBottom: 50,
   },
 });

@@ -3,5 +3,6 @@ let apiUrl = "https://api-parambath.onnich.com/customer";
 let apiUrl2 = "https://api-v5-parambath.onnich.com/api/";
 // let apiDomain = "https://api-v5-parambath.onnich.com";
 let apiDomain = "http://192.168.18.131:1337";
+const pageSize = 15;
 
-export { apiUrl, apiUrl2, apiDomain };
+export { apiUrl, apiUrl2, apiDomain, pageSize };
