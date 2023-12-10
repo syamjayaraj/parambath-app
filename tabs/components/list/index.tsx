@@ -6,21 +6,31 @@ import CategoryList from "../common/category-list";
 import ItemList from "../common/item-list";
 import { useCollectionData } from "../../../hooks/use-collection-data";
 import { pageSize } from "../../../config";
+import { useCategoryData } from "../../../hooks/use-category-data";
 
 export default function ListComponent(props: any) {
   const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState<number>();
   const [searchInput, setSearchInput] = useState("");
   const [fetchMoreLoading, setFetchMoreLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
-  const [fetchedData, setFetchedData] = useState<any>([]);
+  const [collectionDataSate, setCollectionDataState] = useState<any>([]);
+  const [categoryDataState, setCategoryDataSate] = useState<any>([]);
 
   const type = props.route.params.type;
+  const categoryType = props.route.params.categoryType;
+  const categoryName = props.route.params.categoryName;
+
   const { loading, error, data, fetchMore } = useCollectionData(
     type,
     searchInput,
+    selectedCategory,
     pageNumber,
     pageSize
   );
+
+  const { categoryLoading, categoryError, categoryData } =
+    useCategoryData(categoryType);
 
   const handleSearch = (param: string) => {
     setSearchInput(param);
@@ -28,25 +38,31 @@ export default function ListComponent(props: any) {
 
   useEffect(() => {
     if (searchInput === "") {
-      setFetchedData([]);
+      setCollectionDataState([]);
       setPageNumber(1);
     } else {
-      setFetchedData([]);
+      setCollectionDataState([]);
       setPageNumber(1);
     }
   }, [searchInput]);
 
-  const handleSelectCategory = (categoryId: string) => {};
+  const handleSelectCategory = (categoryId: number) => {
+    setSelectedCategory(categoryId);
+  };
 
   const handleSelectItem = (itemId: string) => {};
 
   useEffect(() => {
     if (data && pageNumber >= 2) {
-      setFetchedData([...fetchedData, ...data]);
+      setCollectionDataState([...collectionDataSate, ...data]);
     } else if (data && pageNumber < 2) {
-      setFetchedData(data);
+      setCollectionDataState(data);
     }
   }, [data]);
+
+  useEffect(() => {
+    setCategoryDataSate(categoryData);
+  }, [categoryData]);
 
   const handleLoadMore = () => {
     if (!fetchMoreLoading) {
@@ -70,13 +86,17 @@ export default function ListComponent(props: any) {
       <SafeAreaView>
         <View>
           <SearchBar onSearchData={handleSearch} data={categories} />
-          <CategoryList data={categories} onClick={handleSelectCategory} />
+          <CategoryList
+            data={categoryDataState}
+            categoryName={categoryName}
+            onClick={handleSelectCategory}
+          />
         </View>
         <View style={styles.sectionContainer}>
           <ItemList
             handleLoadMore={handleLoadMore}
             loading={loading}
-            data={fetchedData}
+            data={collectionDataSate}
             onClick={handleSelectItem}
             props={props}
           />

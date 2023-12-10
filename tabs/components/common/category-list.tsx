@@ -6,20 +6,24 @@ import { Ionicons } from "@expo/vector-icons";
 
 interface customProps {
   data: any;
-  onClick: (categoryId: string) => void;
+  categoryName: string;
+  onClick: (categoryId: number) => void;
 }
 
-export default function CategoryList({ data, onClick }: customProps) {
+export default function CategoryList({
+  data,
+  onClick,
+  categoryName,
+}: customProps) {
   const { height } = Dimensions.get("window");
   const refRBSheet: any = useRef();
 
-  const handleSelectCategory = (categoryId: string) => {
-    // ...
+  const handleSelectCategory = (categoryId: number) => {
     onClick(categoryId);
   };
 
-  const handleSelectCategoryFromPopup = (categoryId: string) => {
-    // ...
+  const handleSelectCategoryFromPopup = (categoryId: number) => {
+    onClick(categoryId);
     refRBSheet.current.close();
   };
 
@@ -33,7 +37,7 @@ export default function CategoryList({ data, onClick }: customProps) {
           <View style={{ padding: 10, marginTop: 0 }}>
             <TouchableOpacity
               style={[styles.categoryBadge]}
-              onPress={() => handleSelectCategory(item._id)}
+              onPress={() => handleSelectCategory(Number(item?.id))}
             >
               <Text
                 style={[
@@ -43,7 +47,7 @@ export default function CategoryList({ data, onClick }: customProps) {
                   },
                 ]}
               >
-                {item.malayalamName ? item.malayalamName : item.name}
+                {item?.attributes?.nameMalayalam ?? item?.attributes?.name}
               </Text>
             </TouchableOpacity>
           </View>
@@ -56,7 +60,7 @@ export default function CategoryList({ data, onClick }: customProps) {
             onPress={() => refRBSheet.current.open()}
             style={styles.categoryMoreLink}
           >
-            <Text style={styles.categoryMoreText}>മറ്റുള്ളവ</Text>
+            <Text style={styles.categoryMoreText}>{categoryName}</Text>
             <Ionicons
               style={styles.categoryMoreIcon}
               name="arrow-forward-outline"
@@ -88,7 +92,9 @@ export default function CategoryList({ data, onClick }: customProps) {
               <View style={{ padding: 10, marginTop: 0 }}>
                 <TouchableOpacity
                   style={[styles.categoryExpItem]}
-                  onPress={() => handleSelectCategoryFromPopup(item._id)}
+                  onPress={() =>
+                    handleSelectCategoryFromPopup(Number(item._id))
+                  }
                 >
                   <Text
                     style={[
@@ -98,7 +104,7 @@ export default function CategoryList({ data, onClick }: customProps) {
                       },
                     ]}
                   >
-                    {item.malayalamName ? item.malayalamName : item.name}
+                    {item?.attributes?.nameMalayalam ?? item?.attributes?.name}
                   </Text>
                 </TouchableOpacity>
               </View>

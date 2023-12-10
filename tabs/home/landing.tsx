@@ -170,6 +170,8 @@ export default function Landing(props: any) {
                 onPress={() =>
                   props.navigation.navigate("Autos", {
                     type: "autos",
+                    categoryType: "auto-stands",
+                    categoryName: "ഓട്ടോ സ്റ്റാൻഡുകൾ",
                     main: "Auto",
                   })
                 }

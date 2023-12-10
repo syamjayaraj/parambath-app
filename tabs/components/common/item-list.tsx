@@ -63,10 +63,7 @@ export default function ItemList({
                     {item?.attributes?.nameMalayalam ?? item?.attributes?.name}
                   </Text>
                   <Text>
-                    {
-                      item?.attributes?.business_category?.data?.attributes
-                        ?.nameMalayalam
-                    }
+                    {item?.attributes?.auto_stand?.data?.attributes?.name}
                   </Text>
                 </VStack>
                 <Spacer />
