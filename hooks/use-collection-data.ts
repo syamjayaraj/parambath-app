@@ -4,6 +4,7 @@ import { gql } from "@apollo/client";
 export const useCollectionData = (
   type: string,
   searchInput: string,
+  category: number | undefined,
   pageNumber: number,
   pageSize: number
 ) => {
@@ -13,13 +14,26 @@ export const useCollectionData = (
       query = gql`
         query GetAutos($searchInput: String, $pageNumber: Int, $pageSize: Int) {
           autos(
-            filters: { name: { contains: $searchInput } }
+            filters: {
+              name: { contains: $searchInput }
+              nameMalayalam: { contains: $searchInput }
+              auto_stand: { id: { eq: $category } }
+            }
             pagination: { page: $pageNumber, pageSize: $pageSize }
           ) {
             data {
               id
               attributes {
                 name
+                auto_stand {
+                  data {
+                    id
+                    attributes {
+                      name
+                      nameMalayalam
+                    }
+                  }
+                }
               }
             }
           }
@@ -51,7 +65,7 @@ export const useCollectionData = (
       throw new Error("Invalid collection name");
   }
   const { loading, error, data, fetchMore } = useQuery(query, {
-    variables: { searchInput, pageNumber, pageSize },
+    variables: { searchInput, category, pageNumber, pageSize },
     // fetchPolicy: "cache-and-network",
   });
 
