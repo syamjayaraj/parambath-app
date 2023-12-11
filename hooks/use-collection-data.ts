@@ -9,10 +9,16 @@ export const useCollectionData = (
   pageSize: number
 ) => {
   let query;
+  console.log(category);
   switch (type) {
     case "autos":
       query = gql`
-        query GetAutos($searchInput: String, $pageNumber: Int, $pageSize: Int) {
+        query GetAutos(
+          $searchInput: String
+          $pageNumber: Int
+          $pageSize: Int
+          $category: Int
+        ) {
           autos(
             filters: {
               name: { contains: $searchInput }
@@ -25,6 +31,9 @@ export const useCollectionData = (
               id
               attributes {
                 name
+                nameMalayalam
+                ownerName
+                ownerNameMalayalam
                 auto_stand {
                   data {
                     id

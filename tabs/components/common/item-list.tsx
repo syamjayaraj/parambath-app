@@ -60,10 +60,15 @@ export default function ItemList({
               <HStack space={[3, 3]} justifyContent="space-between">
                 <VStack>
                   <Text bold>
-                    {item?.attributes?.nameMalayalam ?? item?.attributes?.name}
+                    {item?.attributes?.nameMalayalam ?? item?.attributes?.name}(
+                    {item?.attributes?.ownerNameMalayalam ??
+                      item?.attributes?.ownerName}
+                    )
                   </Text>
                   <Text>
-                    {item?.attributes?.auto_stand?.data?.attributes?.name}
+                    {item?.attributes?.auto_stand?.data?.attributes
+                      ?.nameMalayalam ??
+                      item?.attributes?.auto_stand?.data?.attributes?.name}
                   </Text>
                 </VStack>
                 <Spacer />
