@@ -29,6 +29,8 @@ export default function ListComponent(props: any) {
     pageSize
   );
 
+  console.log(error, "error");
+
   const { categoryLoading, categoryError, categoryData } =
     useCategoryData(categoryType);
 
