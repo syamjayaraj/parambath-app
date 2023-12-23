@@ -5,22 +5,22 @@ import SearchBar from "../common/search-bar";
 import CategoryList from "../common/category-list";
 import ItemList from "../common/item-list";
 import { pageSize } from "../../../config";
-import { loadItem } from "../../../apiService";
-import { IBusiness, IPagination } from "../../../models/model";
+import { loadItem, loadItemCategory } from "../../../apiService";
+import { IBusiness, ICategory, IPagination } from "../../../models/model";
 
 export default function ListComponent(props: any) {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<ICategory[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<number>();
   const [searchText, setSearchText] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
   const [businesses, setBusinesses] = useState<IBusiness[] | undefined>([]);
   const [pagination, setPagination] = useState<IPagination>();
   const [loading, setLoading] = useState<boolean>(false);
-  const [categoryDataState, setCategoryDataSate] = useState<any>([]);
 
   const type = props.route.params.type;
-  const categoryType = props.route.params.categoryType;
-  const categoryName = props.route.params.categoryName;
+  const typeCategory = props.route.params.typeCategory;
+  const typeCategoryUrl = props.route.params.typeCategoryUrl;
+  const typeCategoryLabel = props.route.params.typeCategoryLabel;
 
   const handleSearch = (param: string) => {
     setSearchText(param);
@@ -33,20 +33,32 @@ export default function ListComponent(props: any) {
   const handleSelectItem = (itemId: string) => {};
 
   useEffect(() => {
+    loadItemCategoryFromApi();
     loadItemFromApi(1);
   }, []);
+
+  const loadItemCategoryFromApi = async () => {
+    setLoading(true);
+    const response = await loadItemCategory({
+      typeCategoryUrl: typeCategoryUrl,
+      pageSize: 100,
+    });
+    if (response) {
+      setCategories(response?.data);
+      setLoading(false);
+    }
+  };
 
   const loadItemFromApi = async (pageParam?: number) => {
     setLoading(true);
     const response = await loadItem({
       type: type,
       fields: ["name", "nameMalayalam"],
-      populate: ["business_category"],
+      populate: [typeCategory],
       searchText: searchText,
       pageNumber: pageParam ? pageNumber : pageNumber,
       pageSize: pageSize,
     });
-    console.log(response, "res");
     if (response) {
       if (type === "businesses") {
         setBusinesses(response?.data);
@@ -72,10 +84,10 @@ export default function ListComponent(props: any) {
     <Box bg={"white"} mt={2}>
       <SafeAreaView>
         <View>
-          <SearchBar onSearchData={handleSearch} data={categories} />
+          <SearchBar onSearchData={handleSearch} categories={categories} />
           <CategoryList
-            data={categoryDataState}
-            categoryName={categoryName}
+            data={categories}
+            typeCategoryLabel={typeCategoryLabel}
             onClick={handleSelectCategory}
           />
         </View>

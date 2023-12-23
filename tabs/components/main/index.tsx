@@ -12,34 +12,35 @@ import onShare from "../../../utils/on-share";
 import openBrowser from "../../../utils/open-browser";
 import callToTheNumber from "../../../utils/call-to-number";
 import Slider from "../common/slider";
-import * as apiService from "../../../api-service/index";
+import { loadItemDetails } from "../../../apiService";
 
 export default function MainComponent(props: any) {
   let [itemDetails, setItemDetails] = useState<any>({
     itemCategory: {},
   });
   const [loading, setLoading] = useState(false);
-  const itemCategoryProp = props.route.params.itemCategory;
-  const urlProp = props.route.params.url;
-  let { itemId } = props.route.params;
+
+  const type = props.route.params.type;
+  const itemId = props.route.params.itemId;
+  const typeCategory = props?.route?.params?.typeCategory;
 
   useEffect(() => {
-    fetchItemDetails();
+    loadItemDetailsFromApi();
   }, []);
 
-  let fetchItemDetails = async () => {
-    try {
-      setLoading(true);
-      const response = await apiService?.fetchItemDetails(urlProp, itemId);
-      if (response && response.data && response.data.status == 200) {
-        setItemDetails(response?.data?.data);
-      } else {
-      }
-      setLoading(false);
-    } catch (err: any) {
+  const loadItemDetailsFromApi = async (pageParam?: number) => {
+    setLoading(true);
+    const response = await loadItemDetails({
+      id: itemId,
+      type: type,
+    });
+    if (response) {
+      setItemDetails(response?.data?.attributes);
       setLoading(false);
     }
   };
+
+  console.log(itemDetails, "det");
 
   return (
     <Box mt={2} padding={5}>
@@ -61,7 +62,7 @@ export default function MainComponent(props: any) {
               <View style={[styles.sectionContainer]}>
                 <View style={styles.shareButtonContainer}>
                   <TouchableOpacity
-                    onPress={() => onShare(itemDetails, itemCategoryProp)}
+                    onPress={() => onShare(itemDetails, typeCategory)}
                     style={styles.shareButton}
                   >
                     <EvilIcons
@@ -84,11 +85,11 @@ export default function MainComponent(props: any) {
                     &nbsp;
                   </Text>
                 ) : null}
-                {itemDetails[itemCategoryProp] ? (
+                {itemDetails[typeCategory] ? (
                   <Text style={styles.workName}>
-                    {itemDetails[itemCategoryProp].malayalamName
-                      ? itemDetails[itemCategoryProp].malayalamName
-                      : itemDetails[itemCategoryProp].name}
+                    {itemDetails[typeCategory].malayalamName
+                      ? itemDetails[typeCategory].malayalamName
+                      : itemDetails[typeCategory].name}
                     &nbsp;
                   </Text>
                 ) : null}
@@ -103,8 +104,7 @@ export default function MainComponent(props: any) {
                   </Text>
                 ) : null}
 
-                {(urlProp === "notification" || urlProp === "online-service") &&
-                itemDetails.youtube ? (
+                {itemDetails.youtube ? (
                   <TouchableOpacity
                     style={[styles.video]}
                     onPress={() => Linking.openURL(itemDetails.youtube)}
@@ -123,8 +123,7 @@ export default function MainComponent(props: any) {
                   </TouchableOpacity>
                 ) : null}
 
-                {(urlProp === "notification" && itemDetails.website) ||
-                itemDetails.url ? (
+                {itemDetails.url ? (
                   <TouchableOpacity
                     style={[styles.booking]}
                     onPress={() =>
@@ -408,7 +407,7 @@ export default function MainComponent(props: any) {
                     </TouchableOpacity>
                   ) : null}
 
-                  {urlProp !== "notification" && itemDetails.website ? (
+                  {itemDetails.website ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
                       onPress={() =>
@@ -457,9 +456,7 @@ export default function MainComponent(props: any) {
                     </TouchableOpacity>
                   ) : null}
 
-                  {urlProp !== "notification" &&
-                  urlProp !== "online-service" &&
-                  itemDetails.youtube ? (
+                  {itemDetails.youtube ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
                       onPress={() => Linking.openURL(itemDetails.youtube)}

@@ -6,17 +6,17 @@ import useDebounce from "../../../utils/use-debounce";
 
 interface customProps {
   onSearchData: (searchInput: string) => void;
-  data: any;
+  categories: any;
 }
 
-export default function SearchBar({ data, onSearchData }: customProps) {
+export default function SearchBar({ categories, onSearchData }: customProps) {
   const [searchInput, setSearchInput] = useState<string>("");
 
   useDebounce(
     () => {
       onSearchData(searchInput);
     },
-    [data, searchInput],
+    [categories, searchInput],
     800
   );
 

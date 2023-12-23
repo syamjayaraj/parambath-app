@@ -154,6 +154,9 @@ export default function Landing(props: any) {
                 onPress={() =>
                   props.navigation.navigate("Businesses", {
                     type: "businesses",
+                    typeCategory: "business_category",
+                    typeCategoryUrl: "business-categories",
+                    typeCategoryLabel: "Categories",
                     main: "Business",
                   })
                 }
