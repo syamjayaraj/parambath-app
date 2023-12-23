@@ -27,16 +27,14 @@ export default function ItemList({
   props,
   handleLoadMore,
 }: customProps) {
-  let itemCategoryProp = props.route.params.itemCategory;
-  let urlProp = props.route.params.url;
-  let mainProp = props.route.params.main;
+  const type = props.route.params.type;
+  const typeCategory = props.route.params.typeCategory;
+  const mainProp = props.route.params.main;
 
   const handleSelectItem = (itemId: string) => {
     // ...
     onClick(itemId);
   };
-
-  console.log(loading, "loading");
 
   return (
     <View>
@@ -51,9 +49,9 @@ export default function ItemList({
             <TouchableOpacity
               onPress={() =>
                 props?.navigation?.navigate(mainProp, {
-                  itemId: item._id,
-                  url: urlProp,
-                  itemCategory: itemCategoryProp,
+                  itemId: item.id,
+                  type: type,
+                  typeCategory: typeCategory,
                 })
               }
               style={styles.item}

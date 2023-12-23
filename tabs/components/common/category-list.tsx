@@ -6,14 +6,14 @@ import { Ionicons } from "@expo/vector-icons";
 
 interface customProps {
   data: any;
-  categoryName: string;
+  typeCategoryLabel: string;
   onClick: (categoryId: number) => void;
 }
 
 export default function CategoryList({
   data,
   onClick,
-  categoryName,
+  typeCategoryLabel,
 }: customProps) {
   const { height } = Dimensions.get("window");
   const refRBSheet: any = useRef();
@@ -60,7 +60,7 @@ export default function CategoryList({
             onPress={() => refRBSheet.current.open()}
             style={styles.categoryMoreLink}
           >
-            <Text style={styles.categoryMoreText}>{categoryName}</Text>
+            <Text style={styles.categoryMoreText}>{typeCategoryLabel}</Text>
             <Ionicons
               style={styles.categoryMoreIcon}
               name="arrow-forward-outline"
