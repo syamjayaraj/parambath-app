@@ -1,5 +1,10 @@
 import { apiUrl2 } from "../config";
-import { IBusiness, ICategory, IPagination } from "../models/model";
+import {
+  IBusiness,
+  ICategory,
+  IPagination,
+  ISliderHome,
+} from "../models/model";
 import { get } from "../services/http";
 
 interface ILoadItemParam {
@@ -47,6 +52,20 @@ export async function loadItemCategory(param: ILoadItemCategoryParam): Promise<{
 } | null> {
   try {
     const url = `${apiUrl2}${param?.typeCategoryUrl}`;
+    console.log(url, "url2");
+    const response = await get(url);
+    return response?.data as any;
+  } catch (err) {
+    return null;
+  }
+}
+
+export async function loadSliderHome(): Promise<{
+  meta: IPagination;
+  data: ISliderHome[];
+} | null> {
+  try {
+    const url = `${apiUrl2}slider-homes?populate=*`;
     console.log(url, "url2");
     const response = await get(url);
     return response?.data as any;

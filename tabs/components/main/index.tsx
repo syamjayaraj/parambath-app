@@ -22,7 +22,32 @@ export default function MainComponent(props: any) {
 
   const type = props.route.params.type;
   const itemId = props.route.params.itemId;
-  const typeCategory = props?.route?.params?.typeCategory;
+  let typeCategory = "";
+  switch (type) {
+    case "businesses": {
+      typeCategory = "business_category";
+    }
+    case "autos": {
+      typeCategory = "auto_stand";
+    }
+    case "emergencies": {
+      typeCategory = "emergency_category";
+    }
+    case "small-businesses": {
+      typeCategory = "small_business_category";
+    }
+    case "online-services": {
+      typeCategory = "online_service_category";
+    }
+    case "workers": {
+      typeCategory = "work";
+    }
+    case "representatives": {
+      typeCategory = "representative_category";
+    }
+  }
+
+  console.log(type, typeCategory, "typeCategory");
 
   useEffect(() => {
     loadItemDetailsFromApi();
