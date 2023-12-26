@@ -51,14 +51,22 @@ export default function ListComponent(props: any) {
 
   const loadItemFromApi = async (pageParam?: number) => {
     setLoading(true);
-    const response = await loadItem({
+    let fields = ["name", "nameMalayalam"];
+    let sort = ["name"];
+    if (type === "bus-timings") {
+      fields = [...fields, "time"];
+      sort = ["time"];
+    }
+    let params = {
       type: type,
-      fields: ["name", "nameMalayalam"],
+      fields: fields,
+      sort: sort,
       populate: [typeCategory],
       searchText: searchText,
       pageNumber: pageParam ? pageNumber : pageNumber,
       pageSize: pageSize,
-    });
+    };
+    const response = await loadItem(params);
     if (response) {
       setItems(response?.data);
       setPagination(response?.meta);

@@ -6,6 +6,7 @@ interface ILoadItemParam {
   type: string;
   fields: string[];
   populate: string[];
+  sort: string[];
   searchText: string;
   pageNumber: number;
   pageSize: number;
@@ -16,15 +17,18 @@ export async function loadItem(param: ILoadItemParam): Promise<{
   data: any[];
 } | null> {
   try {
-    const fieldsParams = param.fields
+    const fieldsParams = param?.fields
       .map((field: string, index: number) => `fields[${index}]=${field}`)
       .join("&");
-    const populateParams = param.populate
+    const populateParams = param?.populate
       .map((item: string, index: number) => `populate[${index}]=${item}`)
       .join("&");
+    const sortParams = param?.sort
+      .map((item: string, index: number) => `sort[${index}]=${item}`)
+      .join("&");
 
-    const url = `${apiUrl2}${param.type}?${populateParams}&${fieldsParams}&pagination[page]=${param.pageNumber}&pagination[pageSize]=${param?.pageSize}&filters[$or][0][name][$contains]=${param?.searchText}&filters[$or][1][nameMalayalam][$contains]=${param?.searchText}`;
-    console.log(url, "url1");
+    const url = `${apiUrl2}${param?.type}?${populateParams}&${fieldsParams}&${sortParams}&pagination[page]=${param?.pageNumber}&pagination[pageSize]=${param?.pageSize}&filters[$or][0][name][$contains]=${param?.searchText}&filters[$or][1][nameMalayalam][$contains]=${param?.searchText}`;
+    console.log(url, "url");
     const response = await get(url);
     return response?.data as any;
   } catch (err) {
