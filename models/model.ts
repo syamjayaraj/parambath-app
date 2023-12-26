@@ -241,3 +241,13 @@ export interface IWorker {
   instagram: string;
   images: IImage[];
 }
+
+export interface ISliderHome {
+  image: IImage;
+  business: any;
+  auto: any;
+  emergency: any;
+  small_business: any;
+  online_service: any;
+  worker: any;
+}

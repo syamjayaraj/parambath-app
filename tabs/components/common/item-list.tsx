@@ -122,7 +122,7 @@ export default function ItemList({
                         props?.navigation?.navigate(mainProp, {
                           itemId: item.id,
                           type: type,
-                          typeCategory: typeCategory,
+                          // typeCategory: typeCategory,
                         })
                       }
                       style={styles.item}

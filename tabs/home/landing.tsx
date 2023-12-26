@@ -11,86 +11,82 @@ import {
 import { Box, Text, ScrollView } from "native-base";
 import Carousel from "react-native-snap-carousel";
 import axios from "axios";
-import { apiUrl } from "../../config";
+import { apiDomain, apiUrl, apiUrl2 } from "../../config";
+import { loadSliderHome } from "../../apiService";
+import { ISliderHome } from "../../models/model";
 
 const { width } = Dimensions.get("window");
 
 export default function Landing(props: any) {
   const [carousel, setCarousel] = useState([]);
+  const [slider, setSlider] = useState<ISliderHome[]>([]);
   const [settings, setSettings] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchCarousel();
+    loadSliderHomeFromApi();
   }, []);
 
-  let fetchCarousel = async () => {
+  const loadSliderHomeFromApi = async (pageParam?: number) => {
     setLoading(true);
-    try {
-      let response = await axios.get(`${apiUrl}/carousel/list/Home`);
-      if (response && response.data && response.data.status == 200) {
-        setCarousel(response.data.data);
-        fetchSettings();
-      } else {
-      }
-      setLoading(false);
-    } catch (err: any) {
+    const response = await loadSliderHome();
+    if (response) {
+      setSlider(response?.data);
       setLoading(false);
     }
   };
 
-  let fetchSettings = async () => {
-    try {
-      let response = await axios.get(`${apiUrl}/settings`);
-      if (response && response.data && response.data.status == 200) {
-        setSettings(response.data.data);
-      } else {
-      }
-    } catch (err: any) {}
-  };
-
   let _renderItem = ({ item, index }: any) => {
-    let itemImage = item.image;
-    let url = "";
-    let itemCategory = "";
+    let itemImage =
+      apiDomain +
+      item?.attributes?.image?.data?.attributes?.formats?.small?.url;
+    console.log(
+      apiDomain +
+        item?.attributes?.image?.data?.attributes?.formats?.small?.url,
+      "slider"
+    );
 
-    if (item.linkType == "Business") {
-      url = "business";
-      itemCategory = "businessCategory";
-    } else if (item.linkType == "Auto") {
-      url = "auto";
-      itemCategory = "autoStand";
-    } else if (item.linkType == "Vehicle") {
-      url = "vehicle";
-      itemCategory = "vehicleCategory";
-    } else if (item.linkType == "Worker") {
-      url = "worker";
-      itemCategory = "workCategory";
-    } else if (item.linkType == "Emergency") {
-      url = "emergency";
-      itemCategory = "emergencyCategory";
-    } else if (item.linkType == "Representative") {
-      url = "representative";
-      itemCategory = "representativeCategory";
-    } else if (item.linkType == "Enterprise") {
-      url = "enterprise";
-      itemCategory = "businessCategory";
-    } else if (item.linkType == "OnlineService") {
-      url = "online-service";
-      itemCategory = "onlineServiceCategory";
+    let mainProp = "";
+    let type = "";
+    let id = "";
+
+    if (item?.attributes?.business?.data !== null) {
+      mainProp = "Business";
+      type = "businesses";
+      id = item?.attributes?.business?.data?.id;
+    } else if (item?.attributes?.auto?.data !== null) {
+      mainProp = "Auto";
+      type = "autos";
+      id = item?.attributes?.auto?.data?.id;
+    } else if (item?.attributes?.emergency?.data !== null) {
+      mainProp = "Emergency";
+      type = "emergencies";
+      id = item?.attributes?.emergency?.data?.id;
+    } else if (item?.attributes?.small_business?.data !== null) {
+      mainProp = "SmallBusiness";
+      type = "small-businesses";
+      id = item?.attributes?.small_business?.data?.id;
+    } else if (item?.attributes?.small_business?.data !== null) {
+      mainProp = "Worker";
+      type = "workers";
+      id = item?.attributes?.worker?.data?.id;
+    } else if (item?.attributes?.online_service?.data !== null) {
+      mainProp = "OnlineService";
+      type = "online-services";
+      id = item?.attributes?.online_service?.data?.id;
+    } else if (item?.attributes?.vehicle?.data !== null) {
+      mainProp = "Vehicle";
+      type = "vehicles";
+      id = item?.attributes?.vehicle?.data?.id;
     }
 
     return (
       <TouchableOpacity
         activeOpacity={0.95}
         onPress={() =>
-          props.navigation.navigate(item.linkType, {
-            itemId: item.link,
-            url: url,
-            itemCategory: itemCategory,
-            categoryUrl: "auto-stand",
-            placeHolderImage: "auto",
-            main: "Auto",
+          props?.navigation?.navigate(mainProp, {
+            itemId: id,
+            type: type,
           })
         }
         style={{
@@ -139,7 +135,7 @@ export default function Landing(props: any) {
                 autoplayInterval={2500}
                 autoplayDelay={1000}
                 layout={"default"}
-                data={carousel}
+                data={slider}
                 sliderWidth={width}
                 itemWidth={width}
                 renderItem={_renderItem}
