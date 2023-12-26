@@ -58,20 +58,24 @@ export default function ItemList({
               key={index}
             >
               <Box>
+                {console.log(item?.attributes, typeCategory, "att")}
                 <HStack space={[3, 3]} justifyContent="space-between">
                   <VStack>
                     <Text bold>
                       {item?.attributes?.nameMalayalam ??
                         item?.attributes?.name}
-                      (
-                      {item?.attributes?.ownerNameMalayalam ??
-                        item?.attributes?.ownerName}
-                      )
                     </Text>
-                    <Text>
-                      {item?.attributes?.auto_stand?.data?.attributes
+                    <Text
+                      color="coolGray.600"
+                      _dark={{
+                        color: "warmGray.200",
+                      }}
+                      fontSize={12}
+                    >
+                      {item?.attributes[typeCategory]?.data?.attributes
                         ?.nameMalayalam ??
-                        item?.attributes?.auto_stand?.data?.attributes?.name}
+                        item?.attributes[typeCategory]?.data?.attributes
+                          ?.name}{" "}
                     </Text>
                   </VStack>
                   <Spacer />
@@ -105,7 +109,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   item: {
-    // marginBottom: 20,
-    marginBottom: 50,
+    marginBottom: 20,
+    // marginBottom: 50,
   },
 });

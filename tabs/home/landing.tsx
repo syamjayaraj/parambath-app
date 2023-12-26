@@ -156,7 +156,7 @@ export default function Landing(props: any) {
                     type: "businesses",
                     typeCategory: "business_category",
                     typeCategoryUrl: "business-categories",
-                    typeCategoryLabel: "Categories",
+                    typeCategoryLabel: "കാറ്റഗറി",
                     main: "Business",
                   })
                 }
@@ -173,8 +173,9 @@ export default function Landing(props: any) {
                 onPress={() =>
                   props.navigation.navigate("Autos", {
                     type: "autos",
-                    categoryType: "auto-stands",
-                    categoryName: "ഓട്ടോ സ്റ്റാൻഡുകൾ",
+                    typeCategory: "auto_stand",
+                    typeCategoryUrl: "auto-stands",
+                    typeCategoryLabel: "ഓട്ടോ സ്റ്റാൻഡ്",
                     main: "Auto",
                   })
                 }
@@ -201,10 +202,10 @@ export default function Landing(props: any) {
                 style={styles.menuCard}
                 onPress={() =>
                   props.navigation.navigate("Vehicles", {
-                    url: "vehicle",
-                    categoryUrl: "vehicle-category",
-                    placeHolderImage: "vehicle",
-                    itemCategory: "vehicleCategory",
+                    type: "vehicles",
+                    typeCategory: "vehicle_category",
+                    typeCategoryUrl: "vehicle-categories",
+                    typeCategoryLabel: "ഓട്ടോ സ്റ്റാൻഡ്",
                     main: "Vehicle",
                   })
                 }
@@ -220,10 +221,10 @@ export default function Landing(props: any) {
                 style={styles.menuCard}
                 onPress={() =>
                   props.navigation.navigate("Workers", {
-                    url: "worker",
-                    categoryUrl: "work-category",
-                    placeHolderImage: "worker",
-                    itemCategory: "workCategory",
+                    type: "workers",
+                    typeCategory: "work",
+                    typeCategoryUrl: "works",
+                    typeCategoryLabel: "More",
                     main: "Worker",
                   })
                 }
@@ -239,10 +240,10 @@ export default function Landing(props: any) {
                 style={styles.menuCard}
                 onPress={() =>
                   props.navigation.navigate("Emergencies", {
-                    url: "emergency",
-                    categoryUrl: "emergency-category",
-                    placeHolderImage: "emergency",
-                    itemCategory: "emergencyCategory",
+                    type: "emergencies",
+                    typeCategory: "emergency_category",
+                    typeCategoryUrl: "emergency-categories",
+                    typeCategoryLabel: "More",
                     main: "Emergency",
                   })
                 }
@@ -258,10 +259,10 @@ export default function Landing(props: any) {
                 style={styles.menuCard}
                 onPress={() =>
                   props.navigation.navigate("Representatives", {
-                    url: "representative",
-                    categoryUrl: "representative-category",
-                    placeHolderImage: "representative",
-                    itemCategory: "representativeCategory",
+                    type: "representatives",
+                    typeCategory: "representative_category",
+                    typeCategoryUrl: "representative-categories",
+                    typeCategoryLabel: "More",
                     main: "Representative",
                   })
                 }
@@ -276,12 +277,12 @@ export default function Landing(props: any) {
               <TouchableOpacity
                 style={styles.menuCard}
                 onPress={() =>
-                  props.navigation.navigate("Enterprises", {
-                    url: "enterprise",
-                    categoryUrl: "enterprise-category",
-                    placeHolderImage: "enterprise",
-                    itemCategory: "businessCategory",
-                    main: "Enterprise",
+                  props.navigation.navigate("SmallBusinesses", {
+                    type: "small-businesses",
+                    typeCategory: "small_business_category",
+                    typeCategoryUrl: "small-business-categories",
+                    typeCategoryLabel: "More",
+                    main: "SmallBusiness",
                   })
                 }
               >
@@ -296,10 +297,10 @@ export default function Landing(props: any) {
                 style={styles.menuCard}
                 onPress={() =>
                   props.navigation.navigate("OnlineServices", {
-                    url: "online-service",
-                    categoryUrl: "online-service-category",
-                    placeHolderImage: "onlineService",
-                    itemCategory: "onlineServiceCategory",
+                    type: "online-services",
+                    typeCategory: "online_service_category",
+                    typeCategoryUrl: "online-service-categories",
+                    typeCategoryLabel: "More",
                     main: "OnlineService",
                   })
                 }

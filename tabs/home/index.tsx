@@ -169,7 +169,7 @@ function HomeComponent(props: any) {
       />
 
       <Stack.Screen
-        name="Enterprises"
+        name="SmallBusinesses"
         component={ListComponent}
         options={{
           headerShown: true,
@@ -178,7 +178,7 @@ function HomeComponent(props: any) {
         }}
       />
       <Stack.Screen
-        name="Enterprise"
+        name="SmallBusiness"
         component={MainComponent}
         options={{
           headerShown: true,

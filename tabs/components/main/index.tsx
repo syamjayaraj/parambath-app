@@ -154,7 +154,7 @@ export default function MainComponent(props: any) {
                       <Ionicons name="time-outline" size={20} color="black" />
                     </View>
                     <View style={styles.textContainer}>
-                      <Text style={styles.label}>പ്രവൃത്തി സമയം</Text>
+                      <Text>പ്രവൃത്തി സമയം</Text>
                       <Text style={styles.value}>
                         {itemDetails.opensAt}-{itemDetails.closesAt}
                       </Text>
@@ -168,7 +168,7 @@ export default function MainComponent(props: any) {
                       <Ionicons name="person-outline" size={20} color="black" />
                     </View>
                     <View style={styles.textContainer}>
-                      <Text style={styles.label}>ഉടമ</Text>
+                      <Text>ഉടമ</Text>
                       <Text style={styles.value}>
                         {itemDetails.ownerMalayalamName
                           ? itemDetails.ownerMalayalamName
@@ -187,7 +187,7 @@ export default function MainComponent(props: any) {
                       />
                     </View>
                     <View style={styles.textContainer}>
-                      <Text style={styles.label}>കാലാവധി</Text>
+                      <Text>കാലാവധി</Text>
                       <Text style={styles.value}>
                         {itemDetails.from} - {itemDetails.to}
                       </Text>
@@ -204,7 +204,7 @@ export default function MainComponent(props: any) {
                       style={styles.textContainer}
                       onPress={() => callToTheNumber(itemDetails.phoneNumber)}
                     >
-                      <Text style={styles.label}>ഫോൺ നമ്പർ</Text>
+                      <Text>ഫോൺ നമ്പർ</Text>
                       <Text style={styles.value}>
                         {itemDetails.phoneNumber}
                       </Text>
@@ -228,7 +228,7 @@ export default function MainComponent(props: any) {
                           alignItems: "center",
                         }}
                       >
-                        <Text style={styles.label}>ഫോൺ നമ്പർ</Text>
+                        <Text>ഫോൺ നമ്പർ</Text>
                         <Text
                           style={{
                             fontSize: 10,
@@ -248,7 +248,11 @@ export default function MainComponent(props: any) {
                 {itemDetails.email ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
-                      <MaterialIcons name="email" style={styles.icon} />
+                      <MaterialIcons
+                        name="alternate-email"
+                        size={20}
+                        color="black"
+                      />
                     </View>
                     <TouchableOpacity
                       style={styles.textContainer}
@@ -263,7 +267,7 @@ export default function MainComponent(props: any) {
                           alignItems: "center",
                         }}
                       >
-                        <Text style={styles.label}>ഇമെയിൽ</Text>
+                        <Text>ഇമെയിൽ</Text>
                       </View>
                       <Text style={styles.value}>{itemDetails.email}</Text>
                     </TouchableOpacity>
@@ -273,7 +277,11 @@ export default function MainComponent(props: any) {
                 {itemDetails.place ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
-                      <Ionicons name="location-outline" style={styles.icon} />
+                      <Ionicons
+                        name="location-outline"
+                        size={20}
+                        color="black"
+                      />
                     </View>
                     <View style={styles.textContainer}>
                       <View
@@ -283,7 +291,7 @@ export default function MainComponent(props: any) {
                           alignItems: "center",
                         }}
                       >
-                        <Text style={styles.label}>സ്ഥലം</Text>
+                        <Text>സ്ഥലം</Text>
                       </View>
                       <Text style={styles.value}>{itemDetails.place}</Text>
                     </View>
@@ -303,7 +311,7 @@ export default function MainComponent(props: any) {
                           alignItems: "center",
                         }}
                       >
-                        <Text style={styles.label}>മേൽവിലാസം</Text>
+                        <Text>മേൽവിലാസം</Text>
                       </View>
                       <Text style={styles.value}>{itemDetails.address}</Text>
                     </View>
@@ -323,7 +331,7 @@ export default function MainComponent(props: any) {
                           alignItems: "center",
                         }}
                       >
-                        <Text style={styles.label}>ഓൺലൈൻ പേയ്മെന്റ്</Text>
+                        <Text>ഓൺലൈൻ പേയ്മെന്റ്</Text>
                       </View>
                       <View style={{}}>
                         {itemDetails.upi ? (
@@ -358,7 +366,7 @@ export default function MainComponent(props: any) {
                       />
                     </View>
                     <View style={styles.textContainer}>
-                      <Text style={styles.label}>വണ്ടി നമ്പർ</Text>
+                      <Text>വണ്ടി നമ്പർ</Text>
                       <Text style={styles.value}>
                         {itemDetails.vehicleNumber}
                       </Text>
@@ -517,10 +525,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  icon: {
-    fontSize: 25,
-    // color: "#969696",
-  },
   textContainer: {
     marginLeft: 20,
   },
@@ -538,7 +542,7 @@ const styles = StyleSheet.create({
     color: "#595959",
   },
   value: {
-    fontSize: 17,
+    fontSize: 16,
     color: "black",
   },
   label: {
