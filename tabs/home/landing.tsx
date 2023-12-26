@@ -189,7 +189,15 @@ export default function Landing(props: any) {
 
               <TouchableOpacity
                 style={styles.menuCard}
-                onPress={() => props.navigation.navigate("BusTimings")}
+                onPress={() =>
+                  props.navigation.navigate("BusTimings", {
+                    type: "bus-timings",
+                    typeCategory: "bus_route",
+                    typeCategoryUrl: "bus-routes",
+                    typeCategoryLabel: "ബസ് റൂട്ടുകൾ",
+                    main: "BusTiming",
+                  })
+                }
               >
                 <Image
                   source={require("../../assets/icons/bus.png")}

@@ -2,7 +2,6 @@ import React from "react";
 import { StyleSheet, Text } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Landing from "./landing";
-import BusTimings from "./bus-timings";
 import ListComponent from "../components/list";
 import MainComponent from "../components/main";
 
@@ -54,7 +53,7 @@ function HomeComponent(props: any) {
       />
       <Stack.Screen
         name="BusTimings"
-        component={BusTimings}
+        component={ListComponent}
         options={{
           headerShown: true,
           gestureDirection: "horizontal",

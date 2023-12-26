@@ -11,6 +11,7 @@ import {
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import callToTheNumber from "../../../utils/call-to-number";
+import moment from "moment";
 
 interface customProps {
   loading: boolean;
@@ -30,68 +31,148 @@ export default function ItemList({
   const type = props.route.params.type;
   const typeCategory = props.route.params.typeCategory;
   const mainProp = props.route.params.main;
-
-  const handleSelectItem = (itemId: string) => {
-    // ...
-    onClick(itemId);
-  };
+  console.log(type === "bus-timings", "bus");
 
   return (
     <View>
       {!loading && (
-        <FlatList
-          data={data}
-          maxToRenderPerBatch={20}
-          scrollEventThrottle={16}
-          onEndReached={handleLoadMore}
-          onEndReachedThreshold={0.1}
-          renderItem={({ item, index }: any) => (
-            <TouchableOpacity
-              onPress={() =>
-                props?.navigation?.navigate(mainProp, {
-                  itemId: item.id,
-                  type: type,
-                  typeCategory: typeCategory,
-                })
-              }
-              style={styles.item}
-              key={index}
-            >
+        <>
+          {type === "bus-timings" && (
+            <View style={styles.item}>
               <Box>
-                {console.log(item?.attributes, typeCategory, "att")}
                 <HStack space={[3, 3]} justifyContent="space-between">
-                  <VStack>
-                    <Text bold>
-                      {item?.attributes?.nameMalayalam ??
-                        item?.attributes?.name}
-                    </Text>
+                  <VStack></VStack>
+                  <Spacer />
+                  <View>
                     <Text
                       color="coolGray.600"
                       _dark={{
                         color: "warmGray.200",
                       }}
                       fontSize={12}
+                      style={styles.parambath}
                     >
-                      {item?.attributes[typeCategory]?.data?.attributes
-                        ?.nameMalayalam ??
-                        item?.attributes[typeCategory]?.data?.attributes
-                          ?.name}{" "}
+                      പറമ്പത്ത് സ്റ്റോപ്പ്
                     </Text>
-                  </VStack>
-                  <Spacer />
-                  <TouchableOpacity
-                    onPress={() =>
-                      callToTheNumber(item?.attributes?.nameMalayalam, true)
-                    }
-                  >
-                    <Ionicons name="call-outline" size={20} color="black" />
-                  </TouchableOpacity>
+                  </View>
                 </HStack>
               </Box>
-            </TouchableOpacity>
+            </View>
           )}
-          keyExtractor={(item: any) => item?.id}
-        />
+
+          {type === "bus-timings" && (
+            <FlatList
+              data={data}
+              maxToRenderPerBatch={20}
+              scrollEventThrottle={16}
+              onEndReached={handleLoadMore}
+              onEndReachedThreshold={0.1}
+              renderItem={({ item, index }: any) => (
+                <>
+                  <View style={styles.item}>
+                    <Box>
+                      <HStack space={[3, 3]} justifyContent="space-between">
+                        <VStack>
+                          <Text bold>
+                            {item?.attributes?.nameMalayalam ??
+                              item?.attributes?.name}
+                          </Text>
+                          <Text
+                            color="coolGray.600"
+                            _dark={{
+                              color: "warmGray.200",
+                            }}
+                            fontSize={12}
+                          >
+                            {item?.attributes[typeCategory]?.data?.attributes
+                              ?.nameMalayalam ??
+                              item?.attributes[typeCategory]?.data?.attributes
+                                ?.name}{" "}
+                          </Text>
+                        </VStack>
+                        <Spacer />
+                        <View>
+                          <Text style={styles.time}>
+                            {moment(item?.attributes?.time, "HH:mm:ss").format(
+                              "hh:mm A"
+                            )}
+                          </Text>
+                        </View>
+                      </HStack>
+                    </Box>
+                  </View>
+                </>
+              )}
+              keyExtractor={(item: any) => item?.id}
+            />
+          )}
+          {type !== "bus-timings" && (
+            <>
+              {console.log(type !== "bus-timings", "inside")}
+              <FlatList
+                data={data}
+                maxToRenderPerBatch={20}
+                scrollEventThrottle={16}
+                onEndReached={handleLoadMore}
+                onEndReachedThreshold={0.1}
+                renderItem={({ item, index }: any) => (
+                  <>
+                    <TouchableOpacity
+                      onPress={() =>
+                        props?.navigation?.navigate(mainProp, {
+                          itemId: item.id,
+                          type: type,
+                          typeCategory: typeCategory,
+                        })
+                      }
+                      style={styles.item}
+                      key={index}
+                    >
+                      <Box>
+                        <HStack space={[3, 3]} justifyContent="space-between">
+                          <VStack>
+                            <Text bold>
+                              {item?.attributes?.nameMalayalam ??
+                                item?.attributes?.name}
+                            </Text>
+                            <Text
+                              color="coolGray.600"
+                              _dark={{
+                                color: "warmGray.200",
+                              }}
+                              fontSize={12}
+                            >
+                              {item?.attributes[typeCategory]?.data?.attributes
+                                ?.nameMalayalam ??
+                                item?.attributes[typeCategory]?.data?.attributes
+                                  ?.name}{" "}
+                            </Text>
+                          </VStack>
+                          <Spacer />
+                          <TouchableOpacity
+                            onPress={() =>
+                              callToTheNumber(
+                                item?.attributes?.nameMalayalam,
+                                true
+                              )
+                            }
+                          >
+                            <Ionicons
+                              name="call-outline"
+                              size={20}
+                              color="black"
+                            />
+                          </TouchableOpacity>
+                        </HStack>
+                      </Box>
+                    </TouchableOpacity>
+                  </>
+                )}
+                keyExtractor={(item: any) => item?.id}
+              />
+            </>
+          )}
+        </>
       )}
       {loading && (
         <View style={styles.loader}>
@@ -111,5 +192,14 @@ const styles = StyleSheet.create({
   item: {
     marginBottom: 20,
     // marginBottom: 50,
+  },
+  time: {
+    fontSize: 17,
+    fontWeight: "100",
+    display: "flex",
+    flexDirection: "row",
+  },
+  parambath: {
+    fontSize: 8,
   },
 });
