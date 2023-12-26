@@ -13,7 +13,7 @@ export default function ListComponent(props: any) {
   const [selectedCategory, setSelectedCategory] = useState<number>();
   const [searchText, setSearchText] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
-  const [businesses, setBusinesses] = useState<IBusiness[] | undefined>([]);
+  const [items, setItems] = useState<IBusiness[] | undefined>([]);
   const [pagination, setPagination] = useState<IPagination>();
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -60,10 +60,8 @@ export default function ListComponent(props: any) {
       pageSize: pageSize,
     });
     if (response) {
-      if (type === "businesses") {
-        setBusinesses(response?.data);
-        setPagination(response?.meta);
-      }
+      setItems(response?.data);
+      setPagination(response?.meta);
       setLoading(false);
     }
   };
@@ -95,7 +93,7 @@ export default function ListComponent(props: any) {
           <ItemList
             handleLoadMore={handleLoadMore}
             loading={loading}
-            data={businesses}
+            data={items}
             onClick={handleSelectItem}
             props={props}
           />
