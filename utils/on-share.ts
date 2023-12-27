@@ -3,29 +3,20 @@ import { Share } from "react-native";
 const onShare = async (item: any, itemCategoryProp: string) => {
   try {
     let sharableString = `${
-      item.malayalamName
-        ? item.malayalamName
-        : item.malayalamTitle
-        ? item.malayalamTitle
-        : item.name
-        ? item.name
-        : item.title
-        ? item.title
-        : ""
+      item.nameMalayalam ? item.nameMalayalam : item.name
     }${
-      item[itemCategoryProp].malayalamName
-        ? ", " + item[itemCategoryProp].malayalamName
-        : ", " + item[itemCategoryProp].name
+      item[itemCategoryProp]?.data?.attributes?.nameMalayalam
+        ? ", " + item[itemCategoryProp]?.data?.attributes?.nameMalayalam
+        : ", " + item[itemCategoryProp]?.data?.attributes?.name
     }${item?.place ? ", " + item.place : ""} - ${
-      item.ownerMalayalamName
-        ? "ഉടമ: " + item.ownerMalayalamName + ", "
+      item.ownerNameMalayalam
+        ? "ഉടമ: " + item.ownerNameMalayalam + ", "
         : item.owner
         ? "ഉടമ: " + item.owner + ", "
         : ""
     }${item?.phoneNumber ? "ഫോൺ നമ്പർ:" + item?.phoneNumber : ""}${
       item?.phoneNumber2 ? ", ഫോൺ നമ്പർ(2):" + item?.phoneNumber2 : ""
-    }${item.url ? ", വെബ്സൈറ്റ്: " + item.url : ""}`;
-
+    }${item.website ? ", വെബ്സൈറ്റ്: " + item.website : ""}`;
     const result = await Share.share({
       message: sharableString,
     });

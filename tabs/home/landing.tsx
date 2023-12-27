@@ -40,11 +40,6 @@ export default function Landing(props: any) {
     let itemImage =
       apiDomain +
       item?.attributes?.image?.data?.attributes?.formats?.small?.url;
-    console.log(
-      apiDomain +
-        item?.attributes?.image?.data?.attributes?.formats?.small?.url,
-      "slider"
-    );
 
     let mainProp = "";
     let type = "";

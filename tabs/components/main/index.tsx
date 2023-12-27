@@ -24,30 +24,31 @@ export default function MainComponent(props: any) {
   const itemId = props.route.params.itemId;
   let typeCategory = "";
   switch (type) {
-    case "businesses": {
+    case "businesses":
       typeCategory = "business_category";
-    }
-    case "autos": {
+      break;
+    case "autos":
       typeCategory = "auto_stand";
-    }
-    case "emergencies": {
+      break;
+    case "emergencies":
       typeCategory = "emergency_category";
-    }
-    case "small-businesses": {
+      break;
+    case "small-businesses":
       typeCategory = "small_business_category";
-    }
-    case "online-services": {
+      break;
+    case "online-services":
       typeCategory = "online_service_category";
-    }
-    case "workers": {
+      break;
+    case "workers":
       typeCategory = "work";
-    }
-    case "representatives": {
+      break;
+    case "representatives":
       typeCategory = "representative_category";
-    }
+      break;
+    default:
+      typeCategory = "";
+      break;
   }
-
-  console.log(type, typeCategory, "typeCategory");
 
   useEffect(() => {
     loadItemDetailsFromApi();
@@ -64,8 +65,7 @@ export default function MainComponent(props: any) {
       setLoading(false);
     }
   };
-
-  console.log(itemDetails, "det");
+  console.log(itemDetails[typeCategory], "lorem");
 
   return (
     <Box mt={2} padding={5}>
@@ -81,8 +81,9 @@ export default function MainComponent(props: any) {
                 marginTop: 50,
               }}
             >
-              {itemDetails.images && itemDetails.images.length !== 0 ? (
-                <Slider images={itemDetails?.images} />
+              {itemDetails?.images &&
+              itemDetails?.images?.data?.length !== 0 ? (
+                <Slider images={itemDetails?.images?.data} />
               ) : null}
               <View style={[styles.sectionContainer]}>
                 <View style={styles.shareButtonContainer}>
@@ -98,23 +99,20 @@ export default function MainComponent(props: any) {
                     <Text style={styles.shareText}>Share</Text>
                   </TouchableOpacity>
                 </View>
-                {itemDetails.name || itemDetails.title ? (
+                {itemDetails.name ? (
                   <Text style={styles.title}>
-                    {itemDetails.malayalamName
-                      ? itemDetails.malayalamName
-                      : itemDetails.malayalamTitle
-                      ? itemDetails.malayalamTitle
-                      : itemDetails.name
-                      ? itemDetails.name
-                      : itemDetails.title}
+                    {itemDetails.nameMalayalam
+                      ? itemDetails.nameMalayalam
+                      : itemDetails.name}
                     &nbsp;
                   </Text>
                 ) : null}
                 {itemDetails[typeCategory] ? (
                   <Text style={styles.workName}>
-                    {itemDetails[typeCategory].malayalamName
-                      ? itemDetails[typeCategory].malayalamName
-                      : itemDetails[typeCategory].name}
+                    {itemDetails[typeCategory]?.data?.attributes?.nameMalayalam
+                      ? itemDetails[typeCategory]?.data?.attributes
+                          ?.nameMalayalam
+                      : itemDetails[typeCategory]?.data?.attributes?.name}
                     &nbsp;
                   </Text>
                 ) : null}

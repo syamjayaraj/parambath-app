@@ -31,7 +31,6 @@ export default function ItemList({
   const type = props.route.params.type;
   const typeCategory = props.route.params.typeCategory;
   const mainProp = props.route.params.main;
-  console.log(type === "bus-timings", "bus");
 
   return (
     <View>
@@ -108,7 +107,6 @@ export default function ItemList({
           )}
           {type !== "bus-timings" && (
             <>
-              {console.log(type !== "bus-timings", "inside")}
               <FlatList
                 data={data}
                 maxToRenderPerBatch={20}
