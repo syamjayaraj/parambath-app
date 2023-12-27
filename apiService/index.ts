@@ -33,7 +33,6 @@ export async function loadItem(param: ILoadItemParam): Promise<{
       .join("&");
 
     const url = `${apiUrl2}${param?.type}?${populateParams}&${fieldsParams}&${sortParams}&pagination[page]=${param?.pageNumber}&pagination[pageSize]=${param?.pageSize}&filters[$or][0][name][$contains]=${param?.searchText}&filters[$or][1][nameMalayalam][$contains]=${param?.searchText}`;
-    console.log(url, "url");
     const response = await get(url);
     return response?.data as any;
   } catch (err) {
@@ -52,7 +51,6 @@ export async function loadItemCategory(param: ILoadItemCategoryParam): Promise<{
 } | null> {
   try {
     const url = `${apiUrl2}${param?.typeCategoryUrl}`;
-    console.log(url, "url2");
     const response = await get(url);
     return response?.data as any;
   } catch (err) {
@@ -66,7 +64,6 @@ export async function loadSliderHome(): Promise<{
 } | null> {
   try {
     const url = `${apiUrl2}slider-homes?populate=*`;
-    console.log(url, "url2");
     const response = await get(url);
     return response?.data as any;
   } catch (err) {
@@ -84,7 +81,7 @@ export async function loadItemDetails(param: ILoadItemDetailsParam): Promise<{
   data: any;
 } | null> {
   try {
-    const url = `${apiUrl2}${param?.type}/${param?.id}`;
+    const url = `${apiUrl2}${param?.type}/${param?.id}?populate=*`;
     const response = await get(url);
     return response?.data as any;
   } catch (err) {

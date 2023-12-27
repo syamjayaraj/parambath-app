@@ -1,5 +1,6 @@
 import { Dimensions, Image, StyleSheet, View } from "react-native";
 import Carousel from "react-native-snap-carousel";
+import { apiDomain } from "../../../config";
 const { width } = Dimensions.get("window");
 
 interface customProps {
@@ -7,7 +8,9 @@ interface customProps {
 }
 
 export default function Slider({ images }: customProps) {
-  const _renderItem = ({ image, index }: any) => {
+  let _renderItem = ({ item, index }: any) => {
+    let itemImage = apiDomain + item?.attributes?.formats?.small?.url;
+
     return (
       <View
         style={{
@@ -22,7 +25,7 @@ export default function Slider({ images }: customProps) {
             borderRadius: 10,
           }}
           source={{
-            uri: image,
+            uri: itemImage,
           }}
         ></Image>
       </View>
