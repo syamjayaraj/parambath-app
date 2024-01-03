@@ -28,9 +28,9 @@ export default function ItemList({
   props,
   handleLoadMore,
 }: customProps) {
-  const type = props.route.params.type;
-  const typeCategory = props.route.params.typeCategory;
-  const mainProp = props.route.params.main;
+  const type = props?.route?.params?.type;
+  const typeCategory = props?.route?.params?.typeCategory;
+  const mainProp = props?.route?.params?.main;
 
   return (
     <View>
