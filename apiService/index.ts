@@ -88,3 +88,67 @@ export async function loadItemDetails(param: ILoadItemDetailsParam): Promise<{
     return null;
   }
 }
+
+export async function loadEvent(param: ILoadItemParam): Promise<{
+  meta: IPagination;
+  data: any[];
+} | null> {
+  try {
+    const fieldsParams = param?.fields
+      .map((field: string, index: number) => `fields[${index}]=${field}`)
+      .join("&");
+    const populateParams = param?.populate
+      .map((item: string, index: number) => `populate[${index}]=${item}`)
+      .join("&");
+    const sortParams = param?.sort
+      .map((item: string, index: number) => `sort[${index}]=${item}`)
+      .join("&");
+
+    const url = `${apiUrl2}events?${populateParams}&${fieldsParams}&${sortParams}&pagination[page]=${param?.pageNumber}&pagination[pageSize]=${param?.pageSize}&filters[$or][0][name][$contains]=${param?.searchText}&filters[$or][1][nameMalayalam][$contains]=${param?.searchText}`;
+    const response = await get(url);
+    return response?.data as any;
+  } catch (err) {
+    return null;
+  }
+}
+
+export async function loadEventDetails(param: ILoadItemDetailsParam): Promise<{
+  meta: IPagination;
+  data: any;
+} | null> {
+  try {
+    const url = `${apiUrl2}events/${param?.id}?populate[schedule][populate][0]=scheduleDay`;
+    const response = await get(url);
+    return response?.data as any;
+  } catch (err) {
+    return null;
+  }
+}
+
+export async function loadEventCategory(
+  param: ILoadItemCategoryParam
+): Promise<{
+  meta: IPagination;
+  data: ICategory[];
+} | null> {
+  try {
+    const url = `${apiUrl2}event-categories`;
+    const response = await get(url);
+    return response?.data as any;
+  } catch (err) {
+    return null;
+  }
+}
+
+export async function loadSliderEvent(): Promise<{
+  meta: IPagination;
+  data: ISliderHome[];
+} | null> {
+  try {
+    const url = `${apiUrl2}slider-events?populate=*`;
+    const response = await get(url);
+    return response?.data as any;
+  } catch (err) {
+    return null;
+  }
+}

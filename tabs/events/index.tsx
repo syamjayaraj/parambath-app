@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, Animated, Easing } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import ListWithCarousel from "../components/list-with-carousel";
-import Event from "./event";
+import MainEventComponent from "../components/main-event";
 
 const Stack = createStackNavigator();
 
@@ -47,7 +47,7 @@ function EventComponent() {
 
       <Stack.Screen
         name="Event"
-        component={Event}
+        component={MainEventComponent}
         options={{
           headerShown: true,
           headerTransparent: true,

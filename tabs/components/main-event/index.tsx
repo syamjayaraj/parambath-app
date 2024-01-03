@@ -6,62 +6,38 @@ import {
   Linking,
   SafeAreaView,
 } from "react-native";
-import { Text, Spinner, Box, ScrollView } from "native-base";
+import { Text, Spinner, Box, ScrollView, List, Row } from "native-base";
 import { EvilIcons, MaterialIcons, Ionicons } from "@expo/vector-icons";
 import onShare from "../../../utils/on-share";
 import openBrowser from "../../../utils/open-browser";
 import callToTheNumber from "../../../utils/call-to-number";
 import Slider from "../common/slider";
-import { loadItemDetails } from "../../../apiService";
+import { loadEventDetails } from "../../../apiService";
+import moment from "moment";
 
-export default function MainComponent(props: any) {
-  let [itemDetails, setItemDetails] = useState<any>({
+export default function MainEventComponent(props: any) {
+  let [eventDetails, setEventDetails] = useState<any>({
     itemCategory: {},
   });
   const [loading, setLoading] = useState(false);
 
   const type = props.route.params.type;
   const itemId = props.route.params.itemId;
+
   let typeCategory = "";
-  switch (type) {
-    case "businesses":
-      typeCategory = "business_category";
-      break;
-    case "autos":
-      typeCategory = "auto_stand";
-      break;
-    case "emergencies":
-      typeCategory = "emergency_category";
-      break;
-    case "small-businesses":
-      typeCategory = "small_business_category";
-      break;
-    case "online-services":
-      typeCategory = "online_service_category";
-      break;
-    case "workers":
-      typeCategory = "work";
-      break;
-    case "representatives":
-      typeCategory = "representative_category";
-      break;
-    default:
-      typeCategory = "";
-      break;
-  }
 
   useEffect(() => {
-    loadItemDetailsFromApi();
+    loadEventDetailsFromApi();
   }, []);
 
-  const loadItemDetailsFromApi = async (pageParam?: number) => {
+  const loadEventDetailsFromApi = async (pageParam?: number) => {
     setLoading(true);
-    const response = await loadItemDetails({
+    const response = await loadEventDetails({
       id: itemId,
       type: type,
     });
     if (response) {
-      setItemDetails(response?.data?.attributes);
+      setEventDetails(response?.data?.attributes);
       setLoading(false);
     }
   };
@@ -80,14 +56,14 @@ export default function MainComponent(props: any) {
                 marginTop: 50,
               }}
             >
-              {itemDetails?.images &&
-              itemDetails?.images?.data?.length !== 0 ? (
-                <Slider images={itemDetails?.images?.data} />
+              {eventDetails?.images &&
+              eventDetails?.images?.data?.length !== 0 ? (
+                <Slider images={eventDetails?.images?.data} />
               ) : null}
               <View style={[styles.sectionContainer]}>
                 <View style={styles.shareButtonContainer}>
                   <TouchableOpacity
-                    onPress={() => onShare(itemDetails, typeCategory)}
+                    onPress={() => onShare(eventDetails, typeCategory)}
                     style={styles.shareButton}
                   >
                     <EvilIcons
@@ -98,38 +74,38 @@ export default function MainComponent(props: any) {
                     <Text style={styles.shareText}>Share</Text>
                   </TouchableOpacity>
                 </View>
-                {itemDetails.name ? (
+                {eventDetails.name ? (
                   <Text style={styles.title}>
-                    {itemDetails.nameMalayalam
-                      ? itemDetails.nameMalayalam
-                      : itemDetails.name}
+                    {eventDetails.nameMalayalam
+                      ? eventDetails.nameMalayalam
+                      : eventDetails.name}
                     &nbsp;
                   </Text>
                 ) : null}
-                {itemDetails[typeCategory] ? (
+                {eventDetails[typeCategory] ? (
                   <Text style={styles.workName}>
-                    {itemDetails[typeCategory]?.data?.attributes?.nameMalayalam
-                      ? itemDetails[typeCategory]?.data?.attributes
+                    {eventDetails[typeCategory]?.data?.attributes?.nameMalayalam
+                      ? eventDetails[typeCategory]?.data?.attributes
                           ?.nameMalayalam
-                      : itemDetails[typeCategory]?.data?.attributes?.name}
+                      : eventDetails[typeCategory]?.data?.attributes?.name}
                     &nbsp;
                   </Text>
                 ) : null}
 
-                {itemDetails.about ? (
-                  <Text style={styles.aboutText}>{itemDetails.about}</Text>
+                {eventDetails.about ? (
+                  <Text style={styles.aboutText}>{eventDetails.about}</Text>
                 ) : null}
 
-                {itemDetails.description ? (
+                {eventDetails.description ? (
                   <Text style={styles.aboutText}>
-                    {itemDetails.description}
+                    {eventDetails.description}
                   </Text>
                 ) : null}
 
-                {itemDetails.youtube ? (
+                {eventDetails.youtube ? (
                   <TouchableOpacity
                     style={[styles.video]}
-                    onPress={() => Linking.openURL(itemDetails.youtube)}
+                    onPress={() => Linking.openURL(eventDetails.youtube)}
                   >
                     <Ionicons name="logo-youtube" size={20} color="black" />
                     <View
@@ -145,14 +121,14 @@ export default function MainComponent(props: any) {
                   </TouchableOpacity>
                 ) : null}
 
-                {itemDetails.url ? (
+                {eventDetails.url ? (
                   <TouchableOpacity
                     style={[styles.booking]}
                     onPress={() =>
                       openBrowser({
-                        url: itemDetails.website
-                          ? itemDetails.website
-                          : itemDetails.url,
+                        url: eventDetails.website
+                          ? eventDetails.website
+                          : eventDetails.url,
                       })
                     }
                   >
@@ -170,36 +146,7 @@ export default function MainComponent(props: any) {
                   </TouchableOpacity>
                 ) : null}
 
-                {itemDetails.opensAt && itemDetails.closesAt ? (
-                  <View style={styles.section}>
-                    <View style={styles.iconContainer}>
-                      <Ionicons name="time-outline" size={20} color="black" />
-                    </View>
-                    <View style={styles.textContainer}>
-                      <Text>പ്രവൃത്തി സമയം</Text>
-                      <Text style={styles.value}>
-                        {itemDetails.opensAt}-{itemDetails.closesAt}
-                      </Text>
-                    </View>
-                  </View>
-                ) : null}
-
-                {itemDetails.owner ? (
-                  <View style={styles.section}>
-                    <View style={styles.iconContainer}>
-                      <Ionicons name="person-outline" size={20} color="black" />
-                    </View>
-                    <View style={styles.textContainer}>
-                      <Text>ഉടമ</Text>
-                      <Text style={styles.value}>
-                        {itemDetails.ownerMalayalamName
-                          ? itemDetails.ownerMalayalamName
-                          : itemDetails.owner}
-                      </Text>
-                    </View>
-                  </View>
-                ) : null}
-                {itemDetails.from || itemDetails.to ? (
+                {eventDetails.from || eventDetails.to ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
                       <Ionicons
@@ -209,39 +156,40 @@ export default function MainComponent(props: any) {
                       />
                     </View>
                     <View style={styles.textContainer}>
-                      <Text>കാലാവധി</Text>
+                      {/* <Text>കാലാവധി</Text> */}
                       <Text style={styles.value}>
-                        {itemDetails.from} - {itemDetails.to}
+                        {moment(eventDetails.from).format("DD MMM YYYY")} -{" "}
+                        {moment(eventDetails.to).format("DD MMM YYYY")}
                       </Text>
                     </View>
                   </View>
                 ) : null}
 
-                {itemDetails.phoneNumber ? (
+                {eventDetails.phoneNumber ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
                       <Ionicons name="call-outline" size={20} color="black" />
                     </View>
                     <TouchableOpacity
                       style={styles.textContainer}
-                      onPress={() => callToTheNumber(itemDetails.phoneNumber)}
+                      onPress={() => callToTheNumber(eventDetails.phoneNumber)}
                     >
                       <Text>ഫോൺ നമ്പർ</Text>
                       <Text style={styles.value}>
-                        {itemDetails.phoneNumber}
+                        {eventDetails.phoneNumber}
                       </Text>
                     </TouchableOpacity>
                   </View>
                 ) : null}
 
-                {itemDetails.phoneNumber2 ? (
+                {eventDetails.phoneNumber2 ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
                       <Ionicons name="call-outline" size={20} color="black" />
                     </View>
                     <TouchableOpacity
                       style={styles.textContainer}
-                      onPress={() => callToTheNumber(itemDetails.phoneNumber2)}
+                      onPress={() => callToTheNumber(eventDetails.phoneNumber2)}
                     >
                       <View
                         style={{
@@ -261,13 +209,13 @@ export default function MainComponent(props: any) {
                         </Text>
                       </View>
                       <Text style={styles.value}>
-                        {itemDetails.phoneNumber2}
+                        {eventDetails.phoneNumber2}
                       </Text>
                     </TouchableOpacity>
                   </View>
                 ) : null}
 
-                {itemDetails.email ? (
+                {eventDetails.email ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
                       <MaterialIcons
@@ -291,12 +239,12 @@ export default function MainComponent(props: any) {
                       >
                         <Text>ഇമെയിൽ</Text>
                       </View>
-                      <Text style={styles.value}>{itemDetails.email}</Text>
+                      <Text style={styles.value}>{eventDetails.email}</Text>
                     </TouchableOpacity>
                   </View>
                 ) : null}
 
-                {itemDetails.place ? (
+                {eventDetails.place ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
                       <Ionicons
@@ -315,12 +263,12 @@ export default function MainComponent(props: any) {
                       >
                         <Text>സ്ഥലം</Text>
                       </View>
-                      <Text style={styles.value}>{itemDetails.place}</Text>
+                      <Text style={styles.value}>{eventDetails.place}</Text>
                     </View>
                   </View>
                 ) : null}
 
-                {itemDetails.address ? (
+                {eventDetails.address ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
                       <Ionicons name="mail-outline" size={20} color="black" />
@@ -335,12 +283,12 @@ export default function MainComponent(props: any) {
                       >
                         <Text>മേൽവിലാസം</Text>
                       </View>
-                      <Text style={styles.value}>{itemDetails.address}</Text>
+                      <Text style={styles.value}>{eventDetails.address}</Text>
                     </View>
                   </View>
                 ) : null}
 
-                {itemDetails.upi || itemDetails.card ? (
+                {eventDetails.upi || eventDetails.card ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
                       <Ionicons name="wallet-outline" size={20} color="black" />
@@ -356,7 +304,7 @@ export default function MainComponent(props: any) {
                         <Text>ഓൺലൈൻ പേയ്മെന്റ്</Text>
                       </View>
                       <View style={{}}>
-                        {itemDetails.upi ? (
+                        {eventDetails.upi ? (
                           <Text style={styles.value}>
                             യുപിഐ&nbsp;
                             <Text
@@ -368,7 +316,7 @@ export default function MainComponent(props: any) {
                             </Text>
                           </Text>
                         ) : null}
-                        {itemDetails.card ? (
+                        {eventDetails.card ? (
                           <Text style={styles.value}>
                             ക്രെഡിറ്റ്/ഡെബിറ്റ് കാർഡ്
                           </Text>
@@ -378,7 +326,7 @@ export default function MainComponent(props: any) {
                   </View>
                 ) : null}
 
-                {itemDetails.vehicleNumber ? (
+                {eventDetails.vehicleNumber ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
                       <Ionicons
@@ -390,18 +338,18 @@ export default function MainComponent(props: any) {
                     <View style={styles.textContainer}>
                       <Text>വണ്ടി നമ്പർ</Text>
                       <Text style={styles.value}>
-                        {itemDetails.vehicleNumber}
+                        {eventDetails.vehicleNumber}
                       </Text>
                     </View>
                   </View>
                 ) : null}
 
-                {itemDetails.onlineBookingUrl ? (
+                {eventDetails.onlineBookingUrl ? (
                   <TouchableOpacity
                     style={[styles.booking]}
                     onPress={() =>
                       openBrowser({
-                        url: itemDetails.onlineBookingUrl,
+                        url: eventDetails.onlineBookingUrl,
                       })
                     }
                   >
@@ -424,12 +372,12 @@ export default function MainComponent(props: any) {
                 ) : null}
 
                 <View style={styles.footer}>
-                  {itemDetails.whatsapp ? (
+                  {eventDetails.whatsapp ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
                       onPress={() =>
                         Linking.openURL(
-                          `whatsapp://send?phone=${itemDetails.whatsapp}`
+                          `whatsapp://send?phone=${eventDetails.whatsapp}`
                         )
                       }
                     >
@@ -437,12 +385,12 @@ export default function MainComponent(props: any) {
                     </TouchableOpacity>
                   ) : null}
 
-                  {itemDetails.website ? (
+                  {eventDetails.website ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
                       onPress={() =>
                         openBrowser({
-                          url: itemDetails.website,
+                          url: eventDetails.website,
                         })
                       }
                     >
@@ -450,24 +398,24 @@ export default function MainComponent(props: any) {
                     </TouchableOpacity>
                   ) : null}
 
-                  {itemDetails.facebook ? (
+                  {eventDetails.facebook ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
                       onPress={() =>
                         Linking.canOpenURL(
-                          `fb://page/${itemDetails.facebook}`
+                          `fb://page/${eventDetails.facebook}`
                         ).then((supported) => {
                           let facebookUrlIsId = /^\d+$/.test(
-                            itemDetails.facebook
+                            eventDetails.facebook
                           );
 
                           if (supported && facebookUrlIsId) {
                             return Linking.openURL(
-                              `fb://page/${itemDetails.facebook}`
+                              `fb://page/${eventDetails.facebook}`
                             );
                           } else {
                             return Linking.openURL(
-                              `https://www.facebook.com/${itemDetails.facebook}`
+                              `https://www.facebook.com/${eventDetails.facebook}`
                             );
                           }
                         })
@@ -477,25 +425,123 @@ export default function MainComponent(props: any) {
                     </TouchableOpacity>
                   ) : null}
 
-                  {itemDetails.instagram ? (
+                  {eventDetails.instagram ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
-                      onPress={() => Linking.openURL(itemDetails.instagram)}
+                      onPress={() => Linking.openURL(eventDetails.instagram)}
                     >
                       <Ionicons name="logo-instagram" size={20} color="black" />
                     </TouchableOpacity>
                   ) : null}
 
-                  {itemDetails.youtube ? (
+                  {eventDetails.youtube ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
-                      onPress={() => Linking.openURL(itemDetails.youtube)}
+                      onPress={() => Linking.openURL(eventDetails.youtube)}
                     >
                       <Ionicons name="logo-youtube" size={20} color="black" />
                     </TouchableOpacity>
                   ) : null}
                 </View>
               </View>
+
+              {eventDetails?.schedule ? (
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontSize: 18,
+                  }}
+                >
+                  കാര്യപരിപാടികൾ
+                </Text>
+              ) : null}
+
+              {eventDetails?.schedule ? (
+                <View style={styles.sheduleContainer}>
+                  {eventDetails?.schedule.map(
+                    (shedule: any, sheduleIndex: number) => {
+                      return (
+                        <View key={sheduleIndex}>
+                          <View
+                            style={{
+                              marginTop: 10,
+                              marginBottom: 10,
+                              backgroundColor: "#2b2b2b",
+                              borderRadius: 5,
+                              padding: 10,
+                              opacity: 0.99,
+                            }}
+                          >
+                            <Text
+                              style={{
+                                textAlign: "left",
+                                fontSize: 15,
+                                fontWeight: "bold",
+                                color: "white",
+                              }}
+                            >
+                              {shedule.day}
+                            </Text>
+                            <Text
+                              style={{
+                                textAlign: "left",
+                                color: "white",
+                              }}
+                            >
+                              {shedule.title}
+                            </Text>
+                          </View>
+                          {shedule.scheduleDay.map(
+                            (item: any, daySheduleIndex: number) => {
+                              return (
+                                <View
+                                  key={daySheduleIndex}
+                                  style={{
+                                    marginTop: 20,
+                                  }}
+                                >
+                                  <View
+                                    style={{
+                                      display: "flex",
+                                      flexDirection: "column",
+                                      alignContent: "center",
+                                      justifyContent: "center",
+                                    }}
+                                  >
+                                    <View
+                                      style={{
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        marginBottom: 10,
+                                      }}
+                                    >
+                                      <View
+                                        style={{
+                                          marginRight: 8,
+                                        }}
+                                      >
+                                        <EvilIcons
+                                          name="clock"
+                                          size={20}
+                                          color="black"
+                                        />
+                                      </View>
+                                      <Text bold fontSize={18}>
+                                        {item.time} - {item.title}
+                                      </Text>
+                                    </View>
+                                  </View>
+                                  <Text>{item.description}</Text>
+                                </View>
+                              );
+                            }
+                          )}
+                        </View>
+                      );
+                    }
+                  )}
+                </View>
+              ) : null}
             </View>
           )}
         </ScrollView>
@@ -524,7 +570,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   sectionContainer: {
-    marginBottom: 100,
+    marginBottom: 30,
     marginTop: 20,
     borderColor: "#e3e3e3",
     borderWidth: 1,
@@ -656,5 +702,16 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 14,
     marginLeft: 3,
+  },
+  sheduleContainer: {
+    marginBottom: 100,
+    marginTop: 20,
+    borderColor: "#e3e3e3",
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 50,
+    backgroundColor: "white",
   },
 });
