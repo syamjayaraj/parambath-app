@@ -199,23 +199,6 @@ export default function MainComponent(props: any) {
                     </View>
                   </View>
                 ) : null}
-                {itemDetails.from || itemDetails.to ? (
-                  <View style={styles.section}>
-                    <View style={styles.iconContainer}>
-                      <Ionicons
-                        name="calendar-outline"
-                        size={20}
-                        color="black"
-                      />
-                    </View>
-                    <View style={styles.textContainer}>
-                      <Text>കാലാവധി</Text>
-                      <Text style={styles.value}>
-                        {itemDetails.from} - {itemDetails.to}
-                      </Text>
-                    </View>
-                  </View>
-                ) : null}
 
                 {itemDetails.phoneNumber ? (
                   <View style={styles.section}>

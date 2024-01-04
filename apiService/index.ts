@@ -117,7 +117,7 @@ export async function loadEventDetails(param: ILoadItemDetailsParam): Promise<{
   data: any;
 } | null> {
   try {
-    const url = `${apiUrl2}events/${param?.id}?populate[schedule][populate][0]=scheduleDay`;
+    const url = `${apiUrl2}events/${param?.id}?populate[images]=*&populate[schedule][populate][0]=scheduleDay`;
     const response = await get(url);
     return response?.data as any;
   } catch (err) {
