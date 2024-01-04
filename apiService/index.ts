@@ -145,9 +145,7 @@ export async function loadEventDetails(param: ILoadItemDetailsParam): Promise<{
   }
 }
 
-export async function loadEventCategory(
-  param: ILoadItemCategoryParam
-): Promise<{
+export async function loadEventCategory(): Promise<{
   meta: IPagination;
   data: ICategory[];
 } | null> {
