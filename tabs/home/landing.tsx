@@ -276,12 +276,13 @@ export default function Landing(props: any) {
               <TouchableOpacity
                 style={styles.menuCard}
                 onPress={() =>
-                  props.navigation.navigate("SmallBusinesses", {
-                    type: "small-businesses",
-                    typeCategory: "small_business_category",
-                    typeCategoryUrl: "small-business-categories",
-                    typeCategoryLabel: "More",
-                    main: "SmallBusiness",
+                  props.navigation.navigate("Businesses", {
+                    type: "businesses",
+                    typeCategory: "business_category",
+                    typeCategoryUrl: "business-categories",
+                    typeCategoryLabel: "കാറ്റഗറി",
+                    main: "Business",
+                    extra: "small",
                   })
                 }
               >

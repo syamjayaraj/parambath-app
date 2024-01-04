@@ -12,11 +12,7 @@ import SearchBar from "../components/common/search-bar";
 import CategoryList from "../components/common/category-list";
 import ItemList from "../components/common/item-list";
 import { apiDomain, pageSize } from "../../config";
-import {
-  loadEvent,
-  loadEventCategory,
-  loadSliderEvent,
-} from "../../apiService";
+import { loadItem, loadItemCategory, loadSliderEvent } from "../../apiService";
 import {
   IBusiness,
   ICategory,
@@ -36,11 +32,6 @@ export default function LandingDelivery(props: any) {
   const [loading, setLoading] = useState<boolean>(false);
   const [slider, setSlider] = useState<ISliderHome[]>([]);
 
-  // const type = props.route.params.type;
-  // const typeCategory = props.route.params.typeCategory;
-  // const typeCategoryUrl = props.route.params.typeCategoryUrl;
-  // const typeCategoryLabel = props.route.params.typeCategoryLabel;
-
   const type = "businesses";
   const typeCategory = "business_category";
   const typeCategoryUrl = "business-categories";
@@ -59,8 +50,8 @@ export default function LandingDelivery(props: any) {
 
   useEffect(() => {
     loadSliderHomeFromApi();
-    loadEventCategoryFromApi();
-    loadEventFromApi(1);
+    loadItemCategoryFromApi();
+    loadItemFromApi(1);
   }, []);
 
   const loadSliderHomeFromApi = async (pageParam?: number) => {
@@ -72,11 +63,21 @@ export default function LandingDelivery(props: any) {
     }
   };
 
-  const loadEventCategoryFromApi = async () => {
+  const loadItemCategoryFromApi = async () => {
     setLoading(true);
-    const response = await loadEventCategory({
+    let filters: any = [
+      {
+        name: "onlineDelivery",
+        value: true,
+      },
+    ];
+    let params = {
+      filters: filters,
+    };
+    const response = await loadItemCategory({
       typeCategoryUrl: typeCategoryUrl,
       pageSize: 100,
+      params: params,
     });
     if (response) {
       setCategories(response?.data);
@@ -84,12 +85,19 @@ export default function LandingDelivery(props: any) {
     }
   };
 
-  const loadEventFromApi = async (pageParam?: number) => {
+  const loadItemFromApi = async (pageParam?: number) => {
     setLoading(true);
+    let filters: any = [
+      {
+        name: "onlineDelivery",
+        value: true,
+      },
+    ];
     let fields = ["name", "nameMalayalam"];
     let sort = ["name"];
     let params = {
       type: type,
+      filters: filters,
       fields: fields,
       sort: sort,
       populate: [typeCategory],
@@ -97,7 +105,7 @@ export default function LandingDelivery(props: any) {
       pageNumber: pageParam ? pageNumber : pageNumber,
       pageSize: pageSize,
     };
-    const response = await loadEvent(params);
+    const response = await loadItem(params);
     if (response) {
       setItems(response?.data);
       setPagination(response?.meta);
@@ -108,13 +116,13 @@ export default function LandingDelivery(props: any) {
   const handleLoadMore = () => {
     if ((pagination?.pagination?.total as number) < pageSize) {
     } else {
-      loadEventFromApi(pageNumber + 1);
+      loadItemFromApi(pageNumber + 1);
       setPageNumber(pageNumber + 1);
     }
   };
 
   useEffect(() => {
-    loadEventFromApi();
+    loadItemFromApi();
   }, [searchText]);
 
   let _renderItem = ({ item, index }: any) => {
@@ -130,30 +138,10 @@ export default function LandingDelivery(props: any) {
       mainProp = "Business";
       type = "businesses";
       id = item?.attributes?.business?.data?.id;
-    } else if (item?.attributes?.auto?.data !== null) {
-      mainProp = "Auto";
-      type = "autos";
-      id = item?.attributes?.auto?.data?.id;
-    } else if (item?.attributes?.emergency?.data !== null) {
-      mainProp = "Emergency";
-      type = "emergencies";
-      id = item?.attributes?.emergency?.data?.id;
     } else if (item?.attributes?.small_business?.data !== null) {
       mainProp = "SmallBusiness";
       type = "small-businesses";
       id = item?.attributes?.small_business?.data?.id;
-    } else if (item?.attributes?.small_business?.data !== null) {
-      mainProp = "Worker";
-      type = "workers";
-      id = item?.attributes?.worker?.data?.id;
-    } else if (item?.attributes?.online_service?.data !== null) {
-      mainProp = "OnlineService";
-      type = "online-services";
-      id = item?.attributes?.online_service?.data?.id;
-    } else if (item?.attributes?.vehicle?.data !== null) {
-      mainProp = "Vehicle";
-      type = "vehicles";
-      id = item?.attributes?.vehicle?.data?.id;
     }
     return (
       <TouchableOpacity
