@@ -33,13 +33,12 @@ export default function ListWithCarouselEventComponent(props: any) {
   const [pageNumber, setPageNumber] = useState(1);
   const [items, setItems] = useState<IBusiness[] | undefined>([]);
   const [pagination, setPagination] = useState<IPagination>();
+  const [sliderLoading, setSliderLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [slider, setSlider] = useState<ISliderHome[]>([]);
 
   const type = props.route.params.type;
   const typeCategory = props.route.params.typeCategory;
-  const typeCategoryUrl = props.route.params.typeCategoryUrl;
-  const typeCategoryLabel = props.route.params.typeCategoryLabel;
 
   const handleSearch = (param: string) => {
     setSearchText(param);
@@ -58,20 +57,17 @@ export default function ListWithCarouselEventComponent(props: any) {
   }, []);
 
   const loadSliderEventFromApi = async () => {
-    setLoading(true);
+    setSliderLoading(true);
     const response = await loadSliderEvent();
     if (response) {
       setSlider(response?.data);
-      setLoading(false);
+      setSliderLoading(false);
     }
   };
 
   const loadEventCategoryFromApi = async () => {
     setLoading(true);
-    const response = await loadEventCategory({
-      typeCategoryUrl: typeCategoryUrl,
-      pageSize: 100,
-    });
+    const response = await loadEventCategory();
     if (response) {
       setCategories(response?.data);
       setLoading(false);
@@ -81,10 +77,12 @@ export default function ListWithCarouselEventComponent(props: any) {
   const loadEventFromApi = async (pageParam?: number) => {
     setLoading(true);
     let fields = ["name", "nameMalayalam", "from", "to"];
+    let filters: any = [];
     let sort = ["from:desc", "to:desc"];
     let params = {
       type: type,
       fields: fields,
+      filters: filters,
       sort: sort,
       populate: [typeCategory],
       searchText: searchText,
@@ -150,7 +148,7 @@ export default function ListWithCarouselEventComponent(props: any) {
   return (
     <Box bg={"white"} mt={2}>
       <SafeAreaView>
-        {loading ? (
+        {sliderLoading ? (
           <View
             style={{
               width: width - 20,

@@ -29,6 +29,7 @@ export default function LandingDelivery(props: any) {
   const [pageNumber, setPageNumber] = useState(1);
   const [items, setItems] = useState<IBusiness[] | undefined>([]);
   const [pagination, setPagination] = useState<IPagination>();
+  const [sliderLoading, setSliderLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [slider, setSlider] = useState<ISliderHome[]>([]);
 
@@ -55,11 +56,11 @@ export default function LandingDelivery(props: any) {
   }, []);
 
   const loadSliderHomeFromApi = async (pageParam?: number) => {
-    setLoading(true);
+    setSliderLoading(true);
     const response = await loadSliderEvent();
     if (response) {
       setSlider(response?.data);
-      setLoading(false);
+      setSliderLoading(false);
     }
   };
 
@@ -125,6 +126,20 @@ export default function LandingDelivery(props: any) {
     loadItemFromApi();
   }, [searchText]);
 
+  let propsWithParams;
+  propsWithParams = {
+    ...props,
+    route: {
+      params: {
+        type: "businesses",
+        typeCategory: "business_category",
+        typeCategoryUrl: "business-categories",
+        typeCategoryLabel: "കാറ്റഗറി",
+        main: "Business",
+      },
+    },
+  };
+
   let _renderItem = ({ item, index }: any) => {
     let itemImage =
       apiDomain +
@@ -146,12 +161,12 @@ export default function LandingDelivery(props: any) {
     return (
       <TouchableOpacity
         activeOpacity={0.95}
-        onPress={() =>
-          props?.navigation?.navigate(mainProp, {
-            itemId: id,
-            type: type,
-          })
-        }
+        // onPress={() =>
+        //   props?.navigation?.navigate(mainProp, {
+        //     itemId: id,
+        //     type: type,
+        //   })
+        // }
         style={{
           padding: 10,
         }}
@@ -173,7 +188,7 @@ export default function LandingDelivery(props: any) {
   return (
     <Box bg={"white"} mt={2}>
       <SafeAreaView>
-        {loading ? (
+        {sliderLoading ? (
           <View
             style={{
               width: width - 20,
@@ -214,7 +229,7 @@ export default function LandingDelivery(props: any) {
             loading={loading}
             data={items}
             onClick={handleSelectItem}
-            props={props}
+            props={propsWithParams}
           />
         </View>
       </SafeAreaView>
