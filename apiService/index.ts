@@ -7,8 +7,14 @@ import {
 } from "../models/model";
 import { get } from "../services/http";
 
+interface INameValue {
+  name: string;
+  value: any;
+}
+
 interface ILoadItemParam {
   type: string;
+  filters: INameValue[];
   fields: string[];
   populate: string[];
   sort: string[];
@@ -22,6 +28,12 @@ export async function loadItem(param: ILoadItemParam): Promise<{
   data: any[];
 } | null> {
   try {
+    const filtersParams = param?.filters
+      .map(
+        (filter: any, index: number) =>
+          `filters[${filter?.name}][$eq]=${filter?.value}`
+      )
+      .join("&");
     const fieldsParams = param?.fields
       .map((field: string, index: number) => `fields[${index}]=${field}`)
       .join("&");
@@ -32,7 +44,7 @@ export async function loadItem(param: ILoadItemParam): Promise<{
       .map((item: string, index: number) => `sort[${index}]=${item}`)
       .join("&");
 
-    const url = `${apiUrl2}${param?.type}?${populateParams}&${fieldsParams}&${sortParams}&pagination[page]=${param?.pageNumber}&pagination[pageSize]=${param?.pageSize}&filters[$or][0][name][$contains]=${param?.searchText}&filters[$or][1][nameMalayalam][$contains]=${param?.searchText}`;
+    const url = `${apiUrl2}${param?.type}?${populateParams}&${fieldsParams}&${filtersParams}&${sortParams}&pagination[page]=${param?.pageNumber}&pagination[pageSize]=${param?.pageSize}&filters[$or][0][name][$contains]=${param?.searchText}&filters[$or][1][nameMalayalam][$contains]=${param?.searchText}`;
     const response = await get(url);
     return response?.data as any;
   } catch (err) {
@@ -43,6 +55,7 @@ export async function loadItem(param: ILoadItemParam): Promise<{
 interface ILoadItemCategoryParam {
   typeCategoryUrl: string;
   pageSize: number;
+  params: any;
 }
 
 export async function loadItemCategory(param: ILoadItemCategoryParam): Promise<{
@@ -50,7 +63,14 @@ export async function loadItemCategory(param: ILoadItemCategoryParam): Promise<{
   data: ICategory[];
 } | null> {
   try {
-    const url = `${apiUrl2}${param?.typeCategoryUrl}`;
+    const filtersParams = param?.params?.filters
+      .map(
+        (filter: any, index: number) =>
+          `filters[${filter?.name}][$eq]=${filter?.value}`
+      )
+      .join("&");
+    const url = `${apiUrl2}${param?.typeCategoryUrl}?${filtersParams}`;
+    console.log(url);
     const response = await get(url);
     return response?.data as any;
   } catch (err) {
