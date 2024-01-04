@@ -26,6 +26,8 @@ export default function MainEventComponent(props: any) {
 
   let typeCategory = "";
 
+  console.log(eventDetails?.from, "event");
+
   useEffect(() => {
     loadEventDetailsFromApi();
   }, []);
@@ -156,7 +158,6 @@ export default function MainEventComponent(props: any) {
                       />
                     </View>
                     <View style={styles.textContainer}>
-                      {/* <Text>കാലാവധി</Text> */}
                       <Text style={styles.value}>
                         {moment(eventDetails.from).format("DD MMM YYYY")} -{" "}
                         {moment(eventDetails.to).format("DD MMM YYYY")}
@@ -446,101 +447,125 @@ export default function MainEventComponent(props: any) {
               </View>
 
               {eventDetails?.schedule ? (
-                <Text
-                  style={{
-                    textAlign: "center",
-                    fontSize: 18,
-                  }}
-                >
-                  കാര്യപരിപാടികൾ
-                </Text>
-              ) : null}
-
-              {eventDetails?.schedule ? (
-                <View style={styles.sheduleContainer}>
-                  {eventDetails?.schedule.map(
-                    (shedule: any, sheduleIndex: number) => {
-                      return (
-                        <View key={sheduleIndex}>
-                          <View
-                            style={{
-                              marginTop: 10,
-                              marginBottom: 10,
-                              backgroundColor: "#2b2b2b",
-                              borderRadius: 5,
-                              padding: 10,
-                              opacity: 0.99,
-                            }}
-                          >
-                            <Text
+                <>
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      fontSize: 18,
+                    }}
+                  >
+                    കാര്യപരിപാടികൾ
+                  </Text>
+                  <View style={styles.sheduleContainer}>
+                    {eventDetails?.schedule.map(
+                      (shedule: any, sheduleIndex: number) => {
+                        return (
+                          <View key={sheduleIndex}>
+                            <View
                               style={{
-                                textAlign: "left",
-                                fontSize: 15,
-                                fontWeight: "bold",
-                                color: "white",
+                                marginTop: 10,
+                                marginBottom: 10,
+                                backgroundColor: "#2b2b2b",
+                                borderRadius: 5,
+                                padding: 10,
+                                opacity: 0.99,
                               }}
                             >
-                              {shedule.day}
-                            </Text>
-                            <Text
-                              style={{
-                                textAlign: "left",
-                                color: "white",
-                              }}
-                            >
-                              {shedule.title}
-                            </Text>
-                          </View>
-                          {shedule.scheduleDay.map(
-                            (item: any, daySheduleIndex: number) => {
-                              return (
-                                <View
-                                  key={daySheduleIndex}
-                                  style={{
-                                    marginTop: 20,
-                                  }}
-                                >
+                              <Text
+                                style={{
+                                  textAlign: "left",
+                                  fontSize: 15,
+                                  fontWeight: "bold",
+                                  color: "white",
+                                }}
+                              >
+                                {shedule.day}
+                              </Text>
+                              <Text
+                                style={{
+                                  textAlign: "left",
+                                  color: "white",
+                                }}
+                              >
+                                {shedule.title}
+                              </Text>
+                            </View>
+                            {shedule.scheduleDay.map(
+                              (item: any, daySheduleIndex: number) => {
+                                return (
                                   <View
+                                    key={daySheduleIndex}
                                     style={{
-                                      display: "flex",
-                                      flexDirection: "column",
-                                      alignContent: "center",
-                                      justifyContent: "center",
+                                      marginTop: 10,
                                     }}
                                   >
                                     <View
                                       style={{
                                         display: "flex",
-                                        flexDirection: "row",
-                                        marginBottom: 10,
+                                        flexDirection: "column",
+                                        alignContent: "center",
+                                        justifyContent: "center",
                                       }}
                                     >
                                       <View
                                         style={{
-                                          marginRight: 8,
+                                          display: "flex",
+                                          flexDirection: "row",
+                                          marginBottom: 5,
                                         }}
                                       >
-                                        <EvilIcons
-                                          name="clock"
-                                          size={20}
-                                          color="black"
-                                        />
+                                        <View
+                                          style={{
+                                            marginRight: 8,
+                                            paddingTop: 4,
+                                          }}
+                                        >
+                                          <EvilIcons
+                                            name="clock"
+                                            size={20}
+                                            color="black"
+                                          />
+                                        </View>
+                                        <View
+                                          style={{
+                                            display: "flex",
+                                            flexDirection: "row",
+                                          }}
+                                        >
+                                          <Text
+                                            fontSize={18}
+                                            style={{
+                                              color: "#383838",
+                                            }}
+                                          >
+                                            {item.time}
+                                          </Text>
+                                          <Text> - </Text>
+                                          <Text bold fontSize={18}>
+                                            {item.title}
+                                          </Text>
+                                        </View>
                                       </View>
-                                      <Text bold fontSize={18}>
-                                        {item.time} - {item.title}
-                                      </Text>
                                     </View>
+                                    {item.description && (
+                                      <Text
+                                        style={{
+                                          marginBottom: 10,
+                                        }}
+                                      >
+                                        {item.description}
+                                      </Text>
+                                    )}
                                   </View>
-                                  <Text>{item.description}</Text>
-                                </View>
-                              );
-                            }
-                          )}
-                        </View>
-                      );
-                    }
-                  )}
-                </View>
+                                );
+                              }
+                            )}
+                          </View>
+                        );
+                      }
+                    )}
+                  </View>
+                </>
               ) : null}
             </View>
           )}

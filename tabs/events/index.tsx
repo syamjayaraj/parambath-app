@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, Animated, Easing } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
-import ListWithCarousel from "../components/list-with-carousel";
 import MainEventComponent from "../components/main-event";
+import ListWithCarouselEventComponent from "../components/list-with-carousel-event";
 
 const Stack = createStackNavigator();
 
@@ -28,7 +28,7 @@ function EventComponent() {
     >
       <Stack.Screen
         name="Home"
-        component={ListWithCarousel}
+        component={ListWithCarouselEventComponent}
         options={{
           headerShown: true,
           gestureDirection: "horizontal",

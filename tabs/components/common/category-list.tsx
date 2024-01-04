@@ -52,7 +52,7 @@ export default function CategoryList({
             </TouchableOpacity>
           </View>
         )}
-        keyExtractor={(item: any) => item._id}
+        keyExtractor={(item: any) => item.id}
       />
       {data?.length !== 0 && (
         <View style={styles.categoryMore}>
@@ -92,9 +92,7 @@ export default function CategoryList({
               <View style={{ padding: 10, marginTop: 0 }}>
                 <TouchableOpacity
                   style={[styles.categoryExpItem]}
-                  onPress={() =>
-                    handleSelectCategoryFromPopup(Number(item._id))
-                  }
+                  onPress={() => handleSelectCategoryFromPopup(Number(item.id))}
                 >
                   <Text
                     style={[
@@ -109,7 +107,7 @@ export default function CategoryList({
                 </TouchableOpacity>
               </View>
             )}
-            keyExtractor={(item: any) => item._id}
+            keyExtractor={(item: any) => item.id}
           />
         </View>
       </RBSheet>
