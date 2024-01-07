@@ -10,7 +10,9 @@ import { IBusiness, ICategory, IPagination } from "../../../models/model";
 
 export default function ListComponent(props: any) {
   const [categories, setCategories] = useState<ICategory[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<number>();
+  const [selectedCategory, setSelectedCategory] = useState<
+    number | undefined
+  >();
   const [searchText, setSearchText] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
   const [items, setItems] = useState<IBusiness[] | undefined>([]);
@@ -28,7 +30,11 @@ export default function ListComponent(props: any) {
   };
 
   const handleSelectCategory = (categoryId: number) => {
-    setSelectedCategory(categoryId);
+    if (categoryId === selectedCategory) {
+      setSelectedCategory(undefined);
+    } else {
+      setSelectedCategory(categoryId);
+    }
   };
 
   const handleSelectItem = (itemId: string) => {};
@@ -72,7 +78,7 @@ export default function ListComponent(props: any) {
       filters = [
         {
           name: "small",
-          value: extra === "small" ? true : false,
+          value: extra === "small" ? false : true,
         },
       ];
     }
@@ -86,6 +92,8 @@ export default function ListComponent(props: any) {
       fields: fields,
       sort: sort,
       populate: [typeCategory],
+      categoryType: typeCategory,
+      categoryId: selectedCategory,
       searchText: searchText,
       pageNumber: pageParam ? pageNumber : pageNumber,
       pageSize: pageSize,
@@ -108,7 +116,7 @@ export default function ListComponent(props: any) {
 
   useEffect(() => {
     loadItemFromApi();
-  }, [searchText]);
+  }, [type, typeCategory, selectedCategory, searchText, pageNumber, pageSize]);
 
   return (
     <Box bg={"white"} mt={2}>
@@ -119,6 +127,7 @@ export default function ListComponent(props: any) {
             data={categories}
             typeCategoryLabel={typeCategoryLabel}
             onClick={handleSelectCategory}
+            selectedCategory={selectedCategory}
           />
         </View>
         <View style={styles.sectionContainer}>

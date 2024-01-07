@@ -7,6 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 interface customProps {
   data: any;
   typeCategoryLabel: string;
+  selectedCategory: number | undefined;
   onClick: (categoryId: number) => void;
 }
 
@@ -14,6 +15,7 @@ export default function CategoryList({
   data,
   onClick,
   typeCategoryLabel,
+  selectedCategory,
 }: customProps) {
   const { height } = Dimensions.get("window");
   const refRBSheet: any = useRef();
@@ -36,14 +38,20 @@ export default function CategoryList({
         renderItem={({ item }: any) => (
           <View style={{ padding: 10, marginTop: 0 }}>
             <TouchableOpacity
-              style={[styles.categoryBadge]}
+              style={[
+                styles.categoryBadge,
+                {
+                  backgroundColor:
+                    selectedCategory === item?.id ? "black" : "white",
+                },
+              ]}
               onPress={() => handleSelectCategory(Number(item?.id))}
             >
               <Text
                 style={[
                   styles.categoryBadgeText,
                   {
-                    color: "black",
+                    color: selectedCategory === item?.id ? "white" : "black",
                   },
                 ]}
               >
@@ -91,14 +99,21 @@ export default function CategoryList({
             renderItem={({ item }: any) => (
               <View style={{ padding: 10, marginTop: 0 }}>
                 <TouchableOpacity
-                  style={[styles.categoryExpItem]}
+                  style={[
+                    styles.categoryExpItem,
+                    {
+                      backgroundColor:
+                        selectedCategory === item?.id ? "black" : "white",
+                    },
+                  ]}
                   onPress={() => handleSelectCategoryFromPopup(Number(item.id))}
                 >
                   <Text
                     style={[
                       styles.categoryExpItemText,
                       {
-                        color: "black",
+                        color:
+                          selectedCategory === item?.id ? "white" : "black",
                       },
                     ]}
                   >
