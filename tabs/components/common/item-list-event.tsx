@@ -10,7 +10,6 @@ import {
 } from "native-base";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import callToTheNumber from "../../../utils/call-to-number";
 import moment from "moment";
 
 interface customProps {

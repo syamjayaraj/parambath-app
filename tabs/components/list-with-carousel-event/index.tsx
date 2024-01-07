@@ -45,7 +45,11 @@ export default function ListWithCarouselEventComponent(props: any) {
   };
 
   const handleSelectCategory = (categoryId: number) => {
-    setSelectedCategory(categoryId);
+    if (categoryId === selectedCategory) {
+      setSelectedCategory(undefined);
+    } else {
+      setSelectedCategory(categoryId);
+    }
   };
 
   const handleSelectItem = (itemId: string) => {};
@@ -114,9 +118,9 @@ export default function ListWithCarouselEventComponent(props: any) {
       apiDomain +
       item?.attributes?.image?.data?.attributes?.formats?.small?.url;
 
-    let mainProp = "";
-    let type = "";
-    let id = "";
+    let mainProp = "Event";
+    let type = "events";
+    let id = item?.attributes?.event?.data?.id;
 
     return (
       <TouchableOpacity
@@ -177,7 +181,7 @@ export default function ListWithCarouselEventComponent(props: any) {
         )}
         <View>
           <SearchBar onSearchData={handleSearch} categories={categories} />
-          <CategoryListEvent onClick={handleSelectCategory} />
+          {/* <CategoryListEvent onClick={handleSelectCategory} /> */}
         </View>
         <View style={styles.sectionContainer}>
           <ItemListEvent

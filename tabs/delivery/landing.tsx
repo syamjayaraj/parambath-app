@@ -45,7 +45,11 @@ export default function LandingDelivery(props: any) {
   };
 
   const handleSelectCategory = (categoryId: number) => {
-    setSelectedCategory(categoryId);
+    if (categoryId === selectedCategory) {
+      setSelectedCategory(undefined);
+    } else {
+      setSelectedCategory(categoryId);
+    }
   };
 
   const handleSelectItem = (itemId: string) => {};
@@ -227,6 +231,7 @@ export default function LandingDelivery(props: any) {
             data={categories}
             typeCategoryLabel={typeCategoryLabel}
             onClick={handleSelectCategory}
+            selectedCategory={selectedCategory}
           />
         </View>
         <View style={styles.sectionContainer}>
