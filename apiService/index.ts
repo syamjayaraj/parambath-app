@@ -14,15 +14,15 @@ interface INameValue {
 
 interface ILoadItemParam {
   type: string;
-  filters: INameValue[];
+  filters?: INameValue[];
   fields: string[];
   populate: string[];
   sort: string[];
   searchText: string;
   pageNumber: number;
   pageSize: number;
-  categoryId: number | undefined;
-  categoryType: string;
+  categoryId?: number | undefined;
+  categoryType?: string;
 }
 
 export async function loadItem(param: ILoadItemParam): Promise<{
@@ -30,12 +30,14 @@ export async function loadItem(param: ILoadItemParam): Promise<{
   data: any[];
 } | null> {
   try {
-    const filtersParams = param?.filters
-      .map(
-        (filter: any, index: number) =>
-          `filters[${filter?.name}][$eq]=${filter?.value}`
-      )
-      .join("&");
+    const filtersParams =
+      param?.filters &&
+      param?.filters
+        .map(
+          (filter: any, index: number) =>
+            `filters[${filter?.name}][$eq]=${filter?.value}`
+        )
+        .join("&");
     const fieldsParams = param?.fields
       .map((field: string, index: number) => `fields[${index}]=${field}`)
       .join("&");
