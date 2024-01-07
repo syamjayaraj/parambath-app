@@ -1,19 +1,17 @@
 import React from "react";
 import { StyleSheet, Text } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
-import Home from "./Home";
-import BusTimings from "./BusTimings";
-import List from "../components/List";
-import Main from "../components/Main";
+import Landing from "./landing";
+import ListComponent from "../components/list";
+import MainComponent from "../components/main";
 
 const Stack = createStackNavigator();
 
-function HomeComponent() {
-  function HomeTitle() {
+function HomeComponent(props: any) {
+  function LandingTitle() {
     return <Text style={styles.title}>പറമ്പത്ത്</Text>;
   }
-
-  function OtherTitle(props) {
+  function OtherTitle(props: any) {
     return <Text style={styles.subTitle}>{props.name}</Text>;
   }
 
@@ -26,7 +24,6 @@ function HomeComponent() {
           backgroundColor: "white",
           elevation: 1,
           borderWidth: 0,
-          elevation: 0,
           shadowOpacity: 0,
         },
         headerTintColor: "black",
@@ -36,31 +33,36 @@ function HomeComponent() {
       }}
     >
       <Stack.Screen
-        name="Home"
-        component={Home}
-        options={{ headerTitle: (props) => <HomeTitle {...props} /> }}
+        name="Landing"
+        component={Landing}
+        options={{
+          headerShown: false,
+          headerTitle: (props: any) => <LandingTitle {...props} />,
+        }}
       />
       <Stack.Screen
         name="Autos"
-        component={List}
+        component={ListComponent}
         options={{
           headerShown: true,
           gestureDirection: "horizontal",
-          headerTitle: (props) => <OtherTitle {...{ name: "ഓട്ടോ റിക്ഷകൾ" }} />,
+          headerTitle: (props: any) => (
+            <OtherTitle {...{ name: "ഓട്ടോ റിക്ഷകൾ" }} />
+          ),
         }}
       />
       <Stack.Screen
         name="BusTimings"
-        component={BusTimings}
+        component={ListComponent}
         options={{
           headerShown: true,
           gestureDirection: "horizontal",
-          headerTitle: (props) => <OtherTitle {...{ name: "ബസ് സമയം" }} />,
+          headerTitle: (props: any) => <OtherTitle {...{ name: "ബസ് സമയം" }} />,
         }}
       />
       <Stack.Screen
         name="Auto"
-        component={Main}
+        component={MainComponent}
         options={{
           headerShown: true,
           headerTransparent: true,
@@ -70,7 +72,7 @@ function HomeComponent() {
       />
       <Stack.Screen
         name="Workers"
-        component={List}
+        component={ListComponent}
         options={{
           headerShown: true,
           headerTitle: "ജോലിക്കാർ",
@@ -79,7 +81,7 @@ function HomeComponent() {
       />
       <Stack.Screen
         name="Worker"
-        component={Main}
+        component={MainComponent}
         options={{
           headerShown: true,
           headerTransparent: true,
@@ -89,7 +91,7 @@ function HomeComponent() {
       />
       <Stack.Screen
         name="Vehicles"
-        component={List}
+        component={ListComponent}
         options={{
           headerShown: true,
           headerTitle: "മറ്റു വാഹനങ്ങൾ",
@@ -98,7 +100,7 @@ function HomeComponent() {
       />
       <Stack.Screen
         name="Vehicle"
-        component={Main}
+        component={MainComponent}
         options={{
           headerShown: true,
           headerTransparent: true,
@@ -108,7 +110,7 @@ function HomeComponent() {
       />
       <Stack.Screen
         name="Businesses"
-        component={List}
+        component={ListComponent}
         options={{
           headerShown: true,
           headerTitle: "സ്ഥാപനങ്ങൾ",
@@ -117,7 +119,7 @@ function HomeComponent() {
       />
       <Stack.Screen
         name="Business"
-        component={Main}
+        component={MainComponent}
         options={{
           headerShown: true,
           headerTransparent: true,
@@ -127,7 +129,7 @@ function HomeComponent() {
       />
       <Stack.Screen
         name="Emergencies"
-        component={List}
+        component={ListComponent}
         options={{
           headerShown: true,
           headerTitle: "അത്യാഹിതം",
@@ -136,7 +138,7 @@ function HomeComponent() {
       />
       <Stack.Screen
         name="Emergency"
-        component={Main}
+        component={MainComponent}
         options={{
           headerShown: true,
           headerTransparent: true,
@@ -147,7 +149,7 @@ function HomeComponent() {
 
       <Stack.Screen
         name="Representatives"
-        component={List}
+        component={ListComponent}
         options={{
           headerShown: true,
           headerTitle: "ജന പ്രതിനിധികൾ",
@@ -156,7 +158,7 @@ function HomeComponent() {
       />
       <Stack.Screen
         name="Representative"
-        component={Main}
+        component={MainComponent}
         options={{
           headerShown: true,
           headerTransparent: true,
@@ -166,8 +168,8 @@ function HomeComponent() {
       />
 
       <Stack.Screen
-        name="Enterprises"
-        component={List}
+        name="SmallBusinesses"
+        component={ListComponent}
         options={{
           headerShown: true,
           headerTitle: "ചെറു സംരംഭങ്ങൾ",
@@ -175,8 +177,8 @@ function HomeComponent() {
         }}
       />
       <Stack.Screen
-        name="Enterprise"
-        component={Main}
+        name="SmallBusiness"
+        component={MainComponent}
         options={{
           headerShown: true,
           headerTransparent: true,
@@ -187,11 +189,11 @@ function HomeComponent() {
 
       <Stack.Screen
         name="OnlineServices"
-        component={List}
+        component={ListComponent}
         options={{
           headerShown: true,
           gestureDirection: "horizontal",
-          headerTitle: (props) => (
+          headerTitle: (props: any) => (
             <OtherTitle {...{ name: "ഓൺലൈൻ സേവനങ്ങൾ" }} />
           ),
         }}
@@ -199,7 +201,7 @@ function HomeComponent() {
 
       <Stack.Screen
         name="OnlineService"
-        component={Main}
+        component={MainComponent}
         options={{
           headerShown: true,
           headerTransparent: true,
@@ -214,7 +216,7 @@ function HomeComponent() {
 const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
-    fontSize: 30,
+    fontSize: 20,
     color: "black",
   },
   subTitle: {
