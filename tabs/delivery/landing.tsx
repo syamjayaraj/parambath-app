@@ -39,6 +39,7 @@ export default function LandingDelivery(props: any) {
   const typeCategoryLabel = "കാറ്റഗറി";
   const main = "Business";
 
+  console.log(categories, "cat");
   const handleSearch = (param: string) => {
     setSearchText(param);
   };
@@ -67,10 +68,10 @@ export default function LandingDelivery(props: any) {
   const loadItemCategoryFromApi = async () => {
     setLoading(true);
     let filters: any = [
-      {
-        name: "onlineDelivery",
-        value: true,
-      },
+      // {
+      //   name: "onlineDelivery",
+      //   value: true,
+      // },
     ];
     let params = {
       filters: filters,
@@ -81,7 +82,7 @@ export default function LandingDelivery(props: any) {
       params: params,
     });
     if (response) {
-      setCategories(response?.data);
+      // setCategories(response?.data);
       setLoading(false);
     }
   };
@@ -109,6 +110,11 @@ export default function LandingDelivery(props: any) {
     const response = await loadItem(params);
     if (response) {
       setItems(response?.data);
+      let categoriesFiltered: any = [];
+      response?.data?.map((item) => {
+        categoriesFiltered?.push(item?.attributes?.business_category?.data);
+      });
+      setCategories(categoriesFiltered);
       setPagination(response?.meta);
       setLoading(false);
     }

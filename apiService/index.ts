@@ -21,6 +21,8 @@ interface ILoadItemParam {
   searchText: string;
   pageNumber: number;
   pageSize: number;
+  categoryId: number | undefined;
+  categoryType: string;
 }
 
 export async function loadItem(param: ILoadItemParam): Promise<{
@@ -43,8 +45,13 @@ export async function loadItem(param: ILoadItemParam): Promise<{
     const sortParams = param?.sort
       .map((item: string, index: number) => `sort[${index}]=${item}`)
       .join("&");
+    let categoryFilter = "";
+    if (param?.categoryId) {
+      categoryFilter = `&filters[${param?.categoryType}][id][$eq]=${param?.categoryId}`;
+    }
 
-    const url = `${apiUrl2}${param?.type}?${populateParams}&${fieldsParams}&${filtersParams}&${sortParams}&pagination[page]=${param?.pageNumber}&pagination[pageSize]=${param?.pageSize}&filters[$or][0][name][$contains]=${param?.searchText}&filters[$or][1][nameMalayalam][$contains]=${param?.searchText}`;
+    const url = `${apiUrl2}${param?.type}?${populateParams}&${fieldsParams}&${filtersParams}&${sortParams}&pagination[page]=${param?.pageNumber}&pagination[pageSize]=${param?.pageSize}&filters[$or][0][name][$contains]=${param?.searchText}&filters[$or][1][nameMalayalam][$contains]=${param?.searchText}${categoryFilter}`;
+    console.log(url, "url");
     const response = await get(url);
     return response?.data as any;
   } catch (err) {
@@ -63,14 +70,16 @@ export async function loadItemCategory(param: ILoadItemCategoryParam): Promise<{
   data: ICategory[];
 } | null> {
   try {
-    const filtersParams = param?.params?.filters
-      .map(
-        (filter: any, index: number) =>
-          `filters[${filter?.name}][$eq]=${filter?.value}`
-      )
-      .join("&");
+    let filtersParams = [];
+    if (param?.params?.filters?.length !== 0) {
+      filtersParams = param?.params?.filters
+        .map(
+          (filter: any, index: number) =>
+            `filters[${filter?.name}][$eq]=${filter?.value}`
+        )
+        .join("&");
+    }
     const url = `${apiUrl2}${param?.typeCategoryUrl}?${filtersParams}`;
-    console.log(url);
     const response = await get(url);
     return response?.data as any;
   } catch (err) {
