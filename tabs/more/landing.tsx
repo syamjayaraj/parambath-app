@@ -17,12 +17,14 @@ import {
   FlatList,
 } from "native-base";
 import axios from "axios";
-import { apiUrl } from "../../config";
+import { apiUrl, apiUrl2 } from "../../config";
 import { Ionicons, EvilIcons } from "@expo/vector-icons";
 import * as appJson from "../../app.json";
+import { fetchContent } from "../../apiService";
 
 export default function Landing(props: any) {
-  let [settings, setSettings] = useState<any>({});
+  const [content, setContent] = useState<any>({});
+  const [loading, setLoading] = useState(false);
 
   const listData = [
     {
@@ -60,26 +62,30 @@ export default function Landing(props: any) {
   ];
 
   useEffect(() => {
-    fetchSettings();
+    fetchContentFromApi();
   }, []);
 
-  let fetchSettings = async () => {
+  const fetchContentFromApi = async () => {
     try {
-      let response = await axios.get(`${apiUrl}/settings`);
-      if (response && response.data && response.data.status == 200) {
-        setSettings(response.data.data);
+      setLoading(true);
+      const response: any = await fetchContent("settings");
+      if (response && response?.data) {
+        setContent(response?.data);
       } else {
       }
-    } catch (err: any) {}
+      setLoading(false);
+    } catch (err: any) {
+      setLoading(false);
+    }
   };
 
   let shareAppUrl = async () => {
     try {
       let appUrl =
-        Platform.OS === "ios" ? settings.appUrlIos : settings.appUrlAndroid;
+        Platform.OS === "ios" ? content?.appUrlIos : content?.appUrlAndroid;
       const result = await Share.share({
         title: "പറമ്പത്ത് ആപ്പ്",
-        message: settings.shareUrlMessage + appUrl,
+        message: content?.shareUrlMessage + appUrl,
         url: appUrl,
       });
       if (result.action === Share.sharedAction) {
@@ -131,7 +137,7 @@ export default function Landing(props: any) {
               />
             </Box>
 
-            {settings.shareUrlMessage ? (
+            {content?.shareUrlMessage ? (
               <TouchableOpacity
                 onPress={shareAppUrl}
                 style={{

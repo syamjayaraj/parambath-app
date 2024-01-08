@@ -11,7 +11,7 @@ import {
 import { Box, Text, ScrollView } from "native-base";
 import Carousel from "react-native-snap-carousel";
 import axios from "axios";
-import { apiDomain, apiUrl, apiUrl2 } from "../../config";
+import { apiDomain } from "../../config";
 import { loadSliderHome } from "../../apiService";
 import { ISliderHome } from "../../models/model";
 
