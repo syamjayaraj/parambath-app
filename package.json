@@ -27,6 +27,7 @@
     "react-native-markdown-display": "^7.0.0-alpha.2",
     "react-native-phone-call": "^1.2.0",
     "react-native-raw-bottom-sheet": "^2.2.0",
+    "react-native-render-html": "^6.3.4",
     "react-native-snap-carousel": "^3.9.1"
   },
   "devDependencies": {

@@ -26,8 +26,6 @@ export default function MainEventComponent(props: any) {
 
   let typeCategory = "";
 
-  console.log(eventDetails?.from, "event");
-
   useEffect(() => {
     loadEventDetailsFromApi();
   }, []);

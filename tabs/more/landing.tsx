@@ -4,7 +4,6 @@ import {
   View,
   Share,
   TouchableOpacity,
-  Image,
   Platform,
   SafeAreaView,
 } from "react-native";
@@ -19,7 +18,6 @@ import {
 } from "native-base";
 import axios from "axios";
 import { apiUrl } from "../../config";
-import * as WebBrowser from "expo-web-browser";
 import { Ionicons, EvilIcons } from "@expo/vector-icons";
 import * as appJson from "../../app.json";
 
@@ -96,15 +94,6 @@ export default function Landing(props: any) {
     } catch (error: any) {
       alert(error.message);
     }
-  };
-
-  const openBrowser = async (params: any) => {
-    try {
-      let { url } = params;
-      let result = await WebBrowser.openAuthSessionAsync(url, url, {
-        showInRecents: true,
-      });
-    } catch (err: any) {}
   };
 
   return (

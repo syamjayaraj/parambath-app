@@ -53,7 +53,6 @@ export async function loadItem(param: ILoadItemParam): Promise<{
     }
 
     const url = `${apiUrl2}${param?.type}?${populateParams}&${fieldsParams}&${filtersParams}&${sortParams}&pagination[page]=${param?.pageNumber}&pagination[pageSize]=${param?.pageSize}&filters[$or][0][name][$contains]=${param?.searchText}&filters[$or][1][nameMalayalam][$contains]=${param?.searchText}${categoryFilter}`;
-    console.log(url, "url");
     const response = await get(url);
     return response?.data as any;
   } catch (err) {
@@ -175,6 +174,19 @@ export async function loadSliderEvent(): Promise<{
 } | null> {
   try {
     const url = `${apiUrl2}slider-events?populate=*`;
+    const response = await get(url);
+    return response?.data as any;
+  } catch (err) {
+    return null;
+  }
+}
+
+export async function fetchContent(type: string): Promise<{
+  meta: IPagination;
+  data: any;
+} | null> {
+  try {
+    const url = `${apiUrl2}${type}?populate=*`;
     const response = await get(url);
     return response?.data as any;
   } catch (err) {

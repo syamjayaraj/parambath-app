@@ -10,7 +10,7 @@ import { Text, Spinner, Box, ScrollView } from "native-base";
 const { width } = Dimensions.get("window");
 import { Ionicons } from "@expo/vector-icons";
 import Accordion from "react-native-collapsible/Accordion";
-import * as apiService from "../../api-service/index";
+import { fetchContent } from "../../apiService";
 
 export default function Help(props: any) {
   const [content, setContent] = useState([]);
@@ -18,15 +18,15 @@ export default function Help(props: any) {
   const [activeSections, setActiveSections] = useState<any>([]);
 
   useEffect(() => {
-    fetchContent();
+    fetchContentFromApi();
   }, []);
 
-  const fetchContent = async () => {
+  const fetchContentFromApi = async () => {
     try {
       setLoading(true);
-      const response: any = await apiService?.fetchContent("helps");
-      if (response && response?.data && response?.status == 200) {
-        setContent(response?.data?.data);
+      const response: any = await fetchContent("helps");
+      if (response && response?.data) {
+        setContent(response?.data);
       } else {
       }
       setLoading(false);
@@ -64,6 +64,8 @@ export default function Help(props: any) {
       </View>
     );
   }
+
+  console.log(content, "content");
 
   const renderContent = (item: any) => {
     return (

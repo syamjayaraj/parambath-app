@@ -42,7 +42,6 @@ export default function ItemListEvent({
           onEndReachedThreshold={0.1}
           renderItem={({ item, index }: any) => (
             <>
-              {console.log(item?.attributes, "from")}
               <TouchableOpacity
                 onPress={() =>
                   props?.navigation?.navigate(mainProp, {

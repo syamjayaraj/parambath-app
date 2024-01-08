@@ -2,18 +2,11 @@ import React from "react";
 import { StyleSheet, Text } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Landing from "./landing";
-import Cooking from "./cooking";
-
 import Contact from "./contact";
 import Help from "./help";
 import About from "./about";
 import Contributors from "./contributors";
-
 import Terms from "./terms";
-
-import ListWeb from "../components/list-web";
-import List from "../components/list";
-import Main from "../components/main";
 
 const Stack = createStackNavigator();
 
@@ -46,80 +39,6 @@ function MoreComponent() {
           headerTitle: (props: any) => (
             <OtherTitle {...{ name: "മറ്റുള്ളവ" }} />
           ),
-        }}
-      />
-      <Stack.Screen
-        name="Channels"
-        component={ListWeb}
-        options={{
-          headerShown: true,
-          gestureDirection: "horizontal",
-          headerTitle: (props: any) => (
-            <OtherTitle {...{ name: "തത്സമയ ചാനലുകൾ" }} />
-          ),
-        }}
-        initialParams={{
-          url: "channel",
-        }}
-      />
-      <Stack.Screen
-        name="Tools"
-        component={ListWeb}
-        options={{
-          headerShown: true,
-          gestureDirection: "horizontal",
-          headerTitle: (props: any) => (
-            <OtherTitle {...{ name: "ഓൺലൈൻ ടൂൾസ്" }} />
-          ),
-        }}
-        initialParams={{
-          url: "tool",
-        }}
-      />
-      <Stack.Screen
-        name="Cooking"
-        component={Cooking}
-        options={{
-          headerShown: true,
-          gestureDirection: "horizontal",
-          headerTitle: (props: any) => <OtherTitle {...{ name: "പാചകം" }} />,
-        }}
-        initialParams={{
-          url: "cooking",
-        }}
-      />
-      <Stack.Screen
-        name="Games"
-        component={ListWeb}
-        options={{
-          headerShown: true,
-          gestureDirection: "horizontal",
-          headerTitle: (props: any) => <OtherTitle {...{ name: "കളികൾ" }} />,
-        }}
-        initialParams={{
-          url: "game",
-        }}
-      />
-      <Stack.Screen
-        name="Offers"
-        component={List}
-        options={{
-          headerShown: true,
-          gestureDirection: "horizontal",
-          headerTitle: (props: any) => <OtherTitle {...{ name: "ഓഫറുകൾ" }} />,
-        }}
-        initialParams={{
-          url: "game",
-        }}
-      />
-      <Stack.Screen
-        name="Offer"
-        component={Main}
-        options={{
-          headerShown: true,
-          headerTransparent: true,
-          headerTitle: "",
-          gestureDirection: "horizontal",
         }}
       />
 
