@@ -12,7 +12,11 @@ import SearchBar from "../components/common/search-bar";
 import CategoryList from "../components/common/category-list";
 import ItemList from "../components/common/item-list";
 import { apiDomain, pageSize } from "../../config";
-import { loadItem, loadItemCategory, loadSliderEvent } from "../../apiService";
+import {
+  loadItem,
+  loadItemCategory,
+  loadSliderDelivery,
+} from "../../apiService";
 import {
   IBusiness,
   ICategory,
@@ -61,7 +65,7 @@ export default function LandingDelivery(props: any) {
 
   const loadSliderHomeFromApi = async (pageParam?: number) => {
     setSliderLoading(true);
-    const response = await loadSliderEvent();
+    const response = await loadSliderDelivery();
     if (response) {
       setSlider(response?.data);
       setSliderLoading(false);
@@ -154,28 +158,21 @@ export default function LandingDelivery(props: any) {
       apiDomain +
       item?.attributes?.image?.data?.attributes?.formats?.small?.url;
 
-    let mainProp = "";
-    let type = "";
-    let id = "";
+    let mainProp = "Business";
+    let type = "businesses";
+    let id = item?.attributes?.business?.data?.id;
 
-    if (item?.attributes?.business?.data !== null) {
-      mainProp = "Business";
-      type = "businesses";
-      id = item?.attributes?.business?.data?.id;
-    } else if (item?.attributes?.small_business?.data !== null) {
-      mainProp = "SmallBusiness";
-      type = "small-businesses";
-      id = item?.attributes?.small_business?.data?.id;
-    }
+    console.log(item?.attributes, "iii");
+
     return (
       <TouchableOpacity
         activeOpacity={0.95}
-        // onPress={() =>
-        //   props?.navigation?.navigate(mainProp, {
-        //     itemId: id,
-        //     type: type,
-        //   })
-        // }
+        onPress={() =>
+          props?.navigation?.navigate(mainProp, {
+            itemId: id,
+            type: type,
+          })
+        }
         style={{
           padding: 10,
         }}
