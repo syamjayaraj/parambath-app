@@ -181,12 +181,26 @@ export async function loadSliderEvent(): Promise<{
   }
 }
 
+export async function loadSliderDelivery(): Promise<{
+  meta: IPagination;
+  data: ISliderHome[];
+} | null> {
+  try {
+    const url = `${apiUrl2}slider-deliveries?populate=*`;
+    const response = await get(url);
+    return response?.data as any;
+  } catch (err) {
+    return null;
+  }
+}
+
 export async function fetchContent(type: string): Promise<{
   meta: IPagination;
   data: any;
 } | null> {
   try {
     const url = `${apiUrl2}${type}?populate=*`;
+    console.warn(url, "justme");
     const response = await get(url);
     return response?.data as any;
   } catch (err) {

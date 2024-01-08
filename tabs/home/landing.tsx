@@ -10,7 +10,6 @@ import {
 
 import { Box, Text, ScrollView } from "native-base";
 import Carousel from "react-native-snap-carousel";
-import axios from "axios";
 import { apiDomain } from "../../config";
 import { loadSliderHome } from "../../apiService";
 import { ISliderHome } from "../../models/model";
@@ -18,9 +17,7 @@ import { ISliderHome } from "../../models/model";
 const { width } = Dimensions.get("window");
 
 export default function Landing(props: any) {
-  const [carousel, setCarousel] = useState([]);
   const [slider, setSlider] = useState<ISliderHome[]>([]);
-  const [settings, setSettings] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

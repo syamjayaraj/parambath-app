@@ -16,8 +16,6 @@ import {
   Spacer,
   FlatList,
 } from "native-base";
-import axios from "axios";
-import { apiUrl, apiUrl2 } from "../../config";
 import { Ionicons, EvilIcons } from "@expo/vector-icons";
 import * as appJson from "../../app.json";
 import { fetchContent } from "../../apiService";
@@ -68,7 +66,7 @@ export default function Landing(props: any) {
   const fetchContentFromApi = async () => {
     try {
       setLoading(true);
-      const response: any = await fetchContent("settings");
+      const response: any = await fetchContent("setting");
       if (response && response?.data) {
         setContent(response?.data);
       } else {
