@@ -12,7 +12,7 @@ import { Text, Spinner, Box, ScrollView } from "native-base";
 import call from "react-native-phone-call";
 import * as WebBrowser from "expo-web-browser";
 import { Ionicons } from "@expo/vector-icons";
-import * as apiService from "../../api-service/index";
+import { fetchContent } from "../../apiService";
 
 const { width } = Dimensions.get("window");
 
@@ -21,15 +21,15 @@ export default function Contact() {
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    fetchContent();
+    fetchContentFromApi();
   }, []);
 
-  const fetchContent = async () => {
+  const fetchContentFromApi = async () => {
     try {
       setLoading(true);
-      const response: any = await apiService?.fetchContent("setting");
-      if (response && response?.data && response?.status == 200) {
-        setContent(response?.data?.data);
+      const response: any = await fetchContent("setting");
+      if (response && response?.data) {
+        setContent(response?.data);
       } else {
       }
       setLoading(false);

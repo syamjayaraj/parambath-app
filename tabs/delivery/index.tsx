@@ -14,7 +14,7 @@ function DeliveryComponent(props: any) {
 
   return (
     <Stack.Navigator
-      initialRouteName="Home"
+      initialRouteName="ഡെലിവറി"
       screenOptions={{
         headerShown: false,
         headerStyle: {
@@ -30,7 +30,7 @@ function DeliveryComponent(props: any) {
       }}
     >
       <Stack.Screen
-        name="Landing"
+        name="ഡെലിവറി"
         component={LandingDelivery}
         options={{
           headerTitle: (props: any) => (

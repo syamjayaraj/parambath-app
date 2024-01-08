@@ -39,7 +39,6 @@ export default function LandingDelivery(props: any) {
   const typeCategoryLabel = "കാറ്റഗറി";
   const main = "Business";
 
-  console.log(categories, "cat");
   const handleSearch = (param: string) => {
     setSearchText(param);
   };

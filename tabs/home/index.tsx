@@ -33,7 +33,7 @@ function HomeComponent(props: any) {
       }}
     >
       <Stack.Screen
-        name="Landing"
+        name="ഹോം"
         component={Landing}
         options={{
           headerShown: false,

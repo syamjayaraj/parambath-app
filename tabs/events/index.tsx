@@ -27,7 +27,7 @@ function EventComponent() {
       }}
     >
       <Stack.Screen
-        name="Home"
+        name="പരിപാടികൾ"
         component={ListWithCarouselEventComponent}
         options={{
           headerShown: true,
