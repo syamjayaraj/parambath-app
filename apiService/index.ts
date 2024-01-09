@@ -194,13 +194,12 @@ export async function loadSliderDelivery(): Promise<{
   }
 }
 
-export async function fetchContent(type: string): Promise<{
+export async function fetchNotification(): Promise<{
   meta: IPagination;
   data: any;
 } | null> {
   try {
-    const url = `${apiUrl2}${type}?populate=*`;
-    console.warn(url, "justme");
+    const url = `${apiUrl2}notifications?populate=*&sort[0]=date:desc`;
     const response = await get(url);
     return response?.data as any;
   } catch (err) {
