@@ -1,9 +1,7 @@
 import React from "react";
-
 import { createStackNavigator } from "@react-navigation/stack";
 import { StyleSheet, Text } from "react-native";
-import List from "../components/list";
-import Main from "../components/main";
+import ListNotificationComponent from "../components/list-notification";
 
 const Stack = createStackNavigator();
 
@@ -29,7 +27,7 @@ function NotificationComponent() {
     >
       <Stack.Screen
         name="Home"
-        component={List}
+        component={ListNotificationComponent}
         options={{
           headerShown: true,
           gestureDirection: "horizontal",
@@ -44,16 +42,6 @@ function NotificationComponent() {
           itemCategory: "notificationCategory",
           main: "Notification",
           title: true,
-        }}
-      />
-      <Stack.Screen
-        name="Notification"
-        component={Main}
-        options={{
-          headerShown: true,
-          headerTransparent: true,
-          headerTitle: "",
-          gestureDirection: "horizontal",
         }}
       />
     </Stack.Navigator>
