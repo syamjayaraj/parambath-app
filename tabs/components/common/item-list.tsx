@@ -1,24 +1,19 @@
-import {
-  Box,
-  FlatList,
-  HStack,
-  Spacer,
-  Spinner,
-  Text,
-  VStack,
-  View,
-} from "native-base";
+import { Box, HStack, Spacer, Spinner, Text, VStack, View } from "native-base";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import callToTheNumber from "../../../utils/call-to-number";
 import moment from "moment";
+import { FlatList } from "react-native-bidirectional-infinite-scroll";
+import ItemComponent from "../item";
+import ItemBusTimingComponent from "../item-bus-timing";
 
 interface customProps {
   loading: boolean;
   data: any;
   onClick: (categoryId: string) => void;
   props: any;
-  handleLoadMore: () => void;
+  handleLoadMore: () => Promise<void>;
+  handleLoadOld: () => Promise<void>;
 }
 
 export default function ItemList({
@@ -27,6 +22,7 @@ export default function ItemList({
   onClick,
   props,
   handleLoadMore,
+  handleLoadOld,
 }: customProps) {
   const type = props?.route?.params?.type;
   const typeCategory = props?.route?.params?.typeCategory;
@@ -59,107 +55,60 @@ export default function ItemList({
 
       {type === "bus-timings" && (
         <FlatList
+          initialNumToRender={20}
           data={data}
+          keyExtractor={(item: any) => item?.id?.toString()}
+          onStartReached={handleLoadOld}
           onEndReached={handleLoadMore}
-          onEndReachedThreshold={0.1}
-          renderItem={({ item, index }: any) => (
-            <>
-              <View style={styles.item}>
-                <Box>
-                  <HStack space={[3, 3]} justifyContent="space-between">
-                    <VStack>
-                      <Text bold>
-                        {item?.attributes?.nameMalayalam ??
-                          item?.attributes?.name}
-                      </Text>
-                      <Text
-                        color="coolGray.600"
-                        _dark={{
-                          color: "warmGray.200",
-                        }}
-                        fontSize={12}
-                      >
-                        {item?.attributes[typeCategory]?.data?.attributes
-                          ?.nameMalayalam ??
-                          item?.attributes[typeCategory]?.data?.attributes
-                            ?.name}{" "}
-                      </Text>
-                    </VStack>
-                    <Spacer />
-                    <View>
-                      <Text style={styles.time}>
-                        {moment(item?.attributes?.time, "HH:mm:ss").format(
-                          "hh:mm A"
-                        )}
-                      </Text>
-                    </View>
-                  </HStack>
-                </Box>
-              </View>
-            </>
-          )}
-          keyExtractor={(item: any) => item?.id}
-          ListFooterComponent={
+          showDefaultLoadingIndicators={true}
+          onStartReachedThreshold={10}
+          onEndReachedThreshold={10}
+          activityIndicatorColor={"black"}
+          HeaderLoadingIndicator={() =>
             loading ? <Spinner color="black" style={styles.loader} /> : null
           }
+          FooterLoadingIndicator={() =>
+            loading ? <Spinner color="black" style={styles.loader} /> : null
+          }
+          enableAutoscrollToTop={false}
+          renderItem={({ item, index }) => (
+            <ItemBusTimingComponent
+              item={item}
+              typeCategory={typeCategory}
+              index={index}
+            />
+          )}
         />
       )}
       {type !== "bus-timings" && (
         <>
           <FlatList
+            initialNumToRender={20}
             data={data}
+            keyExtractor={(item: any) => item?.id?.toString()}
+            onStartReached={handleLoadOld}
             onEndReached={handleLoadMore}
-            onEndReachedThreshold={0.1}
-            renderItem={({ item, index }: any) => (
-              <>
-                <TouchableOpacity
-                  onPress={() =>
-                    props?.navigation?.navigate(mainProp, {
-                      itemId: item.id,
-                      type: type,
-                      // typeCategory: typeCategory,
-                    })
-                  }
-                  style={styles.item}
-                  key={index}
-                >
-                  <Box>
-                    <HStack space={[3, 3]} justifyContent="space-between">
-                      <VStack>
-                        <Text bold>
-                          {item?.attributes?.nameMalayalam ??
-                            item?.attributes?.name}
-                        </Text>
-                        <Text
-                          color="coolGray.600"
-                          _dark={{
-                            color: "warmGray.200",
-                          }}
-                          fontSize={12}
-                        >
-                          {item?.attributes[typeCategory]?.data?.attributes
-                            ?.nameMalayalam ??
-                            item?.attributes[typeCategory]?.data?.attributes
-                              ?.name}{" "}
-                        </Text>
-                      </VStack>
-                      <Spacer />
-                      <TouchableOpacity
-                        onPress={() =>
-                          callToTheNumber(item?.attributes?.nameMalayalam, true)
-                        }
-                      >
-                        <Ionicons name="call-outline" size={20} color="black" />
-                      </TouchableOpacity>
-                    </HStack>
-                  </Box>
-                </TouchableOpacity>
-              </>
-            )}
-            keyExtractor={(item: any) => item?.id}
-            ListFooterComponent={
+            showDefaultLoadingIndicators={true}
+            onStartReachedThreshold={10}
+            onEndReachedThreshold={10}
+            activityIndicatorColor={"black"}
+            HeaderLoadingIndicator={() =>
               loading ? <Spinner color="black" style={styles.loader} /> : null
             }
+            FooterLoadingIndicator={() =>
+              loading ? <Spinner color="black" style={styles.loader} /> : null
+            }
+            enableAutoscrollToTop={false}
+            renderItem={({ item, index }) => (
+              <ItemComponent
+                item={item}
+                props={props}
+                mainProp={mainProp}
+                type={type}
+                typeCategory={typeCategory}
+                index={index}
+              />
+            )}
           />
         </>
       )}

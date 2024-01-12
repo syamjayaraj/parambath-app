@@ -4,7 +4,7 @@ import { Box } from "native-base";
 import SearchBar from "../common/search-bar";
 import CategoryList from "../common/category-list";
 import ItemList from "../common/item-list";
-import { pageSize } from "../../../config";
+import { categorySize, pageSize } from "../../../config";
 import { loadItem, loadItemCategory } from "../../../apiService";
 import { IBusiness, ICategory, IPagination } from "../../../models/model";
 import debounce from "lodash/debounce";
@@ -16,7 +16,7 @@ export default function ListComponent(props: any) {
   >();
   const [searchText, setSearchText] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
-  const [items, setItems] = useState<IBusiness[] | undefined>([]);
+  const [items, setItems] = useState<IBusiness[]>([]);
   const [pagination, setPagination] = useState<IPagination>();
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -25,6 +25,34 @@ export default function ListComponent(props: any) {
   const typeCategoryUrl = props.route.params.typeCategoryUrl;
   const typeCategoryLabel = props.route.params.typeCategoryLabel;
   const extra = props.route.params.extra;
+
+  let filters: any = [];
+  let fields = ["name", "nameMalayalam"];
+  let sort = ["name"];
+  if (type === "businesses") {
+    filters = [
+      {
+        name: "small",
+        value: extra === "small" ? true : false,
+      },
+    ];
+  }
+  if (type === "bus-timings") {
+    fields = [...fields, "time"];
+    sort = ["time"];
+  }
+  let params = {
+    type: type,
+    filters: filters,
+    fields: fields,
+    sort: sort,
+    populate: [typeCategory],
+    categoryType: typeCategory,
+    categoryId: selectedCategory,
+    searchText: searchText,
+    pageNumber: pageNumber,
+    pageSize: pageSize,
+  };
 
   const handleSearch = (param: string) => {
     setSearchText(param);
@@ -60,7 +88,7 @@ export default function ListComponent(props: any) {
     };
     const response = await loadItemCategory({
       typeCategoryUrl: typeCategoryUrl,
-      pageSize: 100,
+      pageSize: categorySize,
       params: params,
     });
     if (response) {
@@ -69,36 +97,13 @@ export default function ListComponent(props: any) {
     }
   };
 
-  const loadItemFromApi = async (pageParam?: number) => {
+  const loadItems = async (pageParam?: number) => {
     setLoading(true);
-    let filters: any = [];
-    let fields = ["name", "nameMalayalam"];
-    let sort = ["name"];
-    if (type === "businesses") {
-      filters = [
-        {
-          name: "small",
-          value: extra === "small" ? true : false,
-        },
-      ];
-    }
-    if (type === "bus-timings") {
-      fields = [...fields, "time"];
-      sort = ["time"];
-    }
-    let params = {
-      type: type,
-      filters: filters,
-      fields: fields,
-      sort: sort,
-      populate: [typeCategory],
-      categoryType: typeCategory,
-      categoryId: selectedCategory,
-      searchText: searchText,
-      pageNumber: pageParam ? pageParam : pageNumber,
-      pageSize: pageSize,
-    };
-    const response = await loadItem(params);
+    const response = await loadItem({
+      ...params,
+      pageNumber: pageParam || pageNumber,
+    });
+
     if (response) {
       const newData = response?.data;
       const existingData: any = items;
@@ -108,20 +113,57 @@ export default function ListComponent(props: any) {
     }
   };
 
-  const handleLoadMore = () => {
-    if ((pagination?.pagination?.total as number) < pageSize) {
-    } else {
-      const nextPageNumber = pageNumber + 1;
-      loadItemFromApi(nextPageNumber);
-      setPageNumber(nextPageNumber);
+  const handleLoadMore = (): Promise<void> => {
+    return new Promise(async (resolve, reject) => {
+      console.log(
+        pagination?.pagination?.total as number,
+        items?.length,
+        "rose"
+      );
+      try {
+        if ((pagination?.pagination?.total as number) < items?.length) {
+          resolve();
+          return;
+        }
+
+        const nextPageNumber = pageNumber + 1;
+        await loadItems(nextPageNumber);
+        setPageNumber(nextPageNumber);
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
+
+  const handleLoadOld = (): Promise<void> => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        resolve();
+        return;
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
+
+  const loadItemFromApi = async (pageNumberParam: number) => {
+    setLoading(true);
+    const response = await loadItem({
+      ...params,
+      pageNumber: pageNumberParam ?? pageNumber,
+    });
+    if (response) {
+      const data = response?.data;
+      setItems(data);
+      setPagination(response?.meta);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    loadItemFromApi();
+    loadItemFromApi(1);
   }, [type, typeCategory, selectedCategory, searchText]);
-
-  const debouncedHandleLoadMore = debounce(handleLoadMore, 100);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -136,7 +178,8 @@ export default function ListComponent(props: any) {
       </View>
       <View style={styles.sectionContainer}>
         <ItemList
-          handleLoadMore={debouncedHandleLoadMore}
+          handleLoadMore={handleLoadMore}
+          handleLoadOld={handleLoadOld}
           loading={loading}
           data={items}
           onClick={handleSelectItem}
@@ -153,6 +196,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingLeft: 20,
     paddingRight: 20,
-    // marginBottom: 100,
+    paddingBottom: 50,
   },
 });
