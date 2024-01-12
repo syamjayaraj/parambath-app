@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, SafeAreaView, FlatList } from "react-native";
 import { Box, Text, Heading, Stack, Center, HStack, VStack } from "native-base";
-import ItemList from "../common/item-list";
 import { pageSize } from "../../../config";
 import { fetchNotification } from "../../../apiService";
 import { IBusiness, IPagination } from "../../../models/model";

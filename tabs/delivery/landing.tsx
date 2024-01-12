@@ -85,7 +85,7 @@ export default function LandingDelivery(props: any) {
     };
     const response = await loadItemCategory({
       typeCategoryUrl: typeCategoryUrl,
-      pageSize: 100,
+      pageSize: pageSize,
       params: params,
     });
     if (response) {
