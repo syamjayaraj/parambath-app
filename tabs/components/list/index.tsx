@@ -41,7 +41,6 @@ export default function ListComponent(props: any) {
 
   useEffect(() => {
     loadItemCategoryFromApi();
-    loadItemFromApi(1);
   }, []);
 
   const loadItemCategoryFromApi = async () => {
@@ -78,7 +77,7 @@ export default function ListComponent(props: any) {
       filters = [
         {
           name: "small",
-          value: extra === "small" ? false : true,
+          value: extra === "small" ? true : false,
         },
       ];
     }
@@ -95,12 +94,14 @@ export default function ListComponent(props: any) {
       categoryType: typeCategory,
       categoryId: selectedCategory,
       searchText: searchText,
-      pageNumber: pageParam ? pageNumber : pageNumber,
+      pageNumber: pageParam ? pageParam : pageNumber,
       pageSize: pageSize,
     };
     const response = await loadItem(params);
     if (response) {
-      setItems(response?.data);
+      const newData = response?.data;
+      const existingData = items || [];
+      setItems([...existingData, ...newData]);
       setPagination(response?.meta);
       setLoading(false);
     }
@@ -108,39 +109,39 @@ export default function ListComponent(props: any) {
 
   const handleLoadMore = () => {
     if ((pagination?.pagination?.total as number) < pageSize) {
+      // No need to load more if the total items are less than the page size
     } else {
-      loadItemFromApi(pageNumber + 1);
-      setPageNumber(pageNumber + 1);
+      const nextPageNumber = pageNumber + 1;
+      loadItemFromApi(nextPageNumber);
+      setPageNumber(nextPageNumber);
     }
   };
 
   useEffect(() => {
     loadItemFromApi();
-  }, [type, typeCategory, selectedCategory, searchText, pageNumber, pageSize]);
+  }, [type, typeCategory, selectedCategory, searchText]);
 
   return (
-    <Box bg={"white"} mt={2}>
-      <SafeAreaView>
-        <View>
-          <SearchBar onSearchData={handleSearch} categories={categories} />
-          <CategoryList
-            data={categories}
-            typeCategoryLabel={typeCategoryLabel}
-            onClick={handleSelectCategory}
-            selectedCategory={selectedCategory}
-          />
-        </View>
-        <View style={styles.sectionContainer}>
-          <ItemList
-            handleLoadMore={handleLoadMore}
-            loading={loading}
-            data={items}
-            onClick={handleSelectItem}
-            props={props}
-          />
-        </View>
-      </SafeAreaView>
-    </Box>
+    <SafeAreaView style={{ flex: 1 }}>
+      <View>
+        <SearchBar onSearchData={handleSearch} categories={categories} />
+        <CategoryList
+          data={categories}
+          typeCategoryLabel={typeCategoryLabel}
+          onClick={handleSelectCategory}
+          selectedCategory={selectedCategory}
+        />
+      </View>
+      <View style={styles.sectionContainer}>
+        <ItemList
+          handleLoadMore={handleLoadMore}
+          loading={loading}
+          data={items}
+          onClick={handleSelectItem}
+          props={props}
+        />
+      </View>
+    </SafeAreaView>
   );
 }
 
