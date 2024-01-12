@@ -1,4 +1,4 @@
-import { apiUrl2 } from "../config";
+import { apiUrl2, pageSize } from "../config";
 import {
   IBusiness,
   ICategory,
@@ -51,6 +51,7 @@ export async function loadItem(param: ILoadItemParam): Promise<{
     if (param?.categoryId) {
       categoryFilter = `&filters[${param?.categoryType}][id][$eq]=${param?.categoryId}`;
     }
+    console.log(param?.pageNumber, "page");
 
     const url = `${apiUrl2}${param?.type}?${populateParams}&${fieldsParams}&${filtersParams}&${sortParams}&pagination[page]=${param?.pageNumber}&pagination[pageSize]=${param?.pageSize}&filters[$or][0][name][$contains]=${param?.searchText}&filters[$or][1][nameMalayalam][$contains]=${param?.searchText}${categoryFilter}`;
     const response = await get(url);

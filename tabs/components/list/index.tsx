@@ -7,6 +7,7 @@ import ItemList from "../common/item-list";
 import { pageSize } from "../../../config";
 import { loadItem, loadItemCategory } from "../../../apiService";
 import { IBusiness, ICategory, IPagination } from "../../../models/model";
+import debounce from "lodash/debounce";
 
 export default function ListComponent(props: any) {
   const [categories, setCategories] = useState<ICategory[]>([]);
@@ -100,7 +101,7 @@ export default function ListComponent(props: any) {
     const response = await loadItem(params);
     if (response) {
       const newData = response?.data;
-      const existingData = items || [];
+      const existingData: any = items;
       setItems([...existingData, ...newData]);
       setPagination(response?.meta);
       setLoading(false);
@@ -109,7 +110,6 @@ export default function ListComponent(props: any) {
 
   const handleLoadMore = () => {
     if ((pagination?.pagination?.total as number) < pageSize) {
-      // No need to load more if the total items are less than the page size
     } else {
       const nextPageNumber = pageNumber + 1;
       loadItemFromApi(nextPageNumber);
@@ -120,6 +120,8 @@ export default function ListComponent(props: any) {
   useEffect(() => {
     loadItemFromApi();
   }, [type, typeCategory, selectedCategory, searchText]);
+
+  const debouncedHandleLoadMore = debounce(handleLoadMore, 100);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -134,7 +136,7 @@ export default function ListComponent(props: any) {
       </View>
       <View style={styles.sectionContainer}>
         <ItemList
-          handleLoadMore={handleLoadMore}
+          handleLoadMore={debouncedHandleLoadMore}
           loading={loading}
           data={items}
           onClick={handleSelectItem}
@@ -147,8 +149,10 @@ export default function ListComponent(props: any) {
 
 const styles = StyleSheet.create({
   sectionContainer: {
+    flex: 1,
     marginTop: 20,
     paddingLeft: 20,
     paddingRight: 20,
+    // marginBottom: 100,
   },
 });

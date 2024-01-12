@@ -12,7 +12,6 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import callToTheNumber from "../../../utils/call-to-number";
 import moment from "moment";
-import debounce from "lodash/debounce";
 
 interface customProps {
   loading: boolean;
@@ -32,10 +31,6 @@ export default function ItemList({
   const type = props?.route?.params?.type;
   const typeCategory = props?.route?.params?.typeCategory;
   const mainProp = props?.route?.params?.main;
-
-  const debouncedHandleLoadMore = debounce(handleLoadMore, 1000);
-
-  const onEndReached = () => debouncedHandleLoadMore();
 
   return (
     <View>
@@ -65,9 +60,7 @@ export default function ItemList({
       {type === "bus-timings" && (
         <FlatList
           data={data}
-          maxToRenderPerBatch={20}
-          scrollEventThrottle={16}
-          onEndReached={onEndReached}
+          onEndReached={handleLoadMore}
           onEndReachedThreshold={0.1}
           renderItem={({ item, index }: any) => (
             <>
@@ -106,14 +99,17 @@ export default function ItemList({
             </>
           )}
           keyExtractor={(item: any) => item?.id}
+          ListFooterComponent={
+            loading ? <Spinner color="black" style={styles.loader} /> : null
+          }
         />
       )}
       {type !== "bus-timings" && (
         <>
           <FlatList
             data={data}
-            onEndReached={onEndReached}
-            onEndReachedThreshold={0.5}
+            onEndReached={handleLoadMore}
+            onEndReachedThreshold={0.1}
             renderItem={({ item, index }: any) => (
               <>
                 <TouchableOpacity
@@ -161,13 +157,11 @@ export default function ItemList({
               </>
             )}
             keyExtractor={(item: any) => item?.id}
+            ListFooterComponent={
+              loading ? <Spinner color="black" style={styles.loader} /> : null
+            }
           />
         </>
-      )}
-      {loading && (
-        <View style={styles.loader}>
-          <Spinner color="black" />
-        </View>
       )}
     </View>
   );
@@ -175,13 +169,12 @@ export default function ItemList({
 
 const styles = StyleSheet.create({
   loader: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    marginTop: 50,
+    marginBottom: 100,
   },
   item: {
     marginBottom: 20,
-    // marginBottom: 50,
+    flex: 1,
   },
   time: {
     fontSize: 17,
