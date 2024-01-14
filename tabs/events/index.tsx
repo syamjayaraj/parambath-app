@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, Animated, Easing } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import MainEventComponent from "../components/main-event";
-import ListWithCarouselEventComponent from "../components/list-with-carousel-event";
+import ListWithCarouselEventComponent from "../components/list-event";
 
 const Stack = createStackNavigator();
 

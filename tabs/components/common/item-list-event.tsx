@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   FlatList,
   HStack,
@@ -55,6 +56,10 @@ export default function ItemListEvent({
               >
                 <Box>
                   <HStack space={[3, 3]} justifyContent="space-between">
+                    <View style={styles.dateContainer}>
+                      <Text style={styles.date}>25</Text>
+                      <Text style={styles.month}>DEC</Text>
+                    </View>
                     <VStack>
                       <Text bold>
                         {item?.attributes?.nameMalayalam ??
@@ -95,6 +100,28 @@ export default function ItemListEvent({
 }
 
 const styles = StyleSheet.create({
+  dateContainer: {
+    backgroundColor: "#2b2b2b",
+    borderRadius: 5,
+    paddingTop: 12,
+    paddingBottom: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+    display: "flex",
+    justifyContent: "center",
+  },
+  date: {
+    fontSize: 22,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "white",
+  },
+  month: {
+    fontSize: 10,
+    marginTop: -5,
+    textAlign: "center",
+    color: "white",
+  },
   loader: {
     display: "flex",
     justifyContent: "center",
