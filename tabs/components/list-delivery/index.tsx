@@ -245,7 +245,7 @@ export default function ListDeliveryComponent(props: any) {
       <View style={styles.sectionContainer}>
         {initialLoading ? (
           <View>
-            <Spinner color="black" style={styles.loader} />
+            <Spinner color="#2b2b2b" style={styles.loader} />
           </View>
         ) : (
           <ItemList

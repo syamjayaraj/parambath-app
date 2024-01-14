@@ -19,7 +19,7 @@ function NotificationComponent() {
           backgroundColor: "white",
           elevation: 1,
         },
-        headerTintColor: "black",
+        headerTintColor: "#2b2b2b",
         headerTitleStyle: {
           fontWeight: "normal",
         },
@@ -52,12 +52,12 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     fontSize: 30,
-    color: "black",
+    color: "#2b2b2b",
   },
   subTitle: {
     fontWeight: "bold",
     fontSize: 20,
-    color: "black",
+    color: "#2b2b2b",
     marginLeft: 0,
   },
   container: {

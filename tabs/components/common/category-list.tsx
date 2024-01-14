@@ -49,7 +49,7 @@ export default function CategoryList({
                 styles.categoryBadge,
                 {
                   backgroundColor:
-                    selectedCategory === item?.id ? "black" : "white",
+                    selectedCategory === item?.id ? "#2b2b2b" : "white",
                 },
               ]}
               onPress={() => {
@@ -61,7 +61,7 @@ export default function CategoryList({
                 style={[
                   styles.categoryBadgeText,
                   {
-                    color: selectedCategory === item?.id ? "white" : "black",
+                    color: selectedCategory === item?.id ? "white" : "#2b2b2b",
                   },
                 ]}
               >
@@ -113,7 +113,7 @@ export default function CategoryList({
                     styles.categoryExpItem,
                     {
                       backgroundColor:
-                        selectedCategory === item?.id ? "black" : "white",
+                        selectedCategory === item?.id ? "#2b2b2b" : "white",
                     },
                   ]}
                   onPress={() =>
@@ -125,7 +125,7 @@ export default function CategoryList({
                       styles.categoryExpItemText,
                       {
                         color:
-                          selectedCategory === item?.id ? "white" : "black",
+                          selectedCategory === item?.id ? "white" : "#2b2b2b",
                       },
                     ]}
                   >
