@@ -13,6 +13,7 @@ import openBrowser from "../../../utils/open-browser";
 import callToTheNumber from "../../../utils/call-to-number";
 import Slider from "../common/slider";
 import { loadItemDetails } from "../../../apiService";
+import moment from "moment";
 
 export default function MainComponent(props: any) {
   let [itemDetails, setItemDetails] = useState<any>({
@@ -65,6 +66,8 @@ export default function MainComponent(props: any) {
       setLoading(false);
     }
   };
+
+  console.log(itemDetails?.timing, "item");
 
   return (
     <Box mt={2} padding={5}>
@@ -170,16 +173,22 @@ export default function MainComponent(props: any) {
                   </TouchableOpacity>
                 ) : null}
 
-                {itemDetails.opensAt && itemDetails.closesAt ? (
+                {itemDetails.timing?.length !== 0 ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
                       <Ionicons name="time-outline" size={20} color="#2b2b2b" />
                     </View>
                     <View style={styles.textContainer}>
                       <Text>പ്രവൃത്തി സമയം</Text>
-                      <Text style={styles.value}>
-                        {itemDetails.opensAt}-{itemDetails.closesAt}
-                      </Text>
+                      {itemDetails?.timing?.map((item: any, index: number) => {
+                        return (
+                          <Text style={styles.value} key={index}>
+                            {moment(item?.opensAt, "HH:mm").format("hh:mm A")} -{" "}
+                            {moment(item?.closesAt, "HH:mm").format("hh:mm A")}{" "}
+                            {item?.day === "All Days" ? "" : `(${item?.day})`}
+                          </Text>
+                        );
+                      })}
                     </View>
                   </View>
                 ) : null}
