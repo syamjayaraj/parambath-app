@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
-import Markdown from "react-native-markdown-display";
 import { Box, ScrollView, Spinner } from "native-base";
 import HTML from "react-native-render-html";
 import { fetchContent } from "../../apiService";
