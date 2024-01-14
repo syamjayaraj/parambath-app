@@ -65,8 +65,6 @@ export default function Help(props: any) {
     );
   }
 
-  console.log(content, "content");
-
   const renderContent = (item: any) => {
     return (
       <Text

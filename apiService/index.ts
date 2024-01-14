@@ -206,3 +206,15 @@ export async function fetchNotification(): Promise<{
     return null;
   }
 }
+
+export async function fetchContent(type: string): Promise<{
+  meta: IPagination;
+  data: any;
+} | null> {
+  try {
+    const response = await get(`${apiUrl2}${type}?populate=*`);
+    return response?.data as any;
+  } catch (err) {
+    return null;
+  }
+}

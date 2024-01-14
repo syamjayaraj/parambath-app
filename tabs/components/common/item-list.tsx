@@ -1,8 +1,5 @@
 import { Box, HStack, Spacer, Spinner, Text, VStack, View } from "native-base";
-import { StyleSheet, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import callToTheNumber from "../../../utils/call-to-number";
-import moment from "moment";
+import { StyleSheet } from "react-native";
 import { FlatList } from "react-native-bidirectional-infinite-scroll";
 import ItemComponent from "../item";
 import ItemBusTimingComponent from "../item-bus-timing";
@@ -31,54 +28,53 @@ export default function ItemList({
   return (
     <View>
       {type === "bus-timings" && (
-        <View style={styles.item}>
-          <Box>
-            <HStack space={[3, 3]} justifyContent="space-between">
-              <VStack></VStack>
-              <Spacer />
-              <View>
-                <Text
-                  color="coolGray.600"
-                  _dark={{
-                    color: "warmGray.200",
-                  }}
-                  fontSize={12}
-                  style={styles.parambath}
-                >
-                  പറമ്പത്ത് സ്റ്റോപ്പ്
-                </Text>
-              </View>
-            </HStack>
-          </Box>
-        </View>
-      )}
-
-      {type === "bus-timings" && (
-        <FlatList
-          initialNumToRender={20}
-          data={data}
-          keyExtractor={(item: any) => item?.id?.toString()}
-          onStartReached={handleLoadOld}
-          onEndReached={handleLoadMore}
-          showDefaultLoadingIndicators={true}
-          onStartReachedThreshold={10}
-          onEndReachedThreshold={10}
-          activityIndicatorColor={"black"}
-          HeaderLoadingIndicator={() =>
-            loading ? <Spinner color="black" style={styles.loader} /> : null
-          }
-          FooterLoadingIndicator={() =>
-            loading ? <Spinner color="black" style={styles.loader} /> : null
-          }
-          enableAutoscrollToTop={false}
-          renderItem={({ item, index }) => (
-            <ItemBusTimingComponent
-              item={item}
-              typeCategory={typeCategory}
-              index={index}
-            />
-          )}
-        />
+        <>
+          <View style={styles.item}>
+            <Box>
+              <HStack space={[3, 3]} justifyContent="space-between">
+                <VStack></VStack>
+                <Spacer />
+                <View>
+                  <Text
+                    color="coolGray.600"
+                    _dark={{
+                      color: "warmGray.200",
+                    }}
+                    fontSize={12}
+                    style={styles.parambath}
+                  >
+                    പറമ്പത്ത് സ്റ്റോപ്പ്
+                  </Text>
+                </View>
+              </HStack>
+            </Box>
+          </View>
+          <FlatList
+            initialNumToRender={20}
+            data={data}
+            keyExtractor={(item: any) => item?.id?.toString()}
+            onStartReached={handleLoadOld}
+            onEndReached={handleLoadMore}
+            showDefaultLoadingIndicators={true}
+            onStartReachedThreshold={10}
+            onEndReachedThreshold={10}
+            activityIndicatorColor={"black"}
+            HeaderLoadingIndicator={() =>
+              loading ? <Spinner color="black" style={styles.loader} /> : null
+            }
+            FooterLoadingIndicator={() =>
+              loading ? <Spinner color="black" style={styles.loader} /> : null
+            }
+            enableAutoscrollToTop={false}
+            renderItem={({ item, index }) => (
+              <ItemBusTimingComponent
+                item={item}
+                typeCategory={typeCategory}
+                index={index}
+              />
+            )}
+          />
+        </>
       )}
       {type !== "bus-timings" && (
         <>
