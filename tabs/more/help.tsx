@@ -56,9 +56,9 @@ export default function Help(props: any) {
         </Text>
         <View>
           {expanded ? (
-            <Ionicons name="arrow-up-outline" size={24} color="black" />
+            <Ionicons name="arrow-up-outline" size={24} color="#2b2b2b" />
           ) : (
-            <Ionicons name="arrow-down-outline" size={24} color="black" />
+            <Ionicons name="arrow-down-outline" size={24} color="#2b2b2b" />
           )}
         </View>
       </View>
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     fontSize: 30,
-    color: "black",
+    color: "#2b2b2b",
   },
   container: {
     padding: 20,

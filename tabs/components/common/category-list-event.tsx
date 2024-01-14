@@ -40,7 +40,7 @@ export default function CategoryListEvent({ onClick }: customProps) {
                 style={[
                   styles.categoryBadgeText,
                   {
-                    color: "black",
+                    color: "#2b2b2b",
                   },
                 ]}
               >

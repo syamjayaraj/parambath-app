@@ -42,7 +42,7 @@ const ItemComponent = React.memo(
                 callToTheNumber(item?.attributes?.nameMalayalam, true)
               }
             >
-              <Ionicons name="call-outline" size={20} color="black" />
+              <Ionicons name="call-outline" size={20} color="#2b2b2b" />
             </TouchableOpacity>
           </HStack>
         </Box>

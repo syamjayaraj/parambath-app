@@ -26,7 +26,7 @@ function HomeComponent(props: any) {
           borderWidth: 0,
           shadowOpacity: 0,
         },
-        headerTintColor: "black",
+        headerTintColor: "#2b2b2b",
         headerTitleStyle: {
           fontWeight: "normal",
         },
@@ -217,12 +217,12 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     fontSize: 20,
-    color: "black",
+    color: "#2b2b2b",
   },
   subTitle: {
     fontWeight: "bold",
     fontSize: 20,
-    color: "black",
+    color: "#2b2b2b",
   },
   container: {
     flex: 1,

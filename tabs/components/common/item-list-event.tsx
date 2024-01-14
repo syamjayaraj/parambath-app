@@ -57,8 +57,14 @@ export default function ItemListEvent({
                 <Box>
                   <HStack space={[3, 3]} justifyContent="space-between">
                     <View style={styles.dateContainer}>
-                      <Text style={styles.date}>25</Text>
-                      <Text style={styles.month}>DEC</Text>
+                      <Text style={styles.date}>
+                        {moment(item?.attributes?.from).format("DD")}
+                      </Text>
+                      <Text style={styles.month}>
+                        {moment(item?.attributes?.from)
+                          .format("MMM")
+                          ?.toUpperCase()}
+                      </Text>
                     </View>
                     <VStack>
                       <Text bold>
@@ -92,7 +98,7 @@ export default function ItemListEvent({
       )}
       {loading && (
         <View style={styles.loader}>
-          <Spinner color="black" />
+          <Spinner color="#2b2b2b" />
         </View>
       )}
     </View>
@@ -121,6 +127,7 @@ const styles = StyleSheet.create({
     marginTop: -5,
     textAlign: "center",
     color: "white",
+    letterSpacing: 2,
   },
   loader: {
     display: "flex",

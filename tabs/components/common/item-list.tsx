@@ -58,12 +58,12 @@ export default function ItemList({
             showDefaultLoadingIndicators={true}
             onStartReachedThreshold={10}
             onEndReachedThreshold={10}
-            activityIndicatorColor={"black"}
+            activityIndicatorColor={"#2b2b2b"}
             HeaderLoadingIndicator={() =>
-              loading ? <Spinner color="black" style={styles.loader} /> : null
+              loading ? <Spinner color="#2b2b2b" style={styles.loader} /> : null
             }
             FooterLoadingIndicator={() =>
-              loading ? <Spinner color="black" style={styles.loader} /> : null
+              loading ? <Spinner color="#2b2b2b" style={styles.loader} /> : null
             }
             enableAutoscrollToTop={false}
             renderItem={({ item, index }) => (
@@ -87,12 +87,12 @@ export default function ItemList({
             showDefaultLoadingIndicators={true}
             onStartReachedThreshold={10}
             onEndReachedThreshold={10}
-            activityIndicatorColor={"black"}
+            activityIndicatorColor={"#2b2b2b"}
             HeaderLoadingIndicator={() =>
-              loading ? <Spinner color="black" style={styles.loader} /> : null
+              loading ? <Spinner color="#2b2b2b" style={styles.loader} /> : null
             }
             FooterLoadingIndicator={() =>
-              loading ? <Spinner color="black" style={styles.loader} /> : null
+              loading ? <Spinner color="#2b2b2b" style={styles.loader} /> : null
             }
             enableAutoscrollToTop={false}
             renderItem={({ item, index }) => (

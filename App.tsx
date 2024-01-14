@@ -66,7 +66,7 @@ export default function App() {
               fontSize: 10,
               marginTop: 0,
               marginBottom: 5,
-              color: "black",
+              color: "#2b2b2b",
               fontWeight: "bold",
             },
           }}
@@ -77,7 +77,7 @@ export default function App() {
             options={{
               tabBarLabel: "ഹോം",
               tabBarIcon: ({ color, size, focused }) => (
-                <Ionicons name="home-outline" size={24} color={"black"} />
+                <Ionicons name="home-outline" size={24} color={"#2b2b2b"} />
               ),
             }}
           />
@@ -87,7 +87,7 @@ export default function App() {
             options={{
               tabBarLabel: "പരിപാടികൾ",
               tabBarIcon: ({ color, size, focused }) => (
-                <AntDesign name="calendar" size={24} color={"black"} />
+                <AntDesign name="calendar" size={24} color={"#2b2b2b"} />
               ),
             }}
           />
@@ -100,7 +100,7 @@ export default function App() {
                 <Ionicons
                   name="notifications-outline"
                   size={24}
-                  color={"black"}
+                  color={"#2b2b2b"}
                 />
               ),
             }}
@@ -115,7 +115,7 @@ export default function App() {
                 <MaterialIcons
                   name="delivery-dining"
                   size={24}
-                  color={"black"}
+                  color={"#2b2b2b"}
                 />
               ),
             }}
@@ -127,7 +127,7 @@ export default function App() {
             options={{
               tabBarLabel: "മറ്റുള്ളവ",
               tabBarIcon: ({ color, size, focused }) => (
-                <Ionicons name="menu-outline" size={24} color={"black"} />
+                <Ionicons name="menu-outline" size={24} color={"#2b2b2b"} />
               ),
             }}
           />

@@ -135,6 +135,7 @@ export async function loadEvent(param: ILoadItemParam): Promise<{
       .join("&");
 
     const url = `${apiUrl2}events?${populateParams}&${fieldsParams}&${sortParams}&pagination[page]=${param?.pageNumber}&pagination[pageSize]=${param?.pageSize}&filters[$or][0][name][$contains]=${param?.searchText}&filters[$or][1][nameMalayalam][$contains]=${param?.searchText}`;
+    console.log(url, "url");
     const response = await get(url);
     return response?.data as any;
   } catch (err) {

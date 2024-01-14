@@ -29,33 +29,33 @@ export default function Landing(props: any) {
       id: 1,
       title: "സഹായം",
       page: "Help",
-      icon: <Ionicons name="help-circle-outline" size={24} color="black" />,
+      icon: <Ionicons name="help-circle-outline" size={24} color="#2b2b2b" />,
     },
     {
       id: 2,
       title: "ഞങ്ങളുമായി ബന്ധപ്പെടൂ",
       page: "Contact",
-      icon: <Ionicons name="call-outline" size={24} color="black" />,
+      icon: <Ionicons name="call-outline" size={24} color="#2b2b2b" />,
     },
     {
       id: 3,
       title: "ആപ്പിനെക്കുറിച്ച്‌",
       page: "About",
       icon: (
-        <Ionicons name="information-circle-outline" size={24} color="black" />
+        <Ionicons name="information-circle-outline" size={24} color="#2b2b2b" />
       ),
     },
     {
       id: 4,
       title: "സംഭാവകർ",
       page: "Contributors",
-      icon: <Ionicons name="people-outline" size={24} color="black" />,
+      icon: <Ionicons name="people-outline" size={24} color="#2b2b2b" />,
     },
     {
       id: 5,
       title: "ഉപാധികളും നിബന്ധനകളും",
       page: "Terms",
-      icon: <Ionicons name="documents-outline" size={24} color="black" />,
+      icon: <Ionicons name="documents-outline" size={24} color="#2b2b2b" />,
     },
   ];
 
@@ -145,7 +145,7 @@ export default function Landing(props: any) {
                 padding: 10,
               }}
             >
-              <EvilIcons name="share-apple" color="black" size={20} />
+              <EvilIcons name="share-apple" color="#2b2b2b" size={20} />
               <Text style={{ marginLeft: 5, fontSize: 13 }}>
                 സുഹൃത്തുക്കളെ ആപ്പിലേക്ക് സ്വാഗതം ചെയ്യൂ
               </Text>
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     fontSize: 30,
-    color: "black",
+    color: "#2b2b2b",
   },
   container: {
     padding: 20,
