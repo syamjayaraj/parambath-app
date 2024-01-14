@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Text } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import ListDeliveryComponent from "../components/list-delivery";
+import MainComponent from "../components/main";
 
 const Stack = createStackNavigator();
 
@@ -31,9 +32,17 @@ function DeliveryComponent(props: any) {
         name="ഡെലിവറി"
         component={ListDeliveryComponent}
         options={{
-          headerTitle: (props: any) => (
-            <OtherTitle {...{ name: "ഓൺലൈൻ ഡെലിവറി" }} />
-          ),
+          headerTitle: (props: any) => <OtherTitle {...{ name: "ഡെലിവറി" }} />,
+        }}
+      />
+      <Stack.Screen
+        name="Business"
+        component={MainComponent}
+        options={{
+          headerShown: true,
+          headerTransparent: true,
+          headerTitle: "",
+          gestureDirection: "horizontal",
         }}
       />
     </Stack.Navigator>

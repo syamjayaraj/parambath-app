@@ -10,7 +10,6 @@ import {
 import { Spinner } from "native-base";
 import SearchBar from "../common/search-bar";
 import CategoryList from "../common/category-list";
-import ItemList from "../common/item-list";
 import { apiDomain, categorySize, pageSize } from "../../../config";
 import {
   loadItem,
@@ -24,6 +23,7 @@ import {
   ISliderHome,
 } from "../../../models/model";
 import Carousel from "react-native-snap-carousel";
+import ItemList from "../common/item-list";
 const { width } = Dimensions.get("window");
 
 export default function ListDeliveryComponent(props: any) {
