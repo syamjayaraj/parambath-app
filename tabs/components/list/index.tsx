@@ -7,7 +7,6 @@ import ItemList from "../common/item-list";
 import { categorySize, pageSize } from "../../../config";
 import { loadItem, loadItemCategory } from "../../../apiService";
 import { IBusiness, ICategory, IPagination } from "../../../models/model";
-import debounce from "lodash/debounce";
 
 export default function ListComponent(props: any) {
   const [categories, setCategories] = useState<ICategory[]>([]);
