@@ -1,5 +1,5 @@
 import { FlatList, Text, View } from "native-base";
-import { useRef } from "react";
+import { Ref, useRef } from "react";
 import { Dimensions, StyleSheet, TouchableOpacity } from "react-native";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { Ionicons } from "@expo/vector-icons";
@@ -19,39 +19,49 @@ export default function CategoryList({
 }: customProps) {
   const { height } = Dimensions.get("window");
   const refRBSheet: any = useRef();
+  const flatListRef: any = useRef(null);
 
   const handleSelectCategory = (categoryId: number) => {
     onClick(categoryId);
   };
 
-  const handleSelectCategoryFromPopup = (categoryId: number) => {
+  const scrollToIndex = (index: number) => {
+    flatListRef.current.scrollToIndex({ animated: true, index: index });
+  };
+
+  const handleSelectCategoryFromPopup = (categoryId: number, index: number) => {
     onClick(categoryId);
     refRBSheet.current.close();
+    scrollToIndex(index);
   };
 
   return (
     <View>
       <FlatList
+        ref={flatListRef}
         showsHorizontalScrollIndicator={false}
         horizontal
         data={data}
-        renderItem={({ item }: any) => (
+        renderItem={({ item, index }: any) => (
           <View style={{ padding: 10, marginTop: 0 }}>
             <TouchableOpacity
               style={[
                 styles.categoryBadge,
                 {
                   backgroundColor:
-                    selectedCategory === item?.id ? "black" : "white",
+                    selectedCategory === item?.id ? "#2b2b2b" : "white",
                 },
               ]}
-              onPress={() => handleSelectCategory(Number(item?.id))}
+              onPress={() => {
+                handleSelectCategory(Number(item?.id));
+                scrollToIndex(index);
+              }}
             >
               <Text
                 style={[
                   styles.categoryBadgeText,
                   {
-                    color: selectedCategory === item?.id ? "white" : "black",
+                    color: selectedCategory === item?.id ? "white" : "#2b2b2b",
                   },
                 ]}
               >
@@ -96,24 +106,26 @@ export default function CategoryList({
           <FlatList
             showsHorizontalScrollIndicator={false}
             data={data}
-            renderItem={({ item }: any) => (
+            renderItem={({ item, index }: any) => (
               <View style={{ padding: 10, marginTop: 0 }}>
                 <TouchableOpacity
                   style={[
                     styles.categoryExpItem,
                     {
                       backgroundColor:
-                        selectedCategory === item?.id ? "black" : "white",
+                        selectedCategory === item?.id ? "#2b2b2b" : "white",
                     },
                   ]}
-                  onPress={() => handleSelectCategoryFromPopup(Number(item.id))}
+                  onPress={() =>
+                    handleSelectCategoryFromPopup(Number(item.id), index)
+                  }
                 >
                   <Text
                     style={[
                       styles.categoryExpItemText,
                       {
                         color:
-                          selectedCategory === item?.id ? "white" : "black",
+                          selectedCategory === item?.id ? "white" : "#2b2b2b",
                       },
                     ]}
                   >

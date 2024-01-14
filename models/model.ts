@@ -26,6 +26,7 @@ export interface ITiming {
   day: string;
 }
 export interface ICategory {
+  id: number;
   name: string;
   nameMalayalam: string;
 }

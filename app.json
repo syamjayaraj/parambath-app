@@ -1,28 +1,46 @@
 {
   "expo": {
-    "name": "parambath-app",
-    "slug": "parambath-app",
-    "version": "5.0",
+    "name": "Parambath",
+    "owner": "onnich",
+    "slug": "Parambath",
+    "version": "4.9.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
+    },
+    "notification": {
+      "icon": "./assets/notification-icon.png"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "android": {
+      "package": "com.onnich.parambath",
+      "googleServicesFile": "./google-services.json",
+      "permissions": [],
+      "versionCode": 12,
+      "useNextNotificationsApi": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#FFFFFF"
       }
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "description": "",
+    "githubUrl": "https://github.com/syamjayaraj/parambath-app",
+    "extra": {
+      "eas": {
+        "projectId": "1ac69d6c-0b49-4562-be9d-fd5be294f550"
+      }
     }
   }
 }

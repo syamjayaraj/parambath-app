@@ -51,9 +51,8 @@ export async function loadItem(param: ILoadItemParam): Promise<{
     if (param?.categoryId) {
       categoryFilter = `&filters[${param?.categoryType}][id][$eq]=${param?.categoryId}`;
     }
-
     const url = `${apiUrl2}${param?.type}?${populateParams}&${fieldsParams}&${filtersParams}&${sortParams}&pagination[page]=${param?.pageNumber}&pagination[pageSize]=${param?.pageSize}&filters[$or][0][name][$contains]=${param?.searchText}&filters[$or][1][nameMalayalam][$contains]=${param?.searchText}${categoryFilter}`;
-    console.log(url, "url");
+    // console.log(url, "url");
     const response = await get(url);
     return response?.data as any;
   } catch (err) {
@@ -136,6 +135,7 @@ export async function loadEvent(param: ILoadItemParam): Promise<{
       .join("&");
 
     const url = `${apiUrl2}events?${populateParams}&${fieldsParams}&${sortParams}&pagination[page]=${param?.pageNumber}&pagination[pageSize]=${param?.pageSize}&filters[$or][0][name][$contains]=${param?.searchText}&filters[$or][1][nameMalayalam][$contains]=${param?.searchText}`;
+    console.log(url, "url");
     const response = await get(url);
     return response?.data as any;
   } catch (err) {
@@ -176,6 +176,44 @@ export async function loadSliderEvent(): Promise<{
   try {
     const url = `${apiUrl2}slider-events?populate=*`;
     const response = await get(url);
+    return response?.data as any;
+  } catch (err) {
+    return null;
+  }
+}
+
+export async function loadSliderDelivery(): Promise<{
+  meta: IPagination;
+  data: ISliderHome[];
+} | null> {
+  try {
+    const url = `${apiUrl2}slider-deliveries?populate=*`;
+    const response = await get(url);
+    return response?.data as any;
+  } catch (err) {
+    return null;
+  }
+}
+
+export async function fetchNotification(): Promise<{
+  meta: IPagination;
+  data: any;
+} | null> {
+  try {
+    const url = `${apiUrl2}notifications?populate=*&sort[0]=date:desc`;
+    const response = await get(url);
+    return response?.data as any;
+  } catch (err) {
+    return null;
+  }
+}
+
+export async function fetchContent(type: string): Promise<{
+  meta: IPagination;
+  data: any;
+} | null> {
+  try {
+    const response = await get(`${apiUrl2}${type}?populate=*`);
     return response?.data as any;
   } catch (err) {
     return null;

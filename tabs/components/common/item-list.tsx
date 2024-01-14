@@ -1,24 +1,16 @@
-import {
-  Box,
-  FlatList,
-  HStack,
-  Spacer,
-  Spinner,
-  Text,
-  VStack,
-  View,
-} from "native-base";
-import { StyleSheet, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import callToTheNumber from "../../../utils/call-to-number";
-import moment from "moment";
+import { Box, HStack, Spacer, Spinner, Text, VStack, View } from "native-base";
+import { StyleSheet } from "react-native";
+import { FlatList } from "react-native-bidirectional-infinite-scroll";
+import ItemComponent from "../item";
+import ItemBusTimingComponent from "../item-bus-timing";
 
 interface customProps {
   loading: boolean;
   data: any;
   onClick: (categoryId: string) => void;
   props: any;
-  handleLoadMore: () => void;
+  handleLoadMore: () => Promise<void>;
+  handleLoadOld: () => Promise<void>;
 }
 
 export default function ItemList({
@@ -27,6 +19,7 @@ export default function ItemList({
   onClick,
   props,
   handleLoadMore,
+  handleLoadOld,
 }: customProps) {
   const type = props?.route?.params?.type;
   const typeCategory = props?.route?.params?.typeCategory;
@@ -34,148 +27,86 @@ export default function ItemList({
 
   return (
     <View>
-      {!loading && (
+      {type === "bus-timings" && (
         <>
-          {type === "bus-timings" && (
-            <View style={styles.item}>
-              <Box>
-                <HStack space={[3, 3]} justifyContent="space-between">
-                  <VStack></VStack>
-                  <Spacer />
-                  <View>
-                    <Text
-                      color="coolGray.600"
-                      _dark={{
-                        color: "warmGray.200",
-                      }}
-                      fontSize={12}
-                      style={styles.parambath}
-                    >
-                      പറമ്പത്ത് സ്റ്റോപ്പ്
-                    </Text>
-                  </View>
-                </HStack>
-              </Box>
-            </View>
-          )}
-
-          {type === "bus-timings" && (
-            <FlatList
-              data={data}
-              maxToRenderPerBatch={20}
-              scrollEventThrottle={16}
-              onEndReached={handleLoadMore}
-              onEndReachedThreshold={0.1}
-              renderItem={({ item, index }: any) => (
-                <>
-                  <View style={styles.item}>
-                    <Box>
-                      <HStack space={[3, 3]} justifyContent="space-between">
-                        <VStack>
-                          <Text bold>
-                            {item?.attributes?.nameMalayalam ??
-                              item?.attributes?.name}
-                          </Text>
-                          <Text
-                            color="coolGray.600"
-                            _dark={{
-                              color: "warmGray.200",
-                            }}
-                            fontSize={12}
-                          >
-                            {item?.attributes[typeCategory]?.data?.attributes
-                              ?.nameMalayalam ??
-                              item?.attributes[typeCategory]?.data?.attributes
-                                ?.name}{" "}
-                          </Text>
-                        </VStack>
-                        <Spacer />
-                        <View>
-                          <Text style={styles.time}>
-                            {moment(item?.attributes?.time, "HH:mm:ss").format(
-                              "hh:mm A"
-                            )}
-                          </Text>
-                        </View>
-                      </HStack>
-                    </Box>
-                  </View>
-                </>
-              )}
-              keyExtractor={(item: any) => item?.id}
-            />
-          )}
-          {type !== "bus-timings" && (
-            <>
-              <FlatList
-                data={data}
-                maxToRenderPerBatch={20}
-                scrollEventThrottle={16}
-                onEndReached={handleLoadMore}
-                onEndReachedThreshold={0.1}
-                renderItem={({ item, index }: any) => (
-                  <>
-                    <TouchableOpacity
-                      onPress={() =>
-                        props?.navigation?.navigate(mainProp, {
-                          itemId: item.id,
-                          type: type,
-                          // typeCategory: typeCategory,
-                        })
-                      }
-                      style={styles.item}
-                      key={index}
-                    >
-                      <Box>
-                        <HStack space={[3, 3]} justifyContent="space-between">
-                          <VStack>
-                            <Text bold>
-                              {item?.attributes?.nameMalayalam ??
-                                item?.attributes?.name}
-                            </Text>
-                            <Text
-                              color="coolGray.600"
-                              _dark={{
-                                color: "warmGray.200",
-                              }}
-                              fontSize={12}
-                            >
-                              {item?.attributes[typeCategory]?.data?.attributes
-                                ?.nameMalayalam ??
-                                item?.attributes[typeCategory]?.data?.attributes
-                                  ?.name}{" "}
-                            </Text>
-                          </VStack>
-                          <Spacer />
-                          <TouchableOpacity
-                            onPress={() =>
-                              callToTheNumber(
-                                item?.attributes?.nameMalayalam,
-                                true
-                              )
-                            }
-                          >
-                            <Ionicons
-                              name="call-outline"
-                              size={20}
-                              color="black"
-                            />
-                          </TouchableOpacity>
-                        </HStack>
-                      </Box>
-                    </TouchableOpacity>
-                  </>
-                )}
-                keyExtractor={(item: any) => item?.id}
+          <View style={styles.item}>
+            <Box>
+              <HStack space={[3, 3]} justifyContent="space-between">
+                <VStack></VStack>
+                <Spacer />
+                <View>
+                  <Text
+                    color="coolGray.600"
+                    _dark={{
+                      color: "warmGray.200",
+                    }}
+                    fontSize={12}
+                    style={styles.parambath}
+                  >
+                    പറമ്പത്ത് സ്റ്റോപ്പ്
+                  </Text>
+                </View>
+              </HStack>
+            </Box>
+          </View>
+          <FlatList
+            initialNumToRender={20}
+            data={data}
+            keyExtractor={(item: any) => item?.id?.toString()}
+            onStartReached={handleLoadOld}
+            onEndReached={handleLoadMore}
+            showDefaultLoadingIndicators={true}
+            onStartReachedThreshold={10}
+            onEndReachedThreshold={10}
+            activityIndicatorColor={"#2b2b2b"}
+            HeaderLoadingIndicator={() =>
+              loading ? <Spinner color="#2b2b2b" style={styles.loader} /> : null
+            }
+            FooterLoadingIndicator={() =>
+              loading ? <Spinner color="#2b2b2b" style={styles.loader} /> : null
+            }
+            enableAutoscrollToTop={false}
+            renderItem={({ item, index }) => (
+              <ItemBusTimingComponent
+                item={item}
+                typeCategory={typeCategory}
+                index={index}
               />
-            </>
-          )}
+            )}
+          />
         </>
       )}
-      {loading && (
-        <View style={styles.loader}>
-          <Spinner color="black" />
-        </View>
+      {type !== "bus-timings" && (
+        <>
+          <FlatList
+            initialNumToRender={20}
+            data={data}
+            keyExtractor={(item: any) => item?.id?.toString()}
+            onStartReached={handleLoadOld}
+            onEndReached={handleLoadMore}
+            showDefaultLoadingIndicators={true}
+            onStartReachedThreshold={10}
+            onEndReachedThreshold={10}
+            activityIndicatorColor={"#2b2b2b"}
+            HeaderLoadingIndicator={() =>
+              loading ? <Spinner color="#2b2b2b" style={styles.loader} /> : null
+            }
+            FooterLoadingIndicator={() =>
+              loading ? <Spinner color="#2b2b2b" style={styles.loader} /> : null
+            }
+            enableAutoscrollToTop={false}
+            renderItem={({ item, index }) => (
+              <ItemComponent
+                item={item}
+                props={props}
+                mainProp={mainProp}
+                type={type}
+                typeCategory={typeCategory}
+                index={index}
+              />
+            )}
+          />
+        </>
       )}
     </View>
   );
@@ -183,13 +114,12 @@ export default function ItemList({
 
 const styles = StyleSheet.create({
   loader: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    marginTop: 50,
+    marginBottom: 100,
   },
   item: {
     marginBottom: 20,
-    // marginBottom: 50,
+    flex: 1,
   },
   time: {
     fontSize: 17,

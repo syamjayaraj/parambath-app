@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   FlatList,
   HStack,
@@ -42,7 +43,6 @@ export default function ItemListEvent({
           onEndReachedThreshold={0.1}
           renderItem={({ item, index }: any) => (
             <>
-              {console.log(item?.attributes, "from")}
               <TouchableOpacity
                 onPress={() =>
                   props?.navigation?.navigate(mainProp, {
@@ -56,6 +56,16 @@ export default function ItemListEvent({
               >
                 <Box>
                   <HStack space={[3, 3]} justifyContent="space-between">
+                    <View style={styles.dateContainer}>
+                      <Text style={styles.date}>
+                        {moment(item?.attributes?.from).format("DD")}
+                      </Text>
+                      <Text style={styles.month}>
+                        {moment(item?.attributes?.from)
+                          .format("MMM")
+                          ?.toUpperCase()}
+                      </Text>
+                    </View>
                     <VStack>
                       <Text bold>
                         {item?.attributes?.nameMalayalam ??
@@ -88,7 +98,7 @@ export default function ItemListEvent({
       )}
       {loading && (
         <View style={styles.loader}>
-          <Spinner color="black" />
+          <Spinner color="#2b2b2b" />
         </View>
       )}
     </View>
@@ -96,6 +106,29 @@ export default function ItemListEvent({
 }
 
 const styles = StyleSheet.create({
+  dateContainer: {
+    backgroundColor: "#2b2b2b",
+    borderRadius: 5,
+    paddingTop: 12,
+    paddingBottom: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+    display: "flex",
+    justifyContent: "center",
+  },
+  date: {
+    fontSize: 22,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "white",
+  },
+  month: {
+    fontSize: 10,
+    marginTop: -5,
+    textAlign: "center",
+    color: "white",
+    letterSpacing: 2,
+  },
   loader: {
     display: "flex",
     justifyContent: "center",

@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     fontSize: 40,
-    color: "black",
+    color: "#2b2b2b",
     textAlign: "center",
     marginTop: 15,
     paddingTop: 30,
@@ -110,14 +110,14 @@ const styles = StyleSheet.create({
   },
   copyRight: {
     fontSize: 15,
-    color: "black",
+    color: "#2b2b2b",
     textAlign: "center",
     marginTop: 0,
   },
   version: {
     fontWeight: "bold",
     fontSize: 15,
-    color: "black",
+    color: "#2b2b2b",
     textAlign: "center",
     marginTop: 7,
   },

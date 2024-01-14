@@ -13,6 +13,7 @@ import openBrowser from "../../../utils/open-browser";
 import callToTheNumber from "../../../utils/call-to-number";
 import Slider from "../common/slider";
 import { loadItemDetails } from "../../../apiService";
+import moment from "moment";
 
 export default function MainComponent(props: any) {
   let [itemDetails, setItemDetails] = useState<any>({
@@ -66,6 +67,8 @@ export default function MainComponent(props: any) {
     }
   };
 
+  console.log(itemDetails?.timing, "item");
+
   return (
     <Box mt={2} padding={5}>
       <SafeAreaView>
@@ -92,7 +95,7 @@ export default function MainComponent(props: any) {
                   >
                     <EvilIcons
                       name="share-apple"
-                      color="black"
+                      color="#2b2b2b"
                       style={styles.shareIcon}
                     />
                     <Text style={styles.shareText}>Share</Text>
@@ -131,7 +134,7 @@ export default function MainComponent(props: any) {
                     style={[styles.video]}
                     onPress={() => Linking.openURL(itemDetails.youtube)}
                   >
-                    <Ionicons name="logo-youtube" size={20} color="black" />
+                    <Ionicons name="logo-youtube" size={20} color="#2b2b2b" />
                     <View
                       style={{
                         display: "flex",
@@ -156,7 +159,7 @@ export default function MainComponent(props: any) {
                       })
                     }
                   >
-                    <Ionicons name="globe-outline" size={20} color="black" />
+                    <Ionicons name="globe-outline" size={20} color="#2b2b2b" />
                     <View
                       style={{
                         display: "flex",
@@ -170,16 +173,22 @@ export default function MainComponent(props: any) {
                   </TouchableOpacity>
                 ) : null}
 
-                {itemDetails.opensAt && itemDetails.closesAt ? (
+                {itemDetails.timing?.length !== 0 ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
-                      <Ionicons name="time-outline" size={20} color="black" />
+                      <Ionicons name="time-outline" size={20} color="#2b2b2b" />
                     </View>
                     <View style={styles.textContainer}>
                       <Text>പ്രവൃത്തി സമയം</Text>
-                      <Text style={styles.value}>
-                        {itemDetails.opensAt}-{itemDetails.closesAt}
-                      </Text>
+                      {itemDetails?.timing?.map((item: any, index: number) => {
+                        return (
+                          <Text style={styles.value} key={index}>
+                            {moment(item?.opensAt, "HH:mm").format("hh:mm A")} -{" "}
+                            {moment(item?.closesAt, "HH:mm").format("hh:mm A")}{" "}
+                            {item?.day === "All Days" ? "" : `(${item?.day})`}
+                          </Text>
+                        );
+                      })}
                     </View>
                   </View>
                 ) : null}
@@ -187,7 +196,11 @@ export default function MainComponent(props: any) {
                 {itemDetails.owner ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
-                      <Ionicons name="person-outline" size={20} color="black" />
+                      <Ionicons
+                        name="person-outline"
+                        size={20}
+                        color="#2b2b2b"
+                      />
                     </View>
                     <View style={styles.textContainer}>
                       <Text>ഉടമ</Text>
@@ -203,7 +216,7 @@ export default function MainComponent(props: any) {
                 {itemDetails.phoneNumber ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
-                      <Ionicons name="call-outline" size={20} color="black" />
+                      <Ionicons name="call-outline" size={20} color="#2b2b2b" />
                     </View>
                     <TouchableOpacity
                       style={styles.textContainer}
@@ -220,7 +233,7 @@ export default function MainComponent(props: any) {
                 {itemDetails.phoneNumber2 ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
-                      <Ionicons name="call-outline" size={20} color="black" />
+                      <Ionicons name="call-outline" size={20} color="#2b2b2b" />
                     </View>
                     <TouchableOpacity
                       style={styles.textContainer}
@@ -256,7 +269,7 @@ export default function MainComponent(props: any) {
                       <MaterialIcons
                         name="alternate-email"
                         size={20}
-                        color="black"
+                        color="#2b2b2b"
                       />
                     </View>
                     <TouchableOpacity
@@ -285,7 +298,7 @@ export default function MainComponent(props: any) {
                       <Ionicons
                         name="location-outline"
                         size={20}
-                        color="black"
+                        color="#2b2b2b"
                       />
                     </View>
                     <View style={styles.textContainer}>
@@ -306,7 +319,7 @@ export default function MainComponent(props: any) {
                 {itemDetails.address ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
-                      <Ionicons name="mail-outline" size={20} color="black" />
+                      <Ionicons name="mail-outline" size={20} color="#2b2b2b" />
                     </View>
                     <View style={styles.textContainer}>
                       <View
@@ -326,7 +339,11 @@ export default function MainComponent(props: any) {
                 {itemDetails.upi || itemDetails.card ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
-                      <Ionicons name="wallet-outline" size={20} color="black" />
+                      <Ionicons
+                        name="wallet-outline"
+                        size={20}
+                        color="#2b2b2b"
+                      />
                     </View>
                     <View style={styles.textContainer}>
                       <View
@@ -367,7 +384,7 @@ export default function MainComponent(props: any) {
                       <Ionicons
                         name="clipboard-outline"
                         size={20}
-                        color="black"
+                        color="#2b2b2b"
                       />
                     </View>
                     <View style={styles.textContainer}>
@@ -391,7 +408,7 @@ export default function MainComponent(props: any) {
                     <Ionicons
                       name="phone-portrait-outline"
                       size={20}
-                      color="black"
+                      color="#2b2b2b"
                     />
                     <View
                       style={{
@@ -416,7 +433,11 @@ export default function MainComponent(props: any) {
                         )
                       }
                     >
-                      <Ionicons name="logo-whatsapp" size={20} color="black" />
+                      <Ionicons
+                        name="logo-whatsapp"
+                        size={20}
+                        color="#2b2b2b"
+                      />
                     </TouchableOpacity>
                   ) : null}
 
@@ -429,7 +450,11 @@ export default function MainComponent(props: any) {
                         })
                       }
                     >
-                      <Ionicons name="globe-outline" size={20} color="black" />
+                      <Ionicons
+                        name="globe-outline"
+                        size={20}
+                        color="#2b2b2b"
+                      />
                     </TouchableOpacity>
                   ) : null}
 
@@ -456,7 +481,11 @@ export default function MainComponent(props: any) {
                         })
                       }
                     >
-                      <Ionicons name="logo-facebook" size={20} color="black" />
+                      <Ionicons
+                        name="logo-facebook"
+                        size={20}
+                        color="#2b2b2b"
+                      />
                     </TouchableOpacity>
                   ) : null}
 
@@ -465,7 +494,11 @@ export default function MainComponent(props: any) {
                       style={styles.footerIconContainer}
                       onPress={() => Linking.openURL(itemDetails.instagram)}
                     >
-                      <Ionicons name="logo-instagram" size={20} color="black" />
+                      <Ionicons
+                        name="logo-instagram"
+                        size={20}
+                        color="#2b2b2b"
+                      />
                     </TouchableOpacity>
                   ) : null}
 
@@ -474,7 +507,7 @@ export default function MainComponent(props: any) {
                       style={styles.footerIconContainer}
                       onPress={() => Linking.openURL(itemDetails.youtube)}
                     >
-                      <Ionicons name="logo-youtube" size={20} color="black" />
+                      <Ionicons name="logo-youtube" size={20} color="#2b2b2b" />
                     </TouchableOpacity>
                   ) : null}
                 </View>
@@ -536,7 +569,7 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     fontSize: 25,
-    color: "black",
+    color: "#2b2b2b",
     textAlign: "center",
     marginTop: 15,
     paddingTop: 10,
@@ -548,7 +581,7 @@ const styles = StyleSheet.create({
   },
   value: {
     fontSize: 16,
-    color: "black",
+    color: "#2b2b2b",
   },
   label: {
     fontWeight: "normal",

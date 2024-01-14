@@ -1,9 +1,7 @@
 import React from "react";
-
 import { createStackNavigator } from "@react-navigation/stack";
 import { StyleSheet, Text } from "react-native";
-import List from "../components/list";
-import Main from "../components/main";
+import ListNotificationComponent from "../components/list-notification";
 
 const Stack = createStackNavigator();
 
@@ -21,7 +19,7 @@ function NotificationComponent() {
           backgroundColor: "white",
           elevation: 1,
         },
-        headerTintColor: "black",
+        headerTintColor: "#2b2b2b",
         headerTitleStyle: {
           fontWeight: "normal",
         },
@@ -29,7 +27,7 @@ function NotificationComponent() {
     >
       <Stack.Screen
         name="Home"
-        component={List}
+        component={ListNotificationComponent}
         options={{
           headerShown: true,
           gestureDirection: "horizontal",
@@ -46,16 +44,6 @@ function NotificationComponent() {
           title: true,
         }}
       />
-      <Stack.Screen
-        name="Notification"
-        component={Main}
-        options={{
-          headerShown: true,
-          headerTransparent: true,
-          headerTitle: "",
-          gestureDirection: "horizontal",
-        }}
-      />
     </Stack.Navigator>
   );
 }
@@ -64,12 +52,12 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     fontSize: 30,
-    color: "black",
+    color: "#2b2b2b",
   },
   subTitle: {
     fontWeight: "bold",
     fontSize: 20,
-    color: "black",
+    color: "#2b2b2b",
     marginLeft: 0,
   },
   container: {

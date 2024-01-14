@@ -55,6 +55,7 @@ export default function App() {
           screenOptions={{
             headerShown: false,
             tabBarShowLabel: true,
+            tabBarActiveBackgroundColor: "#fafafa",
             tabBarStyle: {
               height: Platform.OS === "ios" ? 90 : 60,
               backgroundColor: "#ffffff",
@@ -65,7 +66,7 @@ export default function App() {
               fontSize: 10,
               marginTop: 0,
               marginBottom: 5,
-              color: "black",
+              color: "#2b2b2b",
               fontWeight: "bold",
             },
           }}
@@ -75,8 +76,8 @@ export default function App() {
             children={(props) => <HomeComponent {...props} />}
             options={{
               tabBarLabel: "ഹോം",
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="home-outline" size={24} color="black" />
+              tabBarIcon: ({ color, size, focused }) => (
+                <Ionicons name="home-outline" size={24} color={"#2b2b2b"} />
               ),
             }}
           />
@@ -85,8 +86,8 @@ export default function App() {
             component={EventComponent}
             options={{
               tabBarLabel: "പരിപാടികൾ",
-              tabBarIcon: ({ color, size }) => (
-                <AntDesign name="calendar" size={24} color="black" />
+              tabBarIcon: ({ color, size, focused }) => (
+                <AntDesign name="calendar" size={24} color={"#2b2b2b"} />
               ),
             }}
           />
@@ -95,11 +96,11 @@ export default function App() {
             component={NotificationComponent}
             options={{
               tabBarLabel: "അറിയിപ്പുകൾ",
-              tabBarIcon: ({ color, size }) => (
+              tabBarIcon: ({ color, size, focused }) => (
                 <Ionicons
                   name="notifications-outline"
                   size={24}
-                  color="black"
+                  color={"#2b2b2b"}
                 />
               ),
             }}
@@ -110,8 +111,12 @@ export default function App() {
             component={DeliveryComponent}
             options={{
               tabBarLabel: "ഡെലിവറി",
-              tabBarIcon: ({ color, size }) => (
-                <MaterialIcons name="delivery-dining" size={24} color="black" />
+              tabBarIcon: ({ color, size, focused }) => (
+                <MaterialIcons
+                  name="delivery-dining"
+                  size={24}
+                  color={"#2b2b2b"}
+                />
               ),
             }}
           />
@@ -121,8 +126,8 @@ export default function App() {
             component={MoreComponent}
             options={{
               tabBarLabel: "മറ്റുള്ളവ",
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="menu-outline" size={24} color="black" />
+              tabBarIcon: ({ color, size, focused }) => (
+                <Ionicons name="menu-outline" size={24} color={"#2b2b2b"} />
               ),
             }}
           />

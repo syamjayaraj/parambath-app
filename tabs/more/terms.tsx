@@ -2,28 +2,76 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 import Markdown from "react-native-markdown-display";
 import { Box, ScrollView, Spinner } from "native-base";
-import * as apiService from "../../api-service/index";
+import HTML from "react-native-render-html";
+import { fetchContent } from "../../apiService";
 
 export default function Terms() {
-  const [content, setContent] = useState([]);
+  const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchContent();
+    fetchContentFromApi();
   }, []);
 
-  const fetchContent = async () => {
+  const fetchContentFromApi = async () => {
     try {
       setLoading(true);
-      const response: any = await apiService?.fetchContent("term");
-      if (response && response?.data && response?.status == 200) {
-        setContent(response?.data?.data);
+      const response = await fetchContent("term");
+      if (response && response?.data) {
+        setContent(response?.data);
       } else {
       }
       setLoading(false);
-    } catch (err: any) {
+    } catch (err) {
+      console.error("Error fetching content:", err);
       setLoading(false);
     }
+  };
+
+  const renderHtmlContent = (content: any) => {
+    const renderersProps = {
+      p: {
+        style: {
+          marginVertical: 1,
+        },
+      },
+      h2: {
+        style: {
+          marginTop: 1,
+          marginBottom: 1,
+        },
+      },
+      h3: {
+        style: {
+          marginTop: 1,
+          marginBottom: 1,
+        },
+      },
+    };
+
+    if (!content?.attributes?.content) return null;
+
+    return content.attributes.content.map((item: any, index: number) => {
+      if (item.type === "paragraph") {
+        return (
+          <HTML
+            key={index}
+            source={{ html: `<p>${item.children[0].text}</p>` }}
+            renderersProps={renderersProps}
+          />
+        );
+      } else if (item.type === "heading") {
+        const level = `h${item.level}`;
+        return (
+          <HTML
+            key={index}
+            source={{ html: `<${level}>${item.children[0].text}</${level}>` }}
+            renderersProps={renderersProps}
+          />
+        );
+      }
+      return null;
+    });
   };
 
   return (
@@ -35,12 +83,8 @@ export default function Terms() {
               <Spinner color="#1c1b29" />
             </View>
           ) : (
-            <View
-              style={{
-                marginBottom: 50,
-              }}
-            >
-              {/* <Markdown>{htmlContent}</Markdown> */}
+            <View style={{ marginBottom: 50 }}>
+              {content && renderHtmlContent(content)}
             </View>
           )}
         </ScrollView>

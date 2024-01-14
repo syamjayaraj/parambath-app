@@ -1,15 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, SafeAreaView } from "react-native";
-import { Box, Spinner } from "native-base";
+import {
+  StyleSheet,
+  View,
+  SafeAreaView,
+  Dimensions,
+  TouchableOpacity,
+  Image,
+} from "react-native";
+import { Spinner } from "native-base";
 import SearchBar from "../common/search-bar";
 import CategoryList from "../common/category-list";
+import { apiDomain, categorySize, pageSize } from "../../../config";
+import {
+  loadItem,
+  loadItemCategory,
+  loadSliderEvent,
+} from "../../../apiService";
+import {
+  IBusiness,
+  ICategory,
+  IPagination,
+  ISliderHome,
+} from "../../../models/model";
+import Carousel from "react-native-snap-carousel";
 import ItemList from "../common/item-list";
-import { categorySize, pageSize } from "../../../config";
-import { loadItem, loadItemCategory } from "../../../apiService";
-import { IBusiness, ICategory, IPagination } from "../../../models/model";
-import debounce from "lodash/debounce";
+const { width } = Dimensions.get("window");
 
-export default function ListComponent(props: any) {
+export default function ListDeliveryComponent(props: any) {
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<
     number | undefined
@@ -19,14 +36,26 @@ export default function ListComponent(props: any) {
   const [items, setItems] = useState<IBusiness[]>([]);
   const [pagination, setPagination] = useState<IPagination>();
   const [loading, setLoading] = useState<boolean>(false);
-  const [categoryLoading, setCategoryLoading] = useState<boolean>(false);
   const [initialLoading, setInitialLoading] = useState<boolean>(false);
+  const [sliderLoading, setSliderLoading] = useState<boolean>(false);
+  const [slider, setSlider] = useState<ISliderHome[]>([]);
 
-  const type = props.route.params.type;
-  const typeCategory = props.route.params.typeCategory;
-  const typeCategoryUrl = props.route.params.typeCategoryUrl;
-  const typeCategoryLabel = props.route.params.typeCategoryLabel;
-  const extra = props.route.params.extra;
+  const type = "businesses";
+  const typeCategory = "business_category";
+
+  let propsWithParams;
+  propsWithParams = {
+    ...props,
+    route: {
+      params: {
+        type: "businesses",
+        typeCategory: "business_category",
+        typeCategoryUrl: "business-categories",
+        typeCategoryLabel: "കാറ്റഗറി",
+        main: "Business",
+      },
+    },
+  };
 
   let filters: any = [];
   let fields = ["name", "nameMalayalam"];
@@ -34,14 +63,10 @@ export default function ListComponent(props: any) {
   if (type === "businesses") {
     filters = [
       {
-        name: "small",
-        value: extra === "small" ? true : false,
+        name: "onlineDelivery",
+        value: true,
       },
     ];
-  }
-  if (type === "bus-timings") {
-    fields = [...fields, "time"];
-    sort = ["time"];
   }
   let params = {
     type: type,
@@ -60,44 +85,7 @@ export default function ListComponent(props: any) {
     setSearchText(param);
   };
 
-  const handleSelectCategory = (categoryId: number) => {
-    if (categoryId === selectedCategory) {
-      setSelectedCategory(undefined);
-    } else {
-      setSelectedCategory(categoryId);
-    }
-  };
-
   const handleSelectItem = (itemId: string) => {};
-
-  useEffect(() => {
-    loadItemCategoryFromApi();
-  }, []);
-
-  const loadItemCategoryFromApi = async () => {
-    setCategoryLoading(true);
-    let filters: any = [];
-    if (type === "businesses") {
-      filters = [
-        {
-          name: "small",
-          value: extra === "small" ? true : false,
-        },
-      ];
-    }
-    let params = {
-      filters: filters,
-    };
-    const response = await loadItemCategory({
-      typeCategoryUrl: typeCategoryUrl,
-      pageSize: categorySize,
-      params: params,
-    });
-    if (response) {
-      setCategories(response?.data);
-      setCategoryLoading(false);
-    }
-  };
 
   const loadItems = async (pageParam?: number) => {
     setLoading(true);
@@ -160,13 +148,86 @@ export default function ListComponent(props: any) {
 
   useEffect(() => {
     loadItemFromApi(1);
+    loadSliderEventFromApi();
   }, [type, typeCategory, selectedCategory, searchText]);
+
+  const loadSliderEventFromApi = async () => {
+    setSliderLoading(true);
+    const response = await loadSliderEvent();
+    if (response) {
+      setSlider(response?.data);
+      setSliderLoading(false);
+    }
+  };
+
+  let _renderItem = ({ item, index }: any) => {
+    let itemImage =
+      apiDomain +
+      item?.attributes?.image?.data?.attributes?.formats?.small?.url;
+
+    let mainProp = "Event";
+    let type = "events";
+    let id = item?.attributes?.event?.data?.id;
+
+    return (
+      <TouchableOpacity
+        activeOpacity={0.95}
+        onPress={() =>
+          props?.navigation?.navigate(mainProp, {
+            itemId: id,
+            type: type,
+          })
+        }
+        style={{
+          padding: 10,
+        }}
+      >
+        <Image
+          style={{
+            width: width - 20,
+            height: 250,
+            borderRadius: 10,
+          }}
+          source={{
+            uri: itemImage,
+          }}
+        ></Image>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      {sliderLoading ? (
+        <View
+          style={{
+            width: width - 20,
+            height: 200,
+            borderRadius: 10,
+            backgroundColor: "#f1f1f1",
+            marginLeft: 10,
+            marginTop: 20,
+          }}
+        ></View>
+      ) : (
+        <View>
+          <Carousel
+            showsHorizontalScrollIndicator={true}
+            loop={true}
+            autoplay={true}
+            autoplayInterval={2500}
+            autoplayDelay={1000}
+            layout={"default"}
+            data={slider}
+            sliderWidth={width}
+            itemWidth={width}
+            renderItem={_renderItem}
+          />
+        </View>
+      )}
       <View>
         <SearchBar onSearchData={handleSearch} categories={categories} />
-        {categoryLoading ? (
+        {/* {categoryLoading ? (
           <View
             style={{
               height: 78,
@@ -179,7 +240,7 @@ export default function ListComponent(props: any) {
             onClick={handleSelectCategory}
             selectedCategory={selectedCategory}
           />
-        )}
+        )} */}
       </View>
       <View style={styles.sectionContainer}>
         {initialLoading ? (
@@ -193,7 +254,7 @@ export default function ListComponent(props: any) {
             loading={loading}
             data={items}
             onClick={handleSelectItem}
-            props={props}
+            props={propsWithParams}
           />
         )}
       </View>

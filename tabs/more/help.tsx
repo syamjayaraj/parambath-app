@@ -10,7 +10,7 @@ import { Text, Spinner, Box, ScrollView } from "native-base";
 const { width } = Dimensions.get("window");
 import { Ionicons } from "@expo/vector-icons";
 import Accordion from "react-native-collapsible/Accordion";
-import * as apiService from "../../api-service/index";
+import { fetchContent } from "../../apiService";
 
 export default function Help(props: any) {
   const [content, setContent] = useState([]);
@@ -18,15 +18,15 @@ export default function Help(props: any) {
   const [activeSections, setActiveSections] = useState<any>([]);
 
   useEffect(() => {
-    fetchContent();
+    fetchContentFromApi();
   }, []);
 
-  const fetchContent = async () => {
+  const fetchContentFromApi = async () => {
     try {
       setLoading(true);
-      const response: any = await apiService?.fetchContent("helps");
-      if (response && response?.data && response?.status == 200) {
-        setContent(response?.data?.data);
+      const response: any = await fetchContent("helps");
+      if (response && response?.data) {
+        setContent(response?.data);
       } else {
       }
       setLoading(false);
@@ -56,9 +56,9 @@ export default function Help(props: any) {
         </Text>
         <View>
           {expanded ? (
-            <Ionicons name="arrow-up-outline" size={24} color="black" />
+            <Ionicons name="arrow-up-outline" size={24} color="#2b2b2b" />
           ) : (
-            <Ionicons name="arrow-down-outline" size={24} color="black" />
+            <Ionicons name="arrow-down-outline" size={24} color="#2b2b2b" />
           )}
         </View>
       </View>
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     fontSize: 30,
-    color: "black",
+    color: "#2b2b2b",
   },
   container: {
     padding: 20,

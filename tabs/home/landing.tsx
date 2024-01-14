@@ -10,17 +10,14 @@ import {
 
 import { Box, Text, ScrollView } from "native-base";
 import Carousel from "react-native-snap-carousel";
-import axios from "axios";
-import { apiDomain, apiUrl, apiUrl2 } from "../../config";
+import { apiDomain } from "../../config";
 import { loadSliderHome } from "../../apiService";
 import { ISliderHome } from "../../models/model";
 
 const { width } = Dimensions.get("window");
 
 export default function Landing(props: any) {
-  const [carousel, setCarousel] = useState([]);
   const [slider, setSlider] = useState<ISliderHome[]>([]);
-  const [settings, setSettings] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -332,7 +329,7 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     fontSize: 25,
-    color: "black",
+    color: "#2b2b2b",
     marginLeft: 10,
     paddingTop: 17,
   },

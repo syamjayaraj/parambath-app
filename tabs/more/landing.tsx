@@ -4,7 +4,6 @@ import {
   View,
   Share,
   TouchableOpacity,
-  Image,
   Platform,
   SafeAreaView,
 } from "react-native";
@@ -17,164 +16,153 @@ import {
   Spacer,
   FlatList,
 } from "native-base";
-import axios from "axios";
-import { apiUrl } from "../../config";
-import * as WebBrowser from "expo-web-browser";
 import { Ionicons, EvilIcons } from "@expo/vector-icons";
 import * as appJson from "../../app.json";
+import { fetchContent } from "../../apiService";
 
 export default function Landing(props: any) {
-  let [settings, setSettings] = useState<any>({});
+  const [content, setContent] = useState<any>({});
+  const [loading, setLoading] = useState(false);
 
   const listData = [
     {
       id: 1,
       title: "സഹായം",
       page: "Help",
-      icon: <Ionicons name="help-circle-outline" size={24} color="black" />,
+      icon: <Ionicons name="help-circle-outline" size={24} color="#2b2b2b" />,
     },
     {
-      id: 1,
+      id: 2,
       title: "ഞങ്ങളുമായി ബന്ധപ്പെടൂ",
       page: "Contact",
-      icon: <Ionicons name="call-outline" size={24} color="black" />,
+      icon: <Ionicons name="call-outline" size={24} color="#2b2b2b" />,
     },
     {
-      id: 1,
+      id: 3,
       title: "ആപ്പിനെക്കുറിച്ച്‌",
       page: "About",
       icon: (
-        <Ionicons name="information-circle-outline" size={24} color="black" />
+        <Ionicons name="information-circle-outline" size={24} color="#2b2b2b" />
       ),
     },
     {
-      id: 1,
+      id: 4,
       title: "സംഭാവകർ",
       page: "Contributors",
-      icon: <Ionicons name="people-outline" size={24} color="black" />,
+      icon: <Ionicons name="people-outline" size={24} color="#2b2b2b" />,
     },
     {
-      id: 1,
+      id: 5,
       title: "ഉപാധികളും നിബന്ധനകളും",
       page: "Terms",
-      icon: <Ionicons name="documents-outline" size={24} color="black" />,
+      icon: <Ionicons name="documents-outline" size={24} color="#2b2b2b" />,
     },
   ];
 
   useEffect(() => {
-    fetchSettings();
+    fetchContentFromApi();
   }, []);
 
-  let fetchSettings = async () => {
+  const fetchContentFromApi = async () => {
     try {
-      let response = await axios.get(`${apiUrl}/settings`);
-      if (response && response.data && response.data.status == 200) {
-        setSettings(response.data.data);
+      setLoading(true);
+      const response: any = await fetchContent("setting");
+      if (response && response?.data) {
+        setContent(response?.data);
       } else {
       }
-    } catch (err: any) {}
+      setLoading(false);
+    } catch (err: any) {
+      setLoading(false);
+    }
   };
 
   let shareAppUrl = async () => {
     try {
       let appUrl =
-        Platform.OS === "ios" ? settings.appUrlIos : settings.appUrlAndroid;
+        Platform.OS === "ios" ? content?.appUrlIos : content?.appUrlAndroid;
       const result = await Share.share({
         title: "പറമ്പത്ത് ആപ്പ്",
-        message: settings.shareUrlMessage + appUrl,
+        message: content?.shareUrlMessage + appUrl,
         url: appUrl,
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
-          // shared with activity type of result.activityType
         } else {
-          // shared
         }
       } else if (result.action === Share.dismissedAction) {
-        // dismissed
       }
     } catch (error: any) {
       alert(error.message);
     }
   };
 
-  const openBrowser = async (params: any) => {
-    try {
-      let { url } = params;
-      let result = await WebBrowser.openAuthSessionAsync(url, url, {
-        showInRecents: true,
-      });
-    } catch (err: any) {}
-  };
-
   return (
     <Box bg={"white"} pt={5} padding={3}>
       <SafeAreaView>
-        <ScrollView contentContainerStyle={{ width: "100%" }}>
-          <View style={styles.sectionContainer}>
-            <Box style={styles.list}>
-              <FlatList
-                data={listData}
-                renderItem={({ item }) => (
-                  <Box
-                    _dark={{
-                      borderColor: "muted.50",
-                    }}
-                    borderColor="muted.800"
-                    pl={["0", "4"]}
-                    pr={["0", "5"]}
-                    py="2"
-                  >
-                    <HStack space={[0, 3]} justifyContent="space-between">
-                      {item?.icon}
-                      <VStack>
-                        <TouchableOpacity
-                          onPress={() => props.navigation.navigate(item?.page)}
-                        >
-                          <Text style={{ marginLeft: 10 }}>{item?.title}</Text>
-                        </TouchableOpacity>
-                      </VStack>
-                      <Spacer />
-                    </HStack>
-                  </Box>
-                )}
-                keyExtractor={(item: any) => item?.id}
-              />
-            </Box>
+        <View style={styles.sectionContainer}>
+          <Box style={styles.list}>
+            <FlatList
+              data={listData}
+              renderItem={({ item }) => (
+                <Box
+                  _dark={{
+                    borderColor: "muted.50",
+                  }}
+                  borderColor="muted.800"
+                  pl={["0", "4"]}
+                  pr={["0", "5"]}
+                  py="2"
+                >
+                  <HStack space={[0, 3]} justifyContent="space-between">
+                    {item?.icon}
+                    <VStack>
+                      <TouchableOpacity
+                        onPress={() => props.navigation.navigate(item?.page)}
+                      >
+                        <Text style={{ marginLeft: 10 }}>{item?.title}</Text>
+                      </TouchableOpacity>
+                    </VStack>
+                    <Spacer />
+                  </HStack>
+                </Box>
+              )}
+              keyExtractor={(item: any) => item?.id}
+            />
+          </Box>
 
-            {settings.shareUrlMessage ? (
-              <TouchableOpacity
-                onPress={shareAppUrl}
-                style={{
-                  marginTop: 30,
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderWidth: 1,
-                  borderColor: "#f1f1f1",
-                  padding: 10,
-                }}
-              >
-                <EvilIcons name="share-apple" color="black" size={20} />
-                <Text style={{ marginLeft: 5, fontSize: 13 }}>
-                  സുഹൃത്തുക്കളെ ആപ്പിലേക്ക് സ്വാഗതം ചെയ്യൂ
-                </Text>
-              </TouchableOpacity>
-            ) : null}
-            <Text
+          {content?.shareUrlMessage ? (
+            <TouchableOpacity
+              onPress={shareAppUrl}
               style={{
                 marginTop: 30,
-                marginBottom: 50,
-                textAlign: "center",
-                fontSize: 15,
-                color: "#b0b0b0",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                borderWidth: 1,
+                borderColor: "#f1f1f1",
+                padding: 10,
               }}
             >
-              Version {appJson?.expo?.version}
-            </Text>
-          </View>
-        </ScrollView>
+              <EvilIcons name="share-apple" color="#2b2b2b" size={20} />
+              <Text style={{ marginLeft: 5, fontSize: 13 }}>
+                സുഹൃത്തുക്കളെ ആപ്പിലേക്ക് സ്വാഗതം ചെയ്യൂ
+              </Text>
+            </TouchableOpacity>
+          ) : null}
+          <Text
+            style={{
+              marginTop: 30,
+              marginBottom: 50,
+              textAlign: "center",
+              fontSize: 15,
+              color: "#b0b0b0",
+            }}
+          >
+            Version {appJson?.expo?.version}
+          </Text>
+        </View>
       </SafeAreaView>
     </Box>
   );
@@ -192,7 +180,7 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     fontSize: 30,
-    color: "black",
+    color: "#2b2b2b",
   },
   container: {
     padding: 20,

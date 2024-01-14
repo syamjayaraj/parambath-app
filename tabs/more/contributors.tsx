@@ -10,23 +10,23 @@ import {
   Text,
   VStack,
 } from "native-base";
-import * as apiService from "../../api-service/index";
 import { apiDomain } from "../../config";
+import { fetchContent } from "../../apiService";
 
 export default function Contributors(props: any) {
   const [content, setContent] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchContent();
+    fetchContentFromApi();
   }, []);
 
-  const fetchContent = async () => {
+  const fetchContentFromApi = async () => {
     try {
       setLoading(true);
-      const response: any = await apiService?.fetchContent("contributors");
-      if (response && response?.data && response?.status == 200) {
-        setContent(response?.data?.data);
+      const response: any = await fetchContent("contributors");
+      if (response && response?.data) {
+        setContent(response?.data);
       } else {
       }
       setLoading(false);
@@ -70,7 +70,7 @@ export default function Contributors(props: any) {
                     </HStack>
                   </Box>
                 )}
-                keyExtractor={(item: any) => item?._id}
+                keyExtractor={(item: any) => item?.id}
               />
             </Box>
           </View>
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     fontSize: 30,
-    color: "black",
+    color: "#2b2b2b",
   },
   container: {
     padding: 20,

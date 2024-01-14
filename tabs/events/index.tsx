@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, Animated, Easing } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import MainEventComponent from "../components/main-event";
-import ListWithCarouselEventComponent from "../components/list-with-carousel-event";
+import ListWithCarouselEventComponent from "../components/list-event";
 
 const Stack = createStackNavigator();
 
@@ -20,14 +20,14 @@ function EventComponent() {
           backgroundColor: "white",
           elevation: 1,
         },
-        headerTintColor: "black",
+        headerTintColor: "#2b2b2b",
         headerTitleStyle: {
           fontWeight: "normal",
         },
       }}
     >
       <Stack.Screen
-        name="Home"
+        name="പരിപാടികൾ"
         component={ListWithCarouselEventComponent}
         options={{
           headerShown: true,
@@ -63,12 +63,12 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     fontSize: 30,
-    color: "black",
+    color: "#2b2b2b",
   },
   subTitle: {
     fontWeight: "bold",
     fontSize: 20,
-    color: "black",
+    color: "#2b2b2b",
   },
   container: {
     flex: 1,

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "89480539182",
+    "project_id": "parambathapplication",
+    "storage_bucket": "parambathapplication.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:89480539182:android:d24931e908e6ee8ecb83bf",
+        "android_client_info": {
+          "package_name": "com.onnich.parambath"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "89480539182-djvnbce27fu93esp897dkb7r6plke4b5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt8dAez052s0IcjxfTvXso9ljAcRh5Qvg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "89480539182-djvnbce27fu93esp897dkb7r6plke4b5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

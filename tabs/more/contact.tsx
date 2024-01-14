@@ -12,7 +12,7 @@ import { Text, Spinner, Box, ScrollView } from "native-base";
 import call from "react-native-phone-call";
 import * as WebBrowser from "expo-web-browser";
 import { Ionicons } from "@expo/vector-icons";
-import * as apiService from "../../api-service/index";
+import { fetchContent } from "../../apiService";
 
 const { width } = Dimensions.get("window");
 
@@ -21,15 +21,15 @@ export default function Contact() {
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    fetchContent();
+    fetchContentFromApi();
   }, []);
 
-  const fetchContent = async () => {
+  const fetchContentFromApi = async () => {
     try {
       setLoading(true);
-      const response: any = await apiService?.fetchContent("setting");
-      if (response && response?.data && response?.status == 200) {
-        setContent(response?.data?.data);
+      const response: any = await fetchContent("setting");
+      if (response && response?.data) {
+        setContent(response?.data);
       } else {
       }
       setLoading(false);
@@ -151,7 +151,11 @@ export default function Contact() {
                         )
                       }
                     >
-                      <Ionicons name="logo-whatsapp" size={24} color="black" />
+                      <Ionicons
+                        name="logo-whatsapp"
+                        size={24}
+                        color="#2b2b2b"
+                      />
                     </TouchableOpacity>
                   ) : null}
 
@@ -164,7 +168,11 @@ export default function Contact() {
                         })
                       }
                     >
-                      <Ionicons name="globe-outline" size={24} color="black" />
+                      <Ionicons
+                        name="globe-outline"
+                        size={24}
+                        color="#2b2b2b"
+                      />
                     </TouchableOpacity>
                   ) : null}
 
@@ -190,7 +198,11 @@ export default function Contact() {
                         })
                       }
                     >
-                      <Ionicons name="logo-facebook" size={24} color="black" />
+                      <Ionicons
+                        name="logo-facebook"
+                        size={24}
+                        color="#2b2b2b"
+                      />
                     </TouchableOpacity>
                   ) : null}
 
@@ -201,7 +213,11 @@ export default function Contact() {
                         Linking.openURL(content?.attributes?.instagram)
                       }
                     >
-                      <Ionicons name="logo-instagram" size={24} color="black" />
+                      <Ionicons
+                        name="logo-instagram"
+                        size={24}
+                        color="#2b2b2b"
+                      />
                     </TouchableOpacity>
                   ) : null}
 
@@ -212,7 +228,7 @@ export default function Contact() {
                         Linking.openURL(content?.attributes?.youtube)
                       }
                     >
-                      <Ionicons name="logo-youtube" size={24} color="black" />
+                      <Ionicons name="logo-youtube" size={24} color="#2b2b2b" />
                     </TouchableOpacity>
                   ) : null}
                 </View>
@@ -254,7 +270,7 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     fontSize: 30,
-    color: "black",
+    color: "#2b2b2b",
     textAlign: "center",
     marginTop: 15,
   },
@@ -265,7 +281,7 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: "bold",
     fontSize: 16,
-    color: "black",
+    color: "#2b2b2b",
   },
   value: {
     fontWeight: "normal",
