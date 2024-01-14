@@ -12,17 +12,10 @@ import MoreComponent from "./tabs/more";
 import { useEffect, useState } from "react";
 import * as Font from "expo-font";
 import { MaterialIcons, Ionicons, AntDesign } from "@expo/vector-icons";
-import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 
 export default function App() {
   const BottomTab = createBottomTabNavigator();
   const [loading, setLoading] = useState(true);
-
-  if (__DEV__) {
-    // Adds messages only in a dev environment
-    loadDevMessages();
-    loadErrorMessages();
-  }
 
   useEffect(() => {
     async function loadFont() {
