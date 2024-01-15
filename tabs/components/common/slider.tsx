@@ -33,17 +33,21 @@ export default function Slider({ images }: customProps) {
   };
 
   return (
-    <Carousel
-      showsHorizontalScrollIndicator={true}
-      loop={true}
-      autoplay={true}
-      autoplayInterval={2500}
-      autoplayDelay={1000}
-      layout={"stack"}
-      data={images}
-      sliderWidth={width}
-      itemWidth={width}
-      renderItem={_renderItem}
-    />
+    <>
+      {images?.length !== 0 && (
+        <Carousel
+          showsHorizontalScrollIndicator={true}
+          loop={true}
+          autoplay={true}
+          autoplayInterval={2500}
+          autoplayDelay={1000}
+          layout={"stack"}
+          data={images}
+          sliderWidth={width}
+          itemWidth={width}
+          renderItem={_renderItem}
+        />
+      )}
+    </>
   );
 }

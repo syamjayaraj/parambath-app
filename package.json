@@ -4,6 +4,7 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
+    "postinstall": "patch-package",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
@@ -20,6 +21,7 @@
     "lodash.debounce": "^4.0.8",
     "moment": "^2.29.4",
     "native-base": "^3.4.28",
+    "patch-package": "^8.0.0",
     "react": "18.2.0",
     "react-native": "0.72.6",
     "react-native-bidirectional-infinite-scroll": "^0.3.3",

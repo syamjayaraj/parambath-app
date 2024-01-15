@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  useWindowDimensions,
+} from "react-native";
 import { Box, ScrollView, Spinner } from "native-base";
 import HTML from "react-native-render-html";
 import { fetchContent } from "../../apiService";
@@ -7,6 +12,7 @@ import { fetchContent } from "../../apiService";
 export default function Terms() {
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { width: contentWidth } = useWindowDimensions();
 
   useEffect(() => {
     fetchContentFromApi();
@@ -54,6 +60,7 @@ export default function Terms() {
       if (item.type === "paragraph") {
         return (
           <HTML
+            contentWidth={contentWidth}
             key={index}
             source={{ html: `<p>${item.children[0].text}</p>` }}
             renderersProps={renderersProps}
@@ -63,6 +70,7 @@ export default function Terms() {
         const level = `h${item.level}`;
         return (
           <HTML
+            contentWidth={contentWidth}
             key={index}
             source={{ html: `<${level}>${item.children[0].text}</${level}>` }}
             renderersProps={renderersProps}

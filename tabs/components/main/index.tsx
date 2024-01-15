@@ -67,8 +67,6 @@ export default function MainComponent(props: any) {
     }
   };
 
-  console.log(itemDetails?.timing, "item");
-
   return (
     <Box mt={2} padding={5}>
       <SafeAreaView>
@@ -83,7 +81,7 @@ export default function MainComponent(props: any) {
                 marginTop: 50,
               }}
             >
-              {itemDetails?.images &&
+              {itemDetails?.images?.data &&
               itemDetails?.images?.data?.length !== 0 ? (
                 <Slider images={itemDetails?.images?.data} />
               ) : null}
