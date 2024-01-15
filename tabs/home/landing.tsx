@@ -9,7 +9,7 @@ import {
 } from "react-native";
 
 import { Box, Text, ScrollView } from "native-base";
-import Carousel from "react-native-snap-carousel";
+import Carousel from "react-native-reanimated-carousel";
 import { apiDomain } from "../../config";
 import { loadSliderHome } from "../../apiService";
 import { ISliderHome } from "../../models/model";
@@ -34,6 +34,7 @@ export default function Landing(props: any) {
   };
 
   let _renderItem = ({ item, index }: any) => {
+    console.log(item, "lotus");
     let itemImage =
       apiDomain +
       item?.attributes?.image?.data?.attributes?.formats?.small?.url;
@@ -121,15 +122,11 @@ export default function Landing(props: any) {
           ) : (
             <View>
               <Carousel
-                showsHorizontalScrollIndicator={true}
                 loop={true}
-                autoplay={true}
-                autoplayInterval={2500}
-                autoplayDelay={1000}
-                layout={"default"}
+                autoPlay={true}
+                autoPlayInterval={2500}
                 data={slider}
-                sliderWidth={width}
-                itemWidth={width}
+                width={width}
                 renderItem={_renderItem}
               />
             </View>

@@ -1,5 +1,5 @@
 import { Dimensions, Image, StyleSheet, View } from "react-native";
-import Carousel from "react-native-snap-carousel";
+import Carousel from "react-native-reanimated-carousel";
 import { apiDomain } from "../../../config";
 const { width } = Dimensions.get("window");
 
@@ -34,15 +34,12 @@ export default function Slider({ images }: customProps) {
 
   return (
     <Carousel
-      showsHorizontalScrollIndicator={true}
       loop={true}
-      autoplay={true}
-      autoplayInterval={2500}
-      autoplayDelay={1000}
+      autoPlay={true}
+      autoPlayInterval={2500}
       layout={"stack"}
       data={images}
-      sliderWidth={width}
-      itemWidth={width}
+      width={width}
       renderItem={_renderItem}
     />
   );

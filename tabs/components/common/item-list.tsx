@@ -52,7 +52,7 @@ export default function ItemList({
           <FlatList
             initialNumToRender={20}
             data={data}
-            keyExtractor={(item: any) => item?.id?.toString()}
+            keyExtractor={(item: any) => item?.id}
             onStartReached={handleLoadOld}
             onEndReached={handleLoadMore}
             showDefaultLoadingIndicators={true}
@@ -81,7 +81,7 @@ export default function ItemList({
           <FlatList
             initialNumToRender={20}
             data={data}
-            keyExtractor={(item: any) => item?.id?.toString()}
+            keyExtractor={(item: any) => item?.id}
             onStartReached={handleLoadOld}
             onEndReached={handleLoadMore}
             showDefaultLoadingIndicators={true}
