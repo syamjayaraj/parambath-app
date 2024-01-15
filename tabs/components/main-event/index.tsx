@@ -56,7 +56,7 @@ export default function MainEventComponent(props: any) {
                 marginTop: 50,
               }}
             >
-              {eventDetails?.images &&
+              {eventDetails?.images?.data &&
               eventDetails?.images?.data?.length !== 0 ? (
                 <Slider images={eventDetails?.images?.data} />
               ) : null}
