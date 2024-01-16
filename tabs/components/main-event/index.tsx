@@ -732,13 +732,14 @@ const styles = StyleSheet.create({
     // borderColor: "#969696",
     borderRadius: 5,
     padding: 8,
-    paddingTop: 4,
-    paddingBottom: 4,
+    paddingTop: 2,
+    paddingRight: 12,
+    paddingBottom: 6,
     backgroundColor: "#1c1b29",
   },
   shareIcon: {
     fontSize: 20,
-    marginRight: 10,
+    marginRight: 5,
     color: "white",
   },
   shareText: {
