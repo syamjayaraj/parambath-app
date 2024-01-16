@@ -1,6 +1,6 @@
 import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Platform } from "react-native";
+import { StyleSheet, Platform, LogBox } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { NativeBaseProvider } from "native-base";
@@ -27,6 +27,9 @@ export default function App() {
       setLoading(false);
     }
     loadFont();
+    LogBox.ignoreLogs([
+      "In React 18, SSRProvider is not necessary and is a noop. You can remove it from your app.",
+    ]);
   }, []);
 
   const navTheme = {
