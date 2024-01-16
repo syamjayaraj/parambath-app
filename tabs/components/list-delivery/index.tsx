@@ -210,7 +210,11 @@ export default function ListDeliveryComponent(props: any) {
           }}
         ></View>
       ) : (
-        <View>
+        <View
+          style={{
+            marginTop: 20,
+          }}
+        >
           {slider?.length !== 0 && (
             <Carousel
               showsHorizontalScrollIndicator={true}
