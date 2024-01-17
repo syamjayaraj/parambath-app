@@ -120,18 +120,20 @@ export default function Landing(props: any) {
             ></View>
           ) : (
             <View>
-              <Carousel
-                showsHorizontalScrollIndicator={true}
-                loop={true}
-                autoplay={true}
-                autoplayInterval={2500}
-                autoplayDelay={1000}
-                layout={"default"}
-                data={slider}
-                sliderWidth={width}
-                itemWidth={width}
-                renderItem={_renderItem}
-              />
+              {slider?.length !== 0 && (
+                <Carousel
+                  showsHorizontalScrollIndicator={true}
+                  loop={true}
+                  autoplay={true}
+                  autoplayInterval={2500}
+                  autoplayDelay={1000}
+                  layout={"default"}
+                  data={slider}
+                  sliderWidth={width}
+                  itemWidth={width}
+                  renderItem={_renderItem}
+                />
+              )}
             </View>
           )}
 

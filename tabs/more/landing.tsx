@@ -17,7 +17,7 @@ import {
   FlatList,
 } from "native-base";
 import { Ionicons, EvilIcons } from "@expo/vector-icons";
-import * as appJson from "../../app.json";
+import appJson from "../../app.json";
 import { fetchContent } from "../../apiService";
 
 export default function Landing(props: any) {
