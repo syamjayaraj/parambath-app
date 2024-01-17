@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Box, ScrollView, Text } from "native-base";
 import * as WebBrowser from "expo-web-browser";
-import * as appJson from "../../app.json";
+import appJson from "../../app.json";
 
 export default function Autos() {
   const openBrowser = async (params: any) => {

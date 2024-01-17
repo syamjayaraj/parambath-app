@@ -1,10 +1,5 @@
-import { apiUrl2 } from "../config";
-import {
-  IBusiness,
-  ICategory,
-  IPagination,
-  ISliderHome,
-} from "../models/model";
+import { apiUrl } from "../config";
+import { ICategory, IPagination, ISliderHome } from "../models/model";
 import { get } from "../services/http";
 
 interface INameValue {
@@ -51,7 +46,7 @@ export async function loadItem(param: ILoadItemParam): Promise<{
     if (param?.categoryId) {
       categoryFilter = `&filters[${param?.categoryType}][id][$eq]=${param?.categoryId}`;
     }
-    const url = `${apiUrl2}${param?.type}?${populateParams}&${fieldsParams}&${filtersParams}&${sortParams}&pagination[page]=${param?.pageNumber}&pagination[pageSize]=${param?.pageSize}&filters[$or][0][name][$contains]=${param?.searchText}&filters[$or][1][nameMalayalam][$contains]=${param?.searchText}${categoryFilter}`;
+    const url = `${apiUrl}${param?.type}?${populateParams}&${fieldsParams}&${filtersParams}&${sortParams}&pagination[page]=${param?.pageNumber}&pagination[pageSize]=${param?.pageSize}&filters[$or][0][name][$contains]=${param?.searchText}&filters[$or][1][nameMalayalam][$contains]=${param?.searchText}${categoryFilter}`;
     // console.log(url, "url");
     const response = await get(url);
     return response?.data as any;
@@ -80,7 +75,7 @@ export async function loadItemCategory(param: ILoadItemCategoryParam): Promise<{
         )
         .join("&");
     }
-    const url = `${apiUrl2}${param?.typeCategoryUrl}?${filtersParams}`;
+    const url = `${apiUrl}${param?.typeCategoryUrl}?${filtersParams}`;
     const response = await get(url);
     return response?.data as any;
   } catch (err) {
@@ -93,7 +88,7 @@ export async function loadSliderHome(): Promise<{
   data: ISliderHome[];
 } | null> {
   try {
-    const url = `${apiUrl2}slider-homes?populate=*`;
+    const url = `${apiUrl}slider-homes?populate=*`;
     const response = await get(url);
     return response?.data as any;
   } catch (err) {
@@ -111,7 +106,7 @@ export async function loadItemDetails(param: ILoadItemDetailsParam): Promise<{
   data: any;
 } | null> {
   try {
-    const url = `${apiUrl2}${param?.type}/${param?.id}?populate=*`;
+    const url = `${apiUrl}${param?.type}/${param?.id}?populate=*`;
     const response = await get(url);
     return response?.data as any;
   } catch (err) {
@@ -134,7 +129,7 @@ export async function loadEvent(param: ILoadItemParam): Promise<{
       .map((item: string, index: number) => `sort[${index}]=${item}`)
       .join("&");
 
-    const url = `${apiUrl2}events?${populateParams}&${fieldsParams}&${sortParams}&pagination[page]=${param?.pageNumber}&pagination[pageSize]=${param?.pageSize}&filters[$or][0][name][$contains]=${param?.searchText}&filters[$or][1][nameMalayalam][$contains]=${param?.searchText}`;
+    const url = `${apiUrl}events?${populateParams}&${fieldsParams}&${sortParams}&pagination[page]=${param?.pageNumber}&pagination[pageSize]=${param?.pageSize}&filters[$or][0][name][$contains]=${param?.searchText}&filters[$or][1][nameMalayalam][$contains]=${param?.searchText}`;
     console.log(url, "url");
     const response = await get(url);
     return response?.data as any;
@@ -148,7 +143,7 @@ export async function loadEventDetails(param: ILoadItemDetailsParam): Promise<{
   data: any;
 } | null> {
   try {
-    const url = `${apiUrl2}events/${param?.id}?populate[images]=*&populate[schedule][populate][0]=scheduleDay`;
+    const url = `${apiUrl}events/${param?.id}?populate[images]=*&populate[schedule][populate][0]=scheduleDay`;
     const response = await get(url);
     return response?.data as any;
   } catch (err) {
@@ -161,7 +156,7 @@ export async function loadEventCategory(): Promise<{
   data: ICategory[];
 } | null> {
   try {
-    const url = `${apiUrl2}event-categories`;
+    const url = `${apiUrl}event-categories`;
     const response = await get(url);
     return response?.data as any;
   } catch (err) {
@@ -174,7 +169,7 @@ export async function loadSliderEvent(): Promise<{
   data: ISliderHome[];
 } | null> {
   try {
-    const url = `${apiUrl2}slider-events?populate=*`;
+    const url = `${apiUrl}slider-events?populate=*`;
     const response = await get(url);
     return response?.data as any;
   } catch (err) {
@@ -187,7 +182,7 @@ export async function loadSliderDelivery(): Promise<{
   data: ISliderHome[];
 } | null> {
   try {
-    const url = `${apiUrl2}slider-deliveries?populate=*`;
+    const url = `${apiUrl}slider-deliveries?populate=*`;
     const response = await get(url);
     return response?.data as any;
   } catch (err) {
@@ -200,7 +195,7 @@ export async function fetchNotification(): Promise<{
   data: any;
 } | null> {
   try {
-    const url = `${apiUrl2}notifications?populate=*&sort[0]=date:desc`;
+    const url = `${apiUrl}notifications?populate=*&sort[0]=date:desc`;
     const response = await get(url);
     return response?.data as any;
   } catch (err) {
@@ -213,7 +208,7 @@ export async function fetchContent(type: string): Promise<{
   data: any;
 } | null> {
   try {
-    const response = await get(`${apiUrl2}${type}?populate=*`);
+    const response = await get(`${apiUrl}${type}?populate=*`);
     return response?.data as any;
   } catch (err) {
     return null;
