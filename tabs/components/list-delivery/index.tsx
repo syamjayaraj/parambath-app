@@ -22,7 +22,6 @@ import {
   IPagination,
   ISliderHome,
 } from "../../../models/model";
-import Carousel from "react-native-snap-carousel";
 import ItemList from "../common/item-list";
 const { width } = Dimensions.get("window");
 
@@ -215,7 +214,7 @@ export default function ListDeliveryComponent(props: any) {
             marginTop: 20,
           }}
         >
-          {slider?.length !== 0 && (
+          {/* {slider?.length !== 0 && (
             <Carousel
               showsHorizontalScrollIndicator={true}
               loop={true}
@@ -228,7 +227,7 @@ export default function ListDeliveryComponent(props: any) {
               itemWidth={width}
               renderItem={_renderItem}
             />
-          )}
+          )} */}
         </View>
       )}
       <View>
