@@ -1,5 +1,4 @@
 import { Dimensions, Image, StyleSheet, View } from "react-native";
-import Carousel from "react-native-snap-carousel";
 import { apiDomain } from "../../../config";
 const { width } = Dimensions.get("window");
 
@@ -35,18 +34,19 @@ export default function Slider({ images }: customProps) {
   return (
     <>
       {images?.length !== 0 && (
-        <Carousel
-          showsHorizontalScrollIndicator={true}
-          loop={true}
-          autoplay={true}
-          autoplayInterval={2500}
-          autoplayDelay={1000}
-          layout={"stack"}
-          data={images}
-          sliderWidth={width}
-          itemWidth={width}
-          renderItem={_renderItem}
-        />
+        // <Carousel
+        //   showsHorizontalScrollIndicator={true}
+        //   loop={true}
+        //   autoplay={true}
+        //   autoplayInterval={2500}
+        //   autoplayDelay={1000}
+        //   layout={"stack"}
+        //   data={images}
+        //   sliderWidth={width}
+        //   itemWidth={width}
+        //   renderItem={_renderItem}
+        // />
+        <></>
       )}
     </>
   );
