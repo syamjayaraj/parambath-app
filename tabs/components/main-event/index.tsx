@@ -529,13 +529,13 @@ export default function MainEventComponent(props: any) {
                                         style={{
                                           display: "flex",
                                           flexDirection: "row",
-                                          marginBottom: 5,
+                                          marginBottom: 10,
                                         }}
                                       >
                                         <View
                                           style={{
                                             marginRight: 8,
-                                            paddingTop: 4,
+                                            paddingTop: 0,
                                           }}
                                         >
                                           <EvilIcons
@@ -548,10 +548,11 @@ export default function MainEventComponent(props: any) {
                                           style={{
                                             display: "flex",
                                             flexDirection: "row",
+                                            flexWrap: "wrap",
                                           }}
                                         >
                                           <Text
-                                            fontSize={18}
+                                            fontSize={14}
                                             style={{
                                               color: "#383838",
                                             }}
@@ -559,7 +560,7 @@ export default function MainEventComponent(props: any) {
                                             {item.time}
                                           </Text>
                                           <Text> - </Text>
-                                          <Text bold fontSize={18}>
+                                          <Text bold fontSize={15}>
                                             {item.title}
                                           </Text>
                                         </View>
@@ -569,6 +570,8 @@ export default function MainEventComponent(props: any) {
                                       <Text
                                         style={{
                                           marginBottom: 10,
+                                          color: "#383838",
+                                          fontSize: 12,
                                         }}
                                       >
                                         {item.description}

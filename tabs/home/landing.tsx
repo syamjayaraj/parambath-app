@@ -12,6 +12,7 @@ import { Box, Text, ScrollView } from "native-base";
 import { apiDomain } from "../../config";
 import { loadSliderHome } from "../../apiService";
 import { ISliderHome } from "../../models/model";
+import Carousel from "react-native-snap-carousel";
 
 const { width } = Dimensions.get("window");
 
@@ -119,7 +120,7 @@ export default function Landing(props: any) {
             ></View>
           ) : (
             <View>
-              {/* {slider?.length !== 0 && (
+              {slider?.length !== 0 && (
                 <Carousel
                   showsHorizontalScrollIndicator={true}
                   loop={true}
@@ -132,7 +133,7 @@ export default function Landing(props: any) {
                   itemWidth={width}
                   renderItem={_renderItem}
                 />
-              )} */}
+              )}
             </View>
           )}
 
