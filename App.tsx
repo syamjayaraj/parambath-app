@@ -1,36 +1,18 @@
 import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Platform, LogBox } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
-import { NativeBaseProvider } from "native-base";
 import HomeComponent from "./tabs/home";
 import EventComponent from "./tabs/events";
 import NotificationComponent from "./tabs/notification-component";
 import DeliveryComponent from "./tabs/delivery";
 import MoreComponent from "./tabs/more";
-import { useEffect, useState } from "react";
-import * as Font from "expo-font";
 import { MaterialIcons, Ionicons, AntDesign } from "@expo/vector-icons";
+import { NativeBaseProvider } from "native-base";
 
 export default function App() {
   const BottomTab = createBottomTabNavigator();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function loadFont() {
-      await Font.loadAsync({
-        Roboto: require("./assets/Fonts/Roboto.ttf"),
-        Roboto_medium: require("./assets/Fonts/Roboto_medium.ttf"),
-        ...Ionicons.font,
-      });
-      setLoading(false);
-    }
-    loadFont();
-    LogBox.ignoreLogs([
-      "In React 18, SSRProvider is not necessary and is a noop. You can remove it from your app.",
-    ]);
-  }, []);
 
   const navTheme = {
     ...DefaultTheme,
@@ -40,9 +22,7 @@ export default function App() {
     },
   };
 
-  return loading ? (
-    <NativeBaseProvider></NativeBaseProvider>
-  ) : (
+  return (
     <NativeBaseProvider>
       <NavigationContainer theme={navTheme}>
         <StatusBar style="dark" backgroundColor="white" />

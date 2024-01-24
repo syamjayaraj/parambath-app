@@ -1,43 +1,43 @@
 {
   "expo": {
-    "name": "Parambath",
-    "owner": "onnich",
-    "slug": "Parambath",
-    "version": "4.9.5",
+    "name": "thalakkulathur-app",
+    "slug": "thalakkulathur-app",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.onnich.parambath"
+      "bundleIdentifier": "com.onnich.thalakkulathur"
     },
     "android": {
-      "package": "com.onnich.parambath",
-      "googleServicesFile": "./google-services.json",
-      "permissions": [],
-      "versionCode": 14,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.onnich.thalakkulathur"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": "",
-    "githubUrl": "https://github.com/syamjayaraj/parambath-app",
     "extra": {
       "eas": {
-        "projectId": "1ac69d6c-0b49-4562-be9d-fd5be294f550"
+        "projectId": "5c21200b-82a6-4e1c-baca-485532c9f5eb"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/5c21200b-82a6-4e1c-baca-485532c9f5eb"
     }
   }
 }

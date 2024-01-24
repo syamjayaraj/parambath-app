@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, Animated, Easing } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import MainEventComponent from "../components/main-event";
 import ListWithCarouselEventComponent from "../components/list-event";
