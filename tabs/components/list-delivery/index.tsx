@@ -9,13 +9,8 @@ import {
 } from "react-native";
 import { Spinner } from "native-base";
 import SearchBar from "../common/search-bar";
-import CategoryList from "../common/category-list";
-import { apiDomain, categorySize, pageSize } from "../../../config";
-import {
-  loadItem,
-  loadItemCategory,
-  loadSliderEvent,
-} from "../../../apiService";
+import { apiDomain, pageSize } from "../../../config";
+import { loadItem, loadSliderEvent } from "../../../apiService";
 import {
   IBusiness,
   ICategory,
