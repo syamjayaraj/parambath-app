@@ -7,7 +7,9 @@ const onShare = async (item: any, itemCategoryProp: string) => {
     }${
       item[itemCategoryProp]?.data?.attributes?.nameMalayalam
         ? ", " + item[itemCategoryProp]?.data?.attributes?.nameMalayalam
-        : ", " + item[itemCategoryProp]?.data?.attributes?.name
+        : item[itemCategoryProp]?.data?.attributes?.name
+        ? ", " + item[itemCategoryProp]?.data?.attributes?.name
+        : ", "
     }${item?.place ? ", " + item.place : ""} - ${
       item.ownerNameMalayalam
         ? "ഉടമ: " + item.ownerNameMalayalam + ", "
