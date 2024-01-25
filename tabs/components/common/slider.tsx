@@ -1,6 +1,6 @@
 import { Dimensions, Image, StyleSheet, View } from "react-native";
-import Carousel from "react-native-snap-carousel";
 import { apiDomain } from "../../../config";
+import Carousel from "react-native-snap-carousel";
 const { width } = Dimensions.get("window");
 
 interface customProps {

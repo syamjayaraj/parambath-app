@@ -22,8 +22,8 @@ import {
   IPagination,
   ISliderHome,
 } from "../../../models/model";
-import Carousel from "react-native-snap-carousel";
 import ItemListEvent from "../common/item-list-event";
+import Carousel from "react-native-snap-carousel";
 const { width } = Dimensions.get("window");
 
 export default function ListWithCarouselEventComponent(props: any) {

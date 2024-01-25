@@ -1,7 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Box, HStack, Spacer, Text, VStack, View } from "native-base";
-import { StyleSheet, TouchableOpacity } from "react-native";
-import callToTheNumber from "../../../utils/call-to-number";
+import { StyleSheet } from "react-native";
 import React from "react";
 import moment from "moment";
 
