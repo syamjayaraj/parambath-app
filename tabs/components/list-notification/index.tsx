@@ -112,5 +112,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingLeft: 20,
     paddingRight: 20,
+    marginBottom: 60,
   },
 });

@@ -99,11 +99,11 @@ export default function MainComponent(props: any) {
                     <Text style={styles.shareText}>Share</Text>
                   </TouchableOpacity>
                 </View>
-                {itemDetails.name ? (
+                {itemDetails?.name ? (
                   <Text style={styles.title}>
-                    {itemDetails.nameMalayalam
-                      ? itemDetails.nameMalayalam
-                      : itemDetails.name}
+                    {itemDetails?.nameMalayalam
+                      ? itemDetails?.nameMalayalam
+                      : itemDetails?.name}
                     &nbsp;
                   </Text>
                 ) : null}
@@ -117,20 +117,20 @@ export default function MainComponent(props: any) {
                   </Text>
                 ) : null}
 
-                {itemDetails.about ? (
-                  <Text style={styles.aboutText}>{itemDetails.about}</Text>
+                {itemDetails?.about ? (
+                  <Text style={styles.aboutText}>{itemDetails?.about}</Text>
                 ) : null}
 
-                {itemDetails.description ? (
+                {itemDetails?.description ? (
                   <Text style={styles.aboutText}>
-                    {itemDetails.description}
+                    {itemDetails?.description}
                   </Text>
                 ) : null}
 
-                {itemDetails.youtube ? (
+                {itemDetails?.youtube ? (
                   <TouchableOpacity
                     style={[styles.video]}
-                    onPress={() => Linking.openURL(itemDetails.youtube)}
+                    onPress={() => Linking.openURL(itemDetails?.youtube)}
                   >
                     <Ionicons name="logo-youtube" size={20} color="#2b2b2b" />
                     <View
@@ -146,14 +146,14 @@ export default function MainComponent(props: any) {
                   </TouchableOpacity>
                 ) : null}
 
-                {itemDetails.url ? (
+                {itemDetails?.url ? (
                   <TouchableOpacity
                     style={[styles.booking]}
                     onPress={() =>
                       openBrowser({
-                        url: itemDetails.website
-                          ? itemDetails.website
-                          : itemDetails.url,
+                        url: itemDetails?.website
+                          ? itemDetails?.website
+                          : itemDetails?.url,
                       })
                     }
                   >
@@ -171,7 +171,7 @@ export default function MainComponent(props: any) {
                   </TouchableOpacity>
                 ) : null}
 
-                {itemDetails.timing?.length !== 0 ? (
+                {itemDetails?.timing?.length !== 0 ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
                       <Ionicons name="time-outline" size={20} color="#2b2b2b" />
@@ -191,7 +191,7 @@ export default function MainComponent(props: any) {
                   </View>
                 ) : null}
 
-                {itemDetails.owner ? (
+                {itemDetails?.owner ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
                       <Ionicons
@@ -203,94 +203,104 @@ export default function MainComponent(props: any) {
                     <View style={styles.textContainer}>
                       <Text>ഉടമ</Text>
                       <Text style={styles.value}>
-                        {itemDetails.ownerMalayalamName
-                          ? itemDetails.ownerMalayalamName
-                          : itemDetails.owner}
+                        {itemDetails?.ownerMalayalamName
+                          ? itemDetails?.ownerMalayalamName
+                          : itemDetails?.owner}
                       </Text>
                     </View>
                   </View>
                 ) : null}
-
-                {itemDetails.phoneNumber ? (
-                  <View style={styles.section}>
-                    <View style={styles.iconContainer}>
-                      <Ionicons name="call-outline" size={20} color="#2b2b2b" />
-                    </View>
-                    <TouchableOpacity
-                      style={styles.textContainer}
-                      onPress={() => callToTheNumber(itemDetails.phoneNumber)}
-                    >
-                      <Text>ഫോൺ നമ്പർ</Text>
-                      <Text style={styles.value}>
-                        {itemDetails.phoneNumber}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                ) : null}
-
-                {itemDetails.phoneNumber2 ? (
-                  <View style={styles.section}>
-                    <View style={styles.iconContainer}>
-                      <Ionicons name="call-outline" size={20} color="#2b2b2b" />
-                    </View>
-                    <TouchableOpacity
-                      style={styles.textContainer}
-                      onPress={() => callToTheNumber(itemDetails.phoneNumber2)}
-                    >
-                      <View
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          alignItems: "center",
-                        }}
-                      >
+                {itemDetails?.phoneNumber ? (
+                  <TouchableOpacity
+                    onPress={() => callToTheNumber(itemDetails?.phoneNumber)}
+                  >
+                    <View style={styles.section}>
+                      <View style={styles.iconContainer}>
+                        <Ionicons
+                          name="call-outline"
+                          size={20}
+                          color="#2b2b2b"
+                        />
+                      </View>
+                      <View style={styles.textContainer}>
                         <Text>ഫോൺ നമ്പർ</Text>
-                        <Text
-                          style={{
-                            fontSize: 10,
-                            marginLeft: 5,
-                          }}
-                        >
-                          (2)
+                        <Text style={styles.value}>
+                          {itemDetails?.phoneNumber}
                         </Text>
                       </View>
-                      <Text style={styles.value}>
-                        {itemDetails.phoneNumber2}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                ) : null}
-
-                {itemDetails.email ? (
-                  <View style={styles.section}>
-                    <View style={styles.iconContainer}>
-                      <MaterialIcons
-                        name="alternate-email"
-                        size={20}
-                        color="#2b2b2b"
-                      />
                     </View>
-                    <TouchableOpacity
-                      style={styles.textContainer}
-                      onPress={() =>
-                        Linking.openURL("mailto:support@example.com")
-                      }
-                    >
-                      <View
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Text>ഇമെയിൽ</Text>
-                      </View>
-                      <Text style={styles.value}>{itemDetails.email}</Text>
-                    </TouchableOpacity>
-                  </View>
+                  </TouchableOpacity>
                 ) : null}
 
-                {itemDetails.place ? (
+                {itemDetails?.phoneNumber2 ? (
+                  <TouchableOpacity
+                    onPress={() => callToTheNumber(itemDetails?.phoneNumber2)}
+                  >
+                    <View style={styles.section}>
+                      <View style={styles.iconContainer}>
+                        <Ionicons
+                          name="call-outline"
+                          size={20}
+                          color="#2b2b2b"
+                        />
+                      </View>
+                      <View style={styles.textContainer}>
+                        <View
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Text>ഫോൺ നമ്പർ</Text>
+                          <Text
+                            style={{
+                              fontSize: 10,
+                              marginLeft: 5,
+                            }}
+                          >
+                            (2)
+                          </Text>
+                        </View>
+                        <Text style={styles.value}>
+                          {itemDetails?.phoneNumber2}
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                ) : null}
+
+                {itemDetails?.email ? (
+                  <TouchableOpacity
+                    onPress={() =>
+                      Linking.openURL(`mailto:${itemDetails?.email}`)
+                    }
+                  >
+                    <View style={styles.section}>
+                      <View style={styles.iconContainer}>
+                        <MaterialIcons
+                          name="alternate-email"
+                          size={20}
+                          color="#2b2b2b"
+                        />
+                      </View>
+                      <View style={styles.textContainer}>
+                        <View
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Text>ഇമെയിൽ</Text>
+                        </View>
+                        <Text style={styles.value}>{itemDetails?.email}</Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                ) : null}
+
+                {itemDetails?.place ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
                       <Ionicons
@@ -309,12 +319,12 @@ export default function MainComponent(props: any) {
                       >
                         <Text>സ്ഥലം</Text>
                       </View>
-                      <Text style={styles.value}>{itemDetails.place}</Text>
+                      <Text style={styles.value}>{itemDetails?.place}</Text>
                     </View>
                   </View>
                 ) : null}
 
-                {itemDetails.address ? (
+                {itemDetails?.address ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
                       <Ionicons name="mail-outline" size={20} color="#2b2b2b" />
@@ -329,12 +339,12 @@ export default function MainComponent(props: any) {
                       >
                         <Text>മേൽവിലാസം</Text>
                       </View>
-                      <Text style={styles.value}>{itemDetails.address}</Text>
+                      <Text style={styles.value}>{itemDetails?.address}</Text>
                     </View>
                   </View>
                 ) : null}
 
-                {itemDetails.upi || itemDetails.card ? (
+                {itemDetails?.upi || itemDetails?.card ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
                       <Ionicons
@@ -354,7 +364,7 @@ export default function MainComponent(props: any) {
                         <Text>ഓൺലൈൻ പേയ്മെന്റ്</Text>
                       </View>
                       <View style={{}}>
-                        {itemDetails.upi ? (
+                        {itemDetails?.upi ? (
                           <Text style={styles.value}>
                             യുപിഐ&nbsp;
                             <Text
@@ -366,7 +376,7 @@ export default function MainComponent(props: any) {
                             </Text>
                           </Text>
                         ) : null}
-                        {itemDetails.card ? (
+                        {itemDetails?.card ? (
                           <Text style={styles.value}>
                             ക്രെഡിറ്റ്/ഡെബിറ്റ് കാർഡ്
                           </Text>
@@ -376,7 +386,7 @@ export default function MainComponent(props: any) {
                   </View>
                 ) : null}
 
-                {itemDetails.vehicleNumber ? (
+                {itemDetails?.vehicleNumber ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
                       <Ionicons
@@ -388,18 +398,18 @@ export default function MainComponent(props: any) {
                     <View style={styles.textContainer}>
                       <Text>വണ്ടി നമ്പർ</Text>
                       <Text style={styles.value}>
-                        {itemDetails.vehicleNumber}
+                        {itemDetails?.vehicleNumber}
                       </Text>
                     </View>
                   </View>
                 ) : null}
 
-                {itemDetails.onlineBookingUrl ? (
+                {itemDetails?.onlineBookingUrl ? (
                   <TouchableOpacity
                     style={[styles.booking]}
                     onPress={() =>
                       openBrowser({
-                        url: itemDetails.onlineBookingUrl,
+                        url: itemDetails?.onlineBookingUrl,
                       })
                     }
                   >
@@ -422,12 +432,12 @@ export default function MainComponent(props: any) {
                 ) : null}
 
                 <View style={styles.footer}>
-                  {itemDetails.whatsapp ? (
+                  {itemDetails?.whatsapp ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
                       onPress={() =>
                         Linking.openURL(
-                          `whatsapp://send?phone=${itemDetails.whatsapp}`
+                          `whatsapp://send?phone=${itemDetails?.whatsapp}`
                         )
                       }
                     >
@@ -439,12 +449,12 @@ export default function MainComponent(props: any) {
                     </TouchableOpacity>
                   ) : null}
 
-                  {itemDetails.website ? (
+                  {itemDetails?.website ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
                       onPress={() =>
                         openBrowser({
-                          url: itemDetails.website,
+                          url: itemDetails?.website,
                         })
                       }
                     >
@@ -456,24 +466,24 @@ export default function MainComponent(props: any) {
                     </TouchableOpacity>
                   ) : null}
 
-                  {itemDetails.facebook ? (
+                  {itemDetails?.facebook ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
                       onPress={() =>
                         Linking.canOpenURL(
-                          `fb://page/${itemDetails.facebook}`
+                          `fb://page/${itemDetails?.facebook}`
                         ).then((supported) => {
                           let facebookUrlIsId = /^\d+$/.test(
-                            itemDetails.facebook
+                            itemDetails?.facebook
                           );
 
                           if (supported && facebookUrlIsId) {
                             return Linking.openURL(
-                              `fb://page/${itemDetails.facebook}`
+                              `fb://page/${itemDetails?.facebook}`
                             );
                           } else {
                             return Linking.openURL(
-                              `https://www.facebook.com/${itemDetails.facebook}`
+                              `https://www.facebook.com/${itemDetails?.facebook}`
                             );
                           }
                         })
@@ -487,10 +497,10 @@ export default function MainComponent(props: any) {
                     </TouchableOpacity>
                   ) : null}
 
-                  {itemDetails.instagram ? (
+                  {itemDetails?.instagram ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
-                      onPress={() => Linking.openURL(itemDetails.instagram)}
+                      onPress={() => Linking.openURL(itemDetails?.instagram)}
                     >
                       <Ionicons
                         name="logo-instagram"
@@ -500,10 +510,10 @@ export default function MainComponent(props: any) {
                     </TouchableOpacity>
                   ) : null}
 
-                  {itemDetails.youtube ? (
+                  {itemDetails?.youtube ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
-                      onPress={() => Linking.openURL(itemDetails.youtube)}
+                      onPress={() => Linking.openURL(itemDetails?.youtube)}
                     >
                       <Ionicons name="logo-youtube" size={20} color="#2b2b2b" />
                     </TouchableOpacity>
@@ -571,6 +581,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 15,
     paddingTop: 10,
+    lineHeight: 26,
   },
   workName: {
     fontSize: 17,

@@ -42,6 +42,12 @@ export default function ListComponent(props: any) {
     fields = [...fields, "time"];
     sort = ["time"];
   }
+  if (type === "vehicles") {
+    fields = [...fields, "ownerNameMalayalam"];
+  }
+  if (type === "autos") {
+    fields = [...fields, "phoneNumber", "ownerNameMalayalam"];
+  }
   let params = {
     type: type,
     filters: filters,

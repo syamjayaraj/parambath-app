@@ -74,11 +74,11 @@ export default function MainEventComponent(props: any) {
                     <Text style={styles.shareText}>Share</Text>
                   </TouchableOpacity>
                 </View>
-                {eventDetails.name ? (
+                {eventDetails?.name ? (
                   <Text style={styles.title}>
-                    {eventDetails.nameMalayalam
-                      ? eventDetails.nameMalayalam
-                      : eventDetails.name}
+                    {eventDetails?.nameMalayalam
+                      ? eventDetails?.nameMalayalam
+                      : eventDetails?.name}
                     &nbsp;
                   </Text>
                 ) : null}
@@ -92,20 +92,20 @@ export default function MainEventComponent(props: any) {
                   </Text>
                 ) : null}
 
-                {eventDetails.about ? (
-                  <Text style={styles.aboutText}>{eventDetails.about}</Text>
+                {eventDetails?.about ? (
+                  <Text style={styles.aboutText}>{eventDetails?.about}</Text>
                 ) : null}
 
-                {eventDetails.description ? (
+                {eventDetails?.description ? (
                   <Text style={styles.aboutText}>
-                    {eventDetails.description}
+                    {eventDetails?.description}
                   </Text>
                 ) : null}
 
-                {eventDetails.youtube ? (
+                {eventDetails?.youtube ? (
                   <TouchableOpacity
                     style={[styles.video]}
-                    onPress={() => Linking.openURL(eventDetails.youtube)}
+                    onPress={() => Linking.openURL(eventDetails?.youtube)}
                   >
                     <Ionicons name="logo-youtube" size={20} color="#2b2b2b" />
                     <View
@@ -121,14 +121,14 @@ export default function MainEventComponent(props: any) {
                   </TouchableOpacity>
                 ) : null}
 
-                {eventDetails.url ? (
+                {eventDetails?.url ? (
                   <TouchableOpacity
                     style={[styles.booking]}
                     onPress={() =>
                       openBrowser({
-                        url: eventDetails.website
-                          ? eventDetails.website
-                          : eventDetails.url,
+                        url: eventDetails?.website
+                          ? eventDetails?.website
+                          : eventDetails?.url,
                       })
                     }
                   >
@@ -146,7 +146,7 @@ export default function MainEventComponent(props: any) {
                   </TouchableOpacity>
                 ) : null}
 
-                {eventDetails.from || eventDetails.to ? (
+                {eventDetails?.from || eventDetails?.to ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
                       <Ionicons
@@ -157,93 +157,104 @@ export default function MainEventComponent(props: any) {
                     </View>
                     <View style={styles.textContainer}>
                       <Text style={styles.value}>
-                        {moment(eventDetails.from).format("DD MMM YYYY")} -{" "}
-                        {moment(eventDetails.to).format("DD MMM YYYY")}
+                        {moment(eventDetails?.from).format("DD MMM YYYY")} -{" "}
+                        {moment(eventDetails?.to).format("DD MMM YYYY")}
                       </Text>
                     </View>
                   </View>
                 ) : null}
 
-                {eventDetails.phoneNumber ? (
-                  <View style={styles.section}>
-                    <View style={styles.iconContainer}>
-                      <Ionicons name="call-outline" size={20} color="#2b2b2b" />
-                    </View>
-                    <TouchableOpacity
-                      style={styles.textContainer}
-                      onPress={() => callToTheNumber(eventDetails.phoneNumber)}
-                    >
-                      <Text>ഫോൺ നമ്പർ</Text>
-                      <Text style={styles.value}>
-                        {eventDetails.phoneNumber}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                ) : null}
-
-                {eventDetails.phoneNumber2 ? (
-                  <View style={styles.section}>
-                    <View style={styles.iconContainer}>
-                      <Ionicons name="call-outline" size={20} color="#2b2b2b" />
-                    </View>
-                    <TouchableOpacity
-                      style={styles.textContainer}
-                      onPress={() => callToTheNumber(eventDetails.phoneNumber2)}
-                    >
-                      <View
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          alignItems: "center",
-                        }}
-                      >
+                {eventDetails?.phoneNumber ? (
+                  <TouchableOpacity
+                    onPress={() => callToTheNumber(eventDetails?.phoneNumber)}
+                  >
+                    <View style={styles.section}>
+                      <View style={styles.iconContainer}>
+                        <Ionicons
+                          name="call-outline"
+                          size={20}
+                          color="#2b2b2b"
+                        />
+                      </View>
+                      <View style={styles.textContainer}>
                         <Text>ഫോൺ നമ്പർ</Text>
-                        <Text
-                          style={{
-                            fontSize: 10,
-                            marginLeft: 5,
-                          }}
-                        >
-                          (2)
+                        <Text style={styles.value}>
+                          {eventDetails?.phoneNumber}
                         </Text>
                       </View>
-                      <Text style={styles.value}>
-                        {eventDetails.phoneNumber2}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                ) : null}
-
-                {eventDetails.email ? (
-                  <View style={styles.section}>
-                    <View style={styles.iconContainer}>
-                      <MaterialIcons
-                        name="alternate-email"
-                        size={20}
-                        color="#2b2b2b"
-                      />
                     </View>
-                    <TouchableOpacity
-                      style={styles.textContainer}
-                      onPress={() =>
-                        Linking.openURL("mailto:support@example.com")
-                      }
-                    >
-                      <View
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Text>ഇമെയിൽ</Text>
-                      </View>
-                      <Text style={styles.value}>{eventDetails.email}</Text>
-                    </TouchableOpacity>
-                  </View>
+                  </TouchableOpacity>
                 ) : null}
 
-                {eventDetails.place ? (
+                {eventDetails?.phoneNumber2 ? (
+                  <TouchableOpacity
+                    onPress={() => callToTheNumber(eventDetails?.phoneNumber2)}
+                  >
+                    <View style={styles.section}>
+                      <View style={styles.iconContainer}>
+                        <Ionicons
+                          name="call-outline"
+                          size={20}
+                          color="#2b2b2b"
+                        />
+                      </View>
+                      <View style={styles.textContainer}>
+                        <View
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Text>ഫോൺ നമ്പർ</Text>
+                          <Text
+                            style={{
+                              fontSize: 10,
+                              marginLeft: 5,
+                            }}
+                          >
+                            (2)
+                          </Text>
+                        </View>
+                        <Text style={styles.value}>
+                          {eventDetails?.phoneNumber2}
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                ) : null}
+
+                {eventDetails?.email ? (
+                  <TouchableOpacity
+                    onPress={() =>
+                      Linking.openURL(`mailto:${eventDetails?.email}`)
+                    }
+                  >
+                    <View style={styles.section}>
+                      <View style={styles.iconContainer}>
+                        <MaterialIcons
+                          name="alternate-email"
+                          size={20}
+                          color="#2b2b2b"
+                        />
+                      </View>
+                      <View style={styles.textContainer}>
+                        <View
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Text>ഇമെയിൽ</Text>
+                        </View>
+                        <Text style={styles.value}>{eventDetails?.email}</Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                ) : null}
+
+                {eventDetails?.place ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
                       <Ionicons
@@ -262,12 +273,12 @@ export default function MainEventComponent(props: any) {
                       >
                         <Text>സ്ഥലം</Text>
                       </View>
-                      <Text style={styles.value}>{eventDetails.place}</Text>
+                      <Text style={styles.value}>{eventDetails?.place}</Text>
                     </View>
                   </View>
                 ) : null}
 
-                {eventDetails.address ? (
+                {eventDetails?.address ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
                       <Ionicons name="mail-outline" size={20} color="#2b2b2b" />
@@ -282,12 +293,12 @@ export default function MainEventComponent(props: any) {
                       >
                         <Text>മേൽവിലാസം</Text>
                       </View>
-                      <Text style={styles.value}>{eventDetails.address}</Text>
+                      <Text style={styles.value}>{eventDetails?.address}</Text>
                     </View>
                   </View>
                 ) : null}
 
-                {eventDetails.upi || eventDetails.card ? (
+                {eventDetails?.upi || eventDetails?.card ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
                       <Ionicons
@@ -307,7 +318,7 @@ export default function MainEventComponent(props: any) {
                         <Text>ഓൺലൈൻ പേയ്മെന്റ്</Text>
                       </View>
                       <View style={{}}>
-                        {eventDetails.upi ? (
+                        {eventDetails?.upi ? (
                           <Text style={styles.value}>
                             യുപിഐ&nbsp;
                             <Text
@@ -319,7 +330,7 @@ export default function MainEventComponent(props: any) {
                             </Text>
                           </Text>
                         ) : null}
-                        {eventDetails.card ? (
+                        {eventDetails?.card ? (
                           <Text style={styles.value}>
                             ക്രെഡിറ്റ്/ഡെബിറ്റ് കാർഡ്
                           </Text>
@@ -329,7 +340,7 @@ export default function MainEventComponent(props: any) {
                   </View>
                 ) : null}
 
-                {eventDetails.vehicleNumber ? (
+                {eventDetails?.vehicleNumber ? (
                   <View style={styles.section}>
                     <View style={styles.iconContainer}>
                       <Ionicons
@@ -341,18 +352,18 @@ export default function MainEventComponent(props: any) {
                     <View style={styles.textContainer}>
                       <Text>വണ്ടി നമ്പർ</Text>
                       <Text style={styles.value}>
-                        {eventDetails.vehicleNumber}
+                        {eventDetails?.vehicleNumber}
                       </Text>
                     </View>
                   </View>
                 ) : null}
 
-                {eventDetails.onlineBookingUrl ? (
+                {eventDetails?.onlineBookingUrl ? (
                   <TouchableOpacity
                     style={[styles.booking]}
                     onPress={() =>
                       openBrowser({
-                        url: eventDetails.onlineBookingUrl,
+                        url: eventDetails?.onlineBookingUrl,
                       })
                     }
                   >
@@ -375,12 +386,12 @@ export default function MainEventComponent(props: any) {
                 ) : null}
 
                 <View style={styles.footer}>
-                  {eventDetails.whatsapp ? (
+                  {eventDetails?.whatsapp ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
                       onPress={() =>
                         Linking.openURL(
-                          `whatsapp://send?phone=${eventDetails.whatsapp}`
+                          `whatsapp://send?phone=${eventDetails?.whatsapp}`
                         )
                       }
                     >
@@ -392,12 +403,12 @@ export default function MainEventComponent(props: any) {
                     </TouchableOpacity>
                   ) : null}
 
-                  {eventDetails.website ? (
+                  {eventDetails?.website ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
                       onPress={() =>
                         openBrowser({
-                          url: eventDetails.website,
+                          url: eventDetails?.website,
                         })
                       }
                     >
@@ -409,24 +420,24 @@ export default function MainEventComponent(props: any) {
                     </TouchableOpacity>
                   ) : null}
 
-                  {eventDetails.facebook ? (
+                  {eventDetails?.facebook ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
                       onPress={() =>
                         Linking.canOpenURL(
-                          `fb://page/${eventDetails.facebook}`
+                          `fb://page/${eventDetails?.facebook}`
                         ).then((supported) => {
                           let facebookUrlIsId = /^\d+$/.test(
-                            eventDetails.facebook
+                            eventDetails?.facebook
                           );
 
                           if (supported && facebookUrlIsId) {
                             return Linking.openURL(
-                              `fb://page/${eventDetails.facebook}`
+                              `fb://page/${eventDetails?.facebook}`
                             );
                           } else {
                             return Linking.openURL(
-                              `https://www.facebook.com/${eventDetails.facebook}`
+                              `https://www.facebook.com/${eventDetails?.facebook}`
                             );
                           }
                         })
@@ -440,10 +451,10 @@ export default function MainEventComponent(props: any) {
                     </TouchableOpacity>
                   ) : null}
 
-                  {eventDetails.instagram ? (
+                  {eventDetails?.instagram ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
-                      onPress={() => Linking.openURL(eventDetails.instagram)}
+                      onPress={() => Linking.openURL(eventDetails?.instagram)}
                     >
                       <Ionicons
                         name="logo-instagram"
@@ -453,10 +464,10 @@ export default function MainEventComponent(props: any) {
                     </TouchableOpacity>
                   ) : null}
 
-                  {eventDetails.youtube ? (
+                  {eventDetails?.youtube ? (
                     <TouchableOpacity
                       style={styles.footerIconContainer}
-                      onPress={() => Linking.openURL(eventDetails.youtube)}
+                      onPress={() => Linking.openURL(eventDetails?.youtube)}
                     >
                       <Ionicons name="logo-youtube" size={20} color="#2b2b2b" />
                     </TouchableOpacity>

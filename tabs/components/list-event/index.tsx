@@ -24,6 +24,7 @@ import {
 } from "../../../models/model";
 import ItemListEvent from "../common/item-list-event";
 import Carousel from "react-native-snap-carousel";
+import { ScrollView } from "react-native-gesture-handler";
 const { width } = Dimensions.get("window");
 
 export default function ListWithCarouselEventComponent(props: any) {
@@ -150,8 +151,8 @@ export default function ListWithCarouselEventComponent(props: any) {
   };
 
   return (
-    <Box bg={"white"} mt={2}>
-      <SafeAreaView>
+    <SafeAreaView>
+      <ScrollView>
         {sliderLoading ? (
           <View
             style={{
@@ -194,8 +195,8 @@ export default function ListWithCarouselEventComponent(props: any) {
             props={props}
           />
         </View>
-      </SafeAreaView>
-    </Box>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -204,5 +205,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingLeft: 20,
     paddingRight: 20,
+    marginBottom: 60,
   },
 });

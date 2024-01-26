@@ -1,12 +1,12 @@
-import call from "react-native-phone-call";
+import { Linking } from "react-native";
 
-const callToTheNumber = async (phoneNumber: any, prompt?: boolean) => {
+const callToTheNumber = (phoneNumber: string) => {
   try {
-    let callArgs = {
-      number: phoneNumber,
-      prompt: prompt ? prompt : false,
-    };
-    await call(callArgs);
+    Linking.openURL(`tel:${phoneNumber}`)
+      .then((result) => {})
+      .catch((err: any) => {
+        console.log(err, "err");
+      });
   } catch (err: any) {}
 };
 

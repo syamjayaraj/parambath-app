@@ -203,7 +203,7 @@ export default function Landing(props: any) {
                     type: "vehicles",
                     typeCategory: "vehicle_category",
                     typeCategoryUrl: "vehicle-categories",
-                    typeCategoryLabel: "ഓട്ടോ സ്റ്റാൻഡ്",
+                    typeCategoryLabel: "കാറ്റഗറി",
                     main: "Vehicle",
                   })
                 }
@@ -222,7 +222,7 @@ export default function Landing(props: any) {
                     type: "workers",
                     typeCategory: "work",
                     typeCategoryUrl: "works",
-                    typeCategoryLabel: "More",
+                    typeCategoryLabel: "ജോലികൾ",
                     main: "Worker",
                   })
                 }
@@ -241,7 +241,7 @@ export default function Landing(props: any) {
                     type: "emergencies",
                     typeCategory: "emergency_category",
                     typeCategoryUrl: "emergency-categories",
-                    typeCategoryLabel: "More",
+                    typeCategoryLabel: "കാറ്റഗറി",
                     main: "Emergency",
                   })
                 }
@@ -260,7 +260,7 @@ export default function Landing(props: any) {
                     type: "representatives",
                     typeCategory: "representative_category",
                     typeCategoryUrl: "representative-categories",
-                    typeCategoryLabel: "More",
+                    typeCategoryLabel: "കാറ്റഗറി",
                     main: "Representative",
                   })
                 }
@@ -299,7 +299,7 @@ export default function Landing(props: any) {
                     type: "online-services",
                     typeCategory: "online_service_category",
                     typeCategoryUrl: "online-service-categories",
-                    typeCategoryLabel: "More",
+                    typeCategoryLabel: "കാറ്റഗറി",
                     main: "OnlineService",
                   })
                 }

@@ -43,7 +43,7 @@ export default function ItemList({
                     fontSize={12}
                     style={styles.parambath}
                   >
-                    പറമ്പത്ത് സ്റ്റോപ്പ്
+                    പറമ്പത്ത് സ്റ്റോപ്പ്{" "}
                   </Text>
                 </View>
               </HStack>
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   },
   item: {
     marginBottom: 20,
-    flex: 1,
+    // flex: 1,
   },
   time: {
     fontSize: 17,

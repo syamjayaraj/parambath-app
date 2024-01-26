@@ -1,11 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Box, HStack, Spacer, Text, VStack } from "native-base";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { Dimensions, StyleSheet, TouchableOpacity } from "react-native";
 import callToTheNumber from "../../../utils/call-to-number";
 import React from "react";
+const { width } = Dimensions.get("window");
 
 const ItemComponent = React.memo(
   ({ item, props, mainProp, type, typeCategory, index }: any) => {
+    console.log(item, "cat");
     return (
       <TouchableOpacity
         onPress={() =>
@@ -19,11 +21,30 @@ const ItemComponent = React.memo(
         key={index}
       >
         <Box>
-          <HStack space={[3, 3]} justifyContent="space-between">
+          <HStack justifyContent="space-between">
             <VStack>
-              <Text bold>
+              <Text
+                bold
+                style={{
+                  flexWrap: "wrap",
+                  width: width - 90,
+                }}
+              >
                 {item?.attributes?.nameMalayalam ?? item?.attributes?.name}
+                {item?.attributes?.ownerNameMalayalam && (
+                  <Text
+                    style={{
+                      fontSize: 10,
+                      color: "coolGray.600",
+                      fontWeight: "300",
+                    }}
+                  >
+                    {"  "}
+                    {item?.attributes?.ownerNameMalayalam}
+                  </Text>
+                )}
               </Text>
+
               <Text
                 color="coolGray.600"
                 _dark={{
@@ -36,14 +57,25 @@ const ItemComponent = React.memo(
                   item?.attributes[typeCategory]?.data?.attributes?.name}{" "}
               </Text>
             </VStack>
-            <Spacer />
-            <TouchableOpacity
-              onPress={() =>
-                callToTheNumber(item?.attributes?.nameMalayalam, true)
-              }
-            >
-              <Ionicons name="call-outline" size={20} color="#2b2b2b" />
-            </TouchableOpacity>
+            {typeCategory === "auto_stand" && (
+              <>
+                <Spacer />
+                <TouchableOpacity
+                  onPress={() => callToTheNumber(item?.attributes?.phoneNumber)}
+                >
+                  <Ionicons name="call-outline" size={20} color="#2b2b2b" />
+                </TouchableOpacity>
+              </>
+            )}
+            {typeCategory !== "auto_stand" && (
+              <>
+                <Spacer />
+                <Ionicons
+                  style={styles.categoryMoreIcon}
+                  name="arrow-forward-outline"
+                />
+              </>
+            )}
           </HStack>
         </Box>
       </TouchableOpacity>
@@ -64,5 +96,8 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     paddingBottom: 50,
+  },
+  categoryMoreIcon: {
+    fontSize: 17,
   },
 });

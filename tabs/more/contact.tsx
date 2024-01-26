@@ -9,10 +9,10 @@ import {
   SafeAreaView,
 } from "react-native";
 import { Text, Spinner, Box, ScrollView } from "native-base";
-import call from "react-native-phone-call";
 import * as WebBrowser from "expo-web-browser";
 import { Ionicons } from "@expo/vector-icons";
 import { fetchContent } from "../../apiService";
+import callToTheNumber from "../../utils/call-to-number";
 
 const { width } = Dimensions.get("window");
 
@@ -36,16 +36,6 @@ export default function Contact() {
     } catch (err: any) {
       setLoading(false);
     }
-  };
-
-  let callToTheNumber = async (phoneNumber: string) => {
-    try {
-      let callArgs = {
-        number: phoneNumber,
-        prompt: false,
-      };
-      await call(callArgs);
-    } catch (err: any) {}
   };
 
   const openBrowser = async (params: any) => {

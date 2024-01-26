@@ -19,6 +19,8 @@ import {
 } from "../../../models/model";
 import ItemList from "../common/item-list";
 import Carousel from "react-native-snap-carousel";
+import { ScrollView } from "react-native-gesture-handler";
+
 const { width } = Dimensions.get("window");
 
 export default function ListDeliveryComponent(props: any) {
@@ -193,42 +195,43 @@ export default function ListDeliveryComponent(props: any) {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      {sliderLoading ? (
-        <View
-          style={{
-            width: width - 20,
-            height: 200,
-            borderRadius: 10,
-            backgroundColor: "#f1f1f1",
-            marginLeft: 10,
-            marginTop: 20,
-          }}
-        ></View>
-      ) : (
-        <View
-          style={{
-            marginTop: 20,
-          }}
-        >
-          {slider?.length !== 0 && (
-            <Carousel
-              showsHorizontalScrollIndicator={true}
-              loop={true}
-              autoplay={true}
-              autoplayInterval={2500}
-              autoplayDelay={1000}
-              layout={"default"}
-              data={slider}
-              sliderWidth={width}
-              itemWidth={width}
-              renderItem={_renderItem}
-            />
-          )}
-        </View>
-      )}
-      <View>
-        <SearchBar onSearchData={handleSearch} categories={categories} />
-        {/* {categoryLoading ? (
+      <ScrollView>
+        {sliderLoading ? (
+          <View
+            style={{
+              width: width - 20,
+              height: 200,
+              borderRadius: 10,
+              backgroundColor: "#f1f1f1",
+              marginLeft: 10,
+              marginTop: 20,
+            }}
+          ></View>
+        ) : (
+          <View
+            style={{
+              marginTop: 20,
+            }}
+          >
+            {slider?.length !== 0 && (
+              <Carousel
+                showsHorizontalScrollIndicator={true}
+                loop={true}
+                autoplay={true}
+                autoplayInterval={2500}
+                autoplayDelay={1000}
+                layout={"default"}
+                data={slider}
+                sliderWidth={width}
+                itemWidth={width}
+                renderItem={_renderItem}
+              />
+            )}
+          </View>
+        )}
+        <View>
+          <SearchBar onSearchData={handleSearch} categories={categories} />
+          {/* {categoryLoading ? (
           <View
             style={{
               height: 78,
@@ -242,23 +245,24 @@ export default function ListDeliveryComponent(props: any) {
             selectedCategory={selectedCategory}
           />
         )} */}
-      </View>
-      <View style={styles.sectionContainer}>
-        {initialLoading ? (
-          <View>
-            <Spinner color="#2b2b2b" style={styles.loader} />
-          </View>
-        ) : (
-          <ItemList
-            handleLoadMore={handleLoadMore}
-            handleLoadOld={handleLoadOld}
-            loading={loading}
-            data={items}
-            onClick={handleSelectItem}
-            props={propsWithParams}
-          />
-        )}
-      </View>
+        </View>
+        <View style={styles.sectionContainer}>
+          {initialLoading ? (
+            <View>
+              <Spinner color="#2b2b2b" style={styles.loader} />
+            </View>
+          ) : (
+            <ItemList
+              handleLoadMore={handleLoadMore}
+              handleLoadOld={handleLoadOld}
+              loading={loading}
+              data={items}
+              onClick={handleSelectItem}
+              props={propsWithParams}
+            />
+          )}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
