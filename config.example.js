@@ -1,5 +1,5 @@
-let apiUrl = "https://api-v5-parambath.onnich.com/api/";
-let apiDomain = "https://api-v5-parambath.onnich.com";
+let apiUrl = "";
+let apiDomain = "";
 const pageSize = 50;
 const categorySize = 100;
 
