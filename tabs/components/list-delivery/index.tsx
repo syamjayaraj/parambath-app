@@ -10,7 +10,7 @@ import {
 import { Spinner } from "native-base";
 import SearchBar from "../common/search-bar";
 import { apiDomain, pageSize } from "../../../config";
-import { loadItem, loadSliderEvent } from "../../../apiService";
+import { loadItem, loadSliderDelivery } from "../../../apiService";
 import {
   IBusiness,
   ICategory,
@@ -53,7 +53,7 @@ export default function ListDeliveryComponent(props: any) {
   };
 
   let filters: any = [];
-  let fields = ["name", "nameMalayalam"];
+  let fields = ["name", "nameMalayalam", "phoneNumber"];
   let sort = ["name"];
   if (type === "businesses") {
     filters = [
@@ -143,12 +143,12 @@ export default function ListDeliveryComponent(props: any) {
 
   useEffect(() => {
     loadItemFromApi(1);
-    loadSliderEventFromApi();
+    loadSliderDeliveryFromApi();
   }, [type, typeCategory, selectedCategory, searchText]);
 
-  const loadSliderEventFromApi = async () => {
+  const loadSliderDeliveryFromApi = async () => {
     setSliderLoading(true);
-    const response = await loadSliderEvent();
+    const response = await loadSliderDelivery();
     if (response) {
       setSlider(response?.data);
       setSliderLoading(false);
@@ -160,9 +160,9 @@ export default function ListDeliveryComponent(props: any) {
       apiDomain +
       item?.attributes?.image?.data?.attributes?.formats?.small?.url;
 
-    let mainProp = "Event";
-    let type = "events";
-    let id = item?.attributes?.event?.data?.id;
+    let mainProp = "Business";
+    let type = "businesses";
+    let id = item?.attributes?.business?.data?.id;
 
     return (
       <TouchableOpacity

@@ -32,6 +32,7 @@ function DeliveryComponent(props: any) {
         name="ഡെലിവറി"
         component={ListDeliveryComponent}
         options={{
+          headerShown: true,
           headerTitle: (props: any) => <OtherTitle {...{ name: "ഡെലിവറി" }} />,
         }}
       />

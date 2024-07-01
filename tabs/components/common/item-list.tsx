@@ -29,7 +29,7 @@ export default function ItemList({
     <View>
       {type === "bus-timings" && (
         <>
-          <View style={styles.item}>
+          {/* <View style={styles.item}>
             <Box>
               <HStack space={[3, 3]} justifyContent="space-between">
                 <VStack></VStack>
@@ -48,7 +48,7 @@ export default function ItemList({
                 </View>
               </HStack>
             </Box>
-          </View>
+          </View> */}
           <FlatList
             initialNumToRender={20}
             data={data}
@@ -119,7 +119,6 @@ const styles = StyleSheet.create({
   },
   item: {
     marginBottom: 20,
-    flex: 1,
   },
   time: {
     fontSize: 17,

@@ -39,7 +39,7 @@ const ItemComponent = React.memo(
             <Spacer />
             <TouchableOpacity
               onPress={() =>
-                callToTheNumber(item?.attributes?.nameMalayalam, true)
+                callToTheNumber(item?.attributes?.phoneNumber, true)
               }
             >
               <Ionicons name="call-outline" size={20} color="#2b2b2b" />

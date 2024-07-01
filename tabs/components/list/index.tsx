@@ -28,7 +28,7 @@ export default function ListComponent(props: any) {
   const extra = props.route.params.extra;
 
   let filters: any = [];
-  let fields = ["name", "nameMalayalam"];
+  let fields = ["name", "nameMalayalam", "phoneNumber"];
   let sort = ["name"];
   if (type === "businesses") {
     filters = [
