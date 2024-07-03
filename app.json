@@ -3,7 +3,7 @@
     "name": "Parambath",
     "owner": "onnich",
     "slug": "Parambath",
-    "version": "4.9.8",
+    "version": "4.9.9",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -22,7 +22,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "versionCode": 15,
+      "versionCode": 19,
       "package": "com.onnich.parambath"
     },
     "web": {
