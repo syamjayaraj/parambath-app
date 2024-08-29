@@ -18,3 +18,13 @@ export async function get<T>(url: string, store?: ApiServiceDataStore) {
   };
   return axios.get<T>(url, options);
 }
+
+export async function post<T>(url: string, data: any): Promise<T> {
+  try {
+    const response = await axios.post<T>(url, data);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error during POST request:", error.message);
+    throw error;
+  }
+}

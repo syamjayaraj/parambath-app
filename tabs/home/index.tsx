@@ -4,6 +4,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Landing from "./landing";
 import ListComponent from "../components/list";
 import MainComponent from "../components/main";
+import Contest from "./contest";
+import ContestDetails from "./contest-details";
 
 const Stack = createStackNavigator();
 
@@ -33,13 +35,34 @@ function HomeComponent(props: any) {
       }}
     >
       <Stack.Screen
-        name="ഹോം"
+        name="Home"
         component={Landing}
         options={{
           headerShown: false,
           headerTitle: (props: any) => <LandingTitle {...props} />,
         }}
       />
+      <Stack.Screen
+        name="Contest"
+        component={Contest}
+        options={{
+          headerShown: true,
+          gestureDirection: "horizontal",
+          headerTitle: (props: any) => <OtherTitle {...{ name: "Contest" }} />,
+        }}
+      />
+      <Stack.Screen
+        name="ContestDetails"
+        component={ContestDetails}
+        options={{
+          headerShown: true,
+          gestureDirection: "horizontal",
+          headerTitle: (props: any) => (
+            <OtherTitle {...{ name: "Contest Details" }} />
+          ),
+        }}
+      />
+
       <Stack.Screen
         name="Autos"
         component={ListComponent}

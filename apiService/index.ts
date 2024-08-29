@@ -1,6 +1,6 @@
 import { apiUrl } from "../config";
 import { ICategory, IPagination, ISliderHome } from "../models/model";
-import { get } from "../services/http";
+import { get, post } from "../services/http";
 
 interface INameValue {
   name: string;
@@ -209,6 +209,19 @@ export async function fetchContent(type: string): Promise<{
     const response = await get(`${apiUrl}${type}?populate=*`);
     return response?.data as any;
   } catch (err) {
+    return null;
+  }
+}
+
+export async function submitContest(
+  data: any
+): Promise<{ meta: IPagination; data: any } | null> {
+  try {
+    const url = `${apiUrl}contest-participants`;
+    const response: any = await post(url, data);
+    return response?.data as any;
+  } catch (err: any) {
+    console.error("Error while submitting contest data:", err.message);
     return null;
   }
 }

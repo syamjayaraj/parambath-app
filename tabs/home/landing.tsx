@@ -8,11 +8,12 @@ import {
   SafeAreaView,
 } from "react-native";
 
-import { Box, Text, ScrollView } from "native-base";
+import { Box, Text, ScrollView, Center } from "native-base";
 import { apiDomain } from "../../config";
 import { loadSliderHome } from "../../apiService";
 import { ISliderHome } from "../../models/model";
 import Carousel from "react-native-snap-carousel";
+import ContentBanner from "../components/contest/content-banner";
 
 const { width } = Dimensions.get("window");
 
@@ -136,6 +137,9 @@ export default function Landing(props: any) {
               )}
             </View>
           )}
+          <Center mt={5}>
+            <ContentBanner />
+          </Center>
 
           <View style={styles.container}>
             <View style={styles.menu}>
@@ -337,6 +341,7 @@ const styles = StyleSheet.create({
   },
   container: {
     padding: 20,
+    paddingTop: 0,
   },
   searchInput: {
     backgroundColor: "#ffffff",
