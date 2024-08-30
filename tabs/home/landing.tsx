@@ -10,7 +10,7 @@ import {
 
 import { Box, Text, ScrollView, Center } from "native-base";
 import { apiDomain } from "../../config";
-import { loadSliderHome } from "../../apiService";
+import { fetchContent, loadSliderHome } from "../../apiService";
 import { ISliderHome } from "../../models/model";
 import Carousel from "react-native-snap-carousel";
 import ContentBanner from "../components/contest/content-banner";
@@ -20,10 +20,28 @@ const { width } = Dimensions.get("window");
 export default function Landing(props: any) {
   const [slider, setSlider] = useState<ISliderHome[]>([]);
   const [loading, setLoading] = useState(false);
+  const [settings, setSettings] = useState<any>({});
 
   useEffect(() => {
     loadSliderHomeFromApi();
+    fetchContentFromApi();
   }, []);
+
+  const fetchContentFromApi = async () => {
+    try {
+      setLoading(true);
+      const response: any = await fetchContent("setting");
+      if (response && response?.data) {
+        setSettings(response?.data);
+      } else {
+      }
+      setLoading(false);
+    } catch (err: any) {
+      setLoading(false);
+    }
+  };
+
+  console.log(settings?.attributes?.contestOpen, "settings");
 
   const loadSliderHomeFromApi = async (pageParam?: number) => {
     setLoading(true);
@@ -137,9 +155,11 @@ export default function Landing(props: any) {
               )}
             </View>
           )}
-          <Center mt={5}>
-            <ContentBanner />
-          </Center>
+          {settings?.attributes?.contestOpen && (
+            <Center mt={5}>
+              <ContentBanner />
+            </Center>
+          )}
 
           <View style={styles.container}>
             <View style={styles.menu}>
