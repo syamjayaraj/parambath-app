@@ -23,7 +23,8 @@
         "backgroundColor": "#ffffff"
       },
       "versionCode": 20,
-      "package": "com.onnich.parambath"
+      "package": "com.onnich.parambath",
+      "targetSdkVersion": 33
     },
     "web": {
       "favicon": "./assets/favicon.png"
