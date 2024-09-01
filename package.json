@@ -31,7 +31,7 @@
     "patch-package": "^8.0.0",
     "postinstall-postinstall": "^2.1.0",
     "ramda": "^0.30.1",
-    "react": "18.2.0",
+    "react": "^18.3.1",
     "react-native": "0.74.5",
     "react-native-bidirectional-infinite-scroll": "^0.3.3",
     "react-native-collapsible": "^1.6.1",
