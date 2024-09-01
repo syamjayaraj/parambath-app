@@ -10,6 +10,9 @@
     "ts:check": "tsc",
     "postinstall": "patch-package"
   },
+  "resolutions": {
+    "react": "18.3.1"
+  },
   "dependencies": {
     "@expo/metro-runtime": "~3.2.3",
     "@react-navigation/bottom-tabs": "^6.5.11",
