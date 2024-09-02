@@ -120,7 +120,7 @@ export default function Contest(props: any) {
                               mt="-1"
                             >
                               {moment(item?.attributes?.endDate).format(
-                                "Do MMM YYYY HH:mm A"
+                                "Do MMM YYYY hh:mm A"
                               )}{" "}
                               വരെ
                             </Text>

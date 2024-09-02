@@ -18,7 +18,7 @@ const SuccessAnimation = ({
   onClose,
   size = 120,
   duration = 2000,
-  backgroundColor = "#44c6b1",
+  backgroundColor = "#691B99",
   iconColor = "white",
   message,
 }: SuccessAnimationProps) => {

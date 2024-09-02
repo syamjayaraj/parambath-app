@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { SafeAreaView, StyleSheet, View, Alert } from "react-native";
+import { SafeAreaView, StyleSheet, View, Alert, Keyboard } from "react-native";
 import {
   AspectRatio,
   Box,
@@ -29,6 +29,7 @@ export default function ContestDetails(props: any) {
   const [name, setName] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [note, setNote] = useState<string>("");
+  const [actionSheetHeight, setActionSheetHeight] = useState("");
   const [showSuccessAnimation, setShowSuccessAnimation] =
     useState<boolean>(false);
 
@@ -56,9 +57,13 @@ export default function ContestDetails(props: any) {
     }
   };
 
-  const handleOptionSelect = (option: string) => {
+  const handleOptionSelect = (option: any) => {
     setSelectedOption(option);
-    onOpen(); // Open bottom sheet
+    console.log(option?.title);
+    if (option?.title !== "അതെ") {
+      setNote(option?.title);
+    }
+    onOpen();
   };
 
   const handleSubmit = async () => {
@@ -106,6 +111,26 @@ export default function ContestDetails(props: any) {
   const handleCloseSuccess = () => {
     navigation.navigate("Home");
   };
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setActionSheetHeight("80%");
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setActionSheetHeight("auto");
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   return (
     <Box mb={20}>
@@ -175,7 +200,7 @@ export default function ContestDetails(props: any) {
                       mt="-1"
                     >
                       {moment(content?.attributes?.endDate).format(
-                        "Do MMM YYYY HH:mm A"
+                        "Do MMM YYYY hh:mm A"
                       )}{" "}
                       വരെ
                     </Text>
@@ -240,7 +265,7 @@ export default function ContestDetails(props: any) {
       {/* Bottom Sheet for Additional Details */}
       <Actionsheet isOpen={isOpen} onClose={onClose}>
         <Actionsheet.Content>
-          <Box w="100%" px={4} py={6}>
+          <Box w="100%" px={4} py={6} height={actionSheetHeight}>
             <Input
               placeholder="പേര്"
               value={name}
@@ -254,14 +279,15 @@ export default function ContestDetails(props: any) {
               mb={4}
               keyboardType="phone-pad"
             />
-            {/* <Input
-              placeholder="Enter a note (if any)"
+            <Input
+              placeholder="ഉത്തരം"
               value={note}
               onChangeText={setNote}
               mb={4}
-            /> */}
+              height={20}
+            />
             <Button onPress={handleSubmit} colorScheme="violet">
-              Submit Answer
+              ഉത്തരം സമർപ്പിക്കൂ
             </Button>
           </Box>
         </Actionsheet.Content>
