@@ -35,7 +35,7 @@ export default function Autos() {
                 <TouchableOpacity
                   onPress={() =>
                     openBrowser({
-                      url: "https://onnich.com",
+                      url: "https://floyet.com",
                     })
                   }
                 >
@@ -47,7 +47,7 @@ export default function Autos() {
                         fontSize: 13,
                       }}
                     >
-                      ONNICH
+                      FLOYET
                     </Text>
                   </Text>
                 </TouchableOpacity>

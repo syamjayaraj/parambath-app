@@ -24,7 +24,7 @@
       },
       "versionCode": 22,
       "package": "com.onnich.parambath",
-      "permissions": ["READ_PHONE_STATE", "CALL_PHONE"]
+      "permissions": ["CALL_PHONE"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
